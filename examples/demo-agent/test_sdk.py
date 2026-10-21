@@ -24,7 +24,11 @@ with scope.trace("SDK Demo Agent") as run_id:
     with scope.span(
         "generate_summary",
         span_type="llm",
-        metadata={"model": "demo-model", "tokens": 250},
+        metadata={
+    "model": "demo-model",
+    "input_tokens": 180,
+    "output_tokens": 70,
+}
     ):
         time.sleep(0.7)
         print("Summary generated")
