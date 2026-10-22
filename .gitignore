@@ -40,3 +40,18 @@ yarn-error.log*
 *.db
 *.sqlite
 *.sqlite3
+
+# AgentScope local backups
+backups/
+*.day2.bak
+*.bak
+
+# Local test artifacts
+*.prof
+*.profraw
+htmlcov/
+.coverage
+
+# Temporary files
+*.tmp
+*.swp

@@ -28,6 +28,8 @@ with scope.trace("SDK Demo Agent") as run_id:
     "model": "demo-model",
     "input_tokens": 180,
     "output_tokens": 70,
+    "input_cost_per_million": 1.0,
+    "output_cost_per_million": 4.0,
 }
     ):
         time.sleep(0.7)

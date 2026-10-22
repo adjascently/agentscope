@@ -1,0 +1,130 @@
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: agentscope-db
+type: Opaque
+stringData:
+  DATABASE_URL: postgresql://agentscope:agentscope_dev@host.docker.internal:5433/agentscope
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agentscope-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: agentscope-api
+  template:
+    metadata:
+      labels:
+        app: agentscope-api
+    spec:
+      containers:
+        - name: api
+          image: agentscope-api:day2
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: agentscope-db
+                  key: DATABASE_URL
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: kafka.default.svc.cluster.local:29092
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agentscope-api
+spec:
+  selector:
+    app: agentscope-api
+  ports:
+    - port: 8000
+      targetPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agentscope-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: agentscope-consumer
+  template:
+    metadata:
+      labels:
+        app: agentscope-consumer
+    spec:
+      containers:
+        - name: consumer
+          image: agentscope-api:day2
+          imagePullPolicy: Never
+          command: ["python", "-m", "apps.api.app.consumer"]
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: agentscope-db
+                  key: DATABASE_URL
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: kafka.default.svc.cluster.local:29092
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agentscope-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: agentscope-web
+  template:
+    metadata:
+      labels:
+        app: agentscope-web
+    spec:
+      containers:
+        - name: web
+          image: agentscope-web:day2
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3000
+          env:
+            - name: AGENTSCOPE_API_URL
+              value: http://agentscope-api:8000
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agentscope-web
+spec:
+  selector:
+    app: agentscope-web
+  ports:
+    - port: 3000
+      targetPort: 3000
+

@@ -26,8 +26,12 @@ type TimelineSpan = {
 };
 
 async function getTrace(runId: string): Promise<TraceResponse> {
+  const apiBaseUrl =
+    process.env.AGENTSCOPE_API_URL ??
+    "http://127.0.0.1:8000";
+
   const response = await fetch(
-    `http://127.0.0.1:8000/v1/traces/${encodeURIComponent(runId)}`,
+    `${apiBaseUrl}/v1/traces/${encodeURIComponent(runId)}`,
     { cache: "no-store" }
   );
 

@@ -1,0 +1,44 @@
+services:
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    container_name: agentscope-prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./infra/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "127.0.0.1:9091:9090"
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:12.1.0
+    container_name: agentscope-grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: agentscope_dev
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./infra/grafana/provisioning:/etc/grafana/provisioning:ro
+    ports:
+      - "127.0.0.1:3001:3000"
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+  kafka-exporter:
+    image: danielqsj/kafka-exporter:v1.9.0
+    container_name: agentscope-kafka-exporter
+    command:
+      - --kafka.server=kafka:29092
+      - --group.filter=agentscope-postgres-writer
+      - --topic.filter=agent-traces
+    ports:
+      - "127.0.0.1:9308:9308"
+    depends_on:
+      - kafka
+    restart: unless-stopped
+
+volumes:
+  prometheus_data:
+  grafana_data:

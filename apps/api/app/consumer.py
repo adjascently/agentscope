@@ -1,7 +1,15 @@
-
+import os
 import json
 import logging
 import signal
+from time import perf_counter
+
+from prometheus_client import start_http_server
+from apps.api.app.metrics import (
+    CONSUMER_PROCESSED,
+    CONSUMER_ERRORS,
+    CONSUMER_LATENCY,
+)
 
 import psycopg
 from confluent_kafka import Consumer, KafkaError
@@ -13,13 +21,16 @@ logging.basicConfig(
 
 logger = logging.getLogger("agentscope.consumer")
 
-DATABASE_URL = (
-    "postgresql://agentscope:agentscope_dev"
-    "@127.0.0.1:5433/agentscope"
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql://agentscope:agentscope_dev@127.0.0.1:5433/agentscope",
 )
 
 consumer = Consumer({
-    "bootstrap.servers": "127.0.0.1:9092",
+   "bootstrap.servers": os.getenv(
+    "KAFKA_BOOTSTRAP_SERVERS",
+    "127.0.0.1:9092",
+),
     "group.id": "agentscope-postgres-writer",
     "auto.offset.reset": "earliest",
     "enable.auto.commit": False,
@@ -74,6 +85,7 @@ def save_trace(conn, event):
 
 
 def main():
+    start_http_server(8002, addr="0.0.0.0")
     logger.info("Starting AgentScope Kafka consumer")
 
     try:
@@ -103,6 +115,7 @@ def main():
                     )
                     continue
 
+                started = perf_counter()
                 try:
                     event = json.loads(message.value())
 
@@ -113,6 +126,7 @@ def main():
                         asynchronous=False,
                     )
 
+                    CONSUMER_PROCESSED.inc()
                     logger.info(
                         "Saved trace: %s (%s)",
                         event["name"],
@@ -120,12 +134,16 @@ def main():
                     )
 
                 except Exception:
+                    CONSUMER_ERRORS.inc()
                     logger.exception(
                         "Failed to process trace; "
                         "stopping without committing "
                         "the failed message"
                     )
                     break
+
+                finally:
+                    CONSUMER_LATENCY.observe(perf_counter() - started)
 
     finally:
         consumer.close()

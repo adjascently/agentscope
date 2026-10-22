@@ -23,6 +23,8 @@ services:
     hostname: kafka
     ports:
       - "127.0.0.1:9092:9092"
+    volumes:
+      - agentscope_kafka_data:/tmp/kafka-logs
     environment:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker,controller
@@ -39,5 +41,62 @@ services:
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
       KAFKA_HEAP_OPTS: "-Xms256m -Xmx512m"
 
+  kafka-init:
+    image: apache/kafka:3.9.1
+    depends_on:
+      kafka:
+        condition: service_started
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        until /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:29092 --list >/dev/null 2>&1; do
+          echo "Waiting for Kafka..."
+          sleep 2
+        done
+        /opt/kafka/bin/kafka-topics.sh           --bootstrap-server kafka:29092           --create --if-not-exists           --topic agent-traces           --partitions 3           --replication-factor 1
+    restart: "no"
+
+  api:
+    image: agentscope-api:day3
+    container_name: agentscope-api
+    environment:
+      DATABASE_URL: postgresql://agentscope:agentscope_dev@postgres:5432/agentscope
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka-init:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  consumer:
+    image: agentscope-api:day3
+    container_name: agentscope-consumer
+    command: ["python", "-m", "apps.api.app.consumer"]
+    environment:
+      DATABASE_URL: postgresql://agentscope:agentscope_dev@postgres:5432/agentscope
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka-init:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  web:
+    image: agentscope-web:day2
+    container_name: agentscope-web
+    environment:
+      AGENTSCOPE_API_URL: http://api:8000
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      - api
+    restart: unless-stopped
+
 volumes:
   postgres_data:
+  agentscope_kafka_data:
+    external: true

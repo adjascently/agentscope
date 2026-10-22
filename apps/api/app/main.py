@@ -1,22 +1,32 @@
-
+import os
 import json
+from time import perf_counter
 from contextlib import asynccontextmanager
 from datetime import datetime
 from uuid import UUID
 
 import psycopg
+from typing import Literal
 from psycopg.rows import dict_row
 from confluent_kafka import Producer
 from fastapi import FastAPI, HTTPException, Query
+from prometheus_fastapi_instrumentator import Instrumentator
+from apps.api.app.metrics import (
+    TRACES_INGESTED, INGESTION_ERRORS, INGESTION_LATENCY
+)
 from pydantic import BaseModel, Field
 
 
-DATABASE_URL = (
-    "postgresql://agentscope:agentscope_dev@127.0.0.1:5433/agentscope"
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql://agentscope:agentscope_dev@127.0.0.1:5433/agentscope",
 )
 
 producer = Producer({
-    "bootstrap.servers": "127.0.0.1:9092",
+    "bootstrap.servers": os.getenv(
+        "KAFKA_BOOTSTRAP_SERVERS",
+        "127.0.0.1:9092",
+    ),
     "enable.idempotence": True,
     "acks": "all",
 })
@@ -47,6 +57,8 @@ app = FastAPI(
 )
 
 
+Instrumentator().instrument(app).expose(app, endpoint="/metrics")
+
 @app.get("/")
 def root():
     return {
@@ -62,6 +74,7 @@ def health():
 
 @app.post("/v1/traces", status_code=202)
 def ingest_trace(event: TraceEvent):
+    started = perf_counter()
     try:
         producer.produce(
             topic="agent-traces",
@@ -76,21 +89,27 @@ def ingest_trace(event: TraceEvent):
         if remaining:
             raise RuntimeError("Kafka delivery timed out")
 
+        TRACES_INGESTED.inc()
         return {
             "message": "Trace accepted",
             "span_id": str(event.span_id),
         }
 
     except Exception as exc:
+        INGESTION_ERRORS.inc()
         raise HTTPException(
             status_code=503,
             detail="Kafka ingestion unavailable",
         ) from exc
 
+    finally:
+        INGESTION_LATENCY.observe(perf_counter() - started)
+
 
 @app.get("/v1/runs")
 def list_runs(
     limit: int = Query(default=20, ge=1, le=100),
+    status: Literal["ok", "error"] | None = None,
 ):
     try:
         with psycopg.connect(
@@ -105,14 +124,70 @@ def list_runs(
                     MIN(timestamp) AS started_at,
                     MAX(timestamp) AS last_event_at,
                     COUNT(*) FILTER (
-                        WHERE status = 'error'
-                    ) AS error_count
+    WHERE status = 'error'
+) AS error_count,
+
+COALESCE(
+    SUM(
+        CASE
+            WHEN span_type = 'llm'
+             AND jsonb_typeof(metadata->'input_tokens') = 'number'
+            THEN (metadata->>'input_tokens')::numeric
+            ELSE 0
+        END
+    ),
+    0
+)::bigint AS input_tokens,
+
+COALESCE(
+    SUM(
+        CASE
+            WHEN span_type = 'llm'
+             AND jsonb_typeof(metadata->'output_tokens') = 'number'
+            THEN (metadata->>'output_tokens')::numeric
+            ELSE 0
+        END
+    ),
+    0
+)::bigint AS output_tokens,
+
+COALESCE(
+    SUM(
+        CASE
+            WHEN span_type = 'llm'
+             AND jsonb_typeof(metadata->'input_tokens') = 'number'
+             AND jsonb_typeof(metadata->'output_tokens') = 'number'
+             AND jsonb_typeof(metadata->'input_cost_per_million') = 'number'
+             AND jsonb_typeof(metadata->'output_cost_per_million') = 'number'
+            THEN (
+                (metadata->>'input_tokens')::numeric
+                * (metadata->>'input_cost_per_million')::numeric
+                +
+                (metadata->>'output_tokens')::numeric
+                * (metadata->>'output_cost_per_million')::numeric
+            ) / 1000000
+            ELSE 0
+        END
+    ),
+    0
+) AS estimated_cost_usd
                 FROM spans
-                GROUP BY run_id
-                ORDER BY last_event_at DESC
-                LIMIT %s
+GROUP BY run_id
+HAVING (
+    %s::text IS NULL
+    OR (
+        %s = 'error'
+        AND COUNT(*) FILTER (WHERE status = 'error') > 0
+    )
+    OR (
+        %s = 'ok'
+        AND COUNT(*) FILTER (WHERE status = 'error') = 0
+    )
+)
+ORDER BY last_event_at DESC
+LIMIT %s
                 """,
-                (limit,),
+                (status, status, status, limit),
             ).fetchall()
 
     except psycopg.Error as exc:
