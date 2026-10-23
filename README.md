@@ -398,23 +398,6 @@ They provide operational visibility into ingestion, consumer activity, errors, a
 
 ---
 
-## Roadmap
-
-AgentScope is an evolving developer tool. Planned improvements include:
-
-- [ ] Automatic instrumentation for OpenAI and popular agent frameworks
-- [ ] Bottleneck detection and slow-span analysis
-- [ ] Per-model token and cost analytics
-- [ ] Search and filtering across agent runs
-- [ ] Easier Python SDK installation and onboarding
-- [ ] Shareable debugging reports
-- [ ] Authentication and workspace isolation
-- [ ] Load testing and production deployment hardening
-
-These are planned capabilities, not features available in the current release.
-
----
-
 ## Current Limitations
 
 AgentScope is currently intended for local development and demonstration.
