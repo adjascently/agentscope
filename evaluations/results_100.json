@@ -1,0 +1,445 @@
+{
+  "summary": {
+    "dataset": "100 deterministic synthetic scenarios",
+    "total_cases": 100,
+    "true_positives": 100,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "evidence_accuracy": 1.0,
+    "evidence_correct": 100,
+    "evidence_total": 100,
+    "extra_cases_passed": 20,
+    "extra_cases_total": 20,
+    "limitations": [
+      "Synthetic template-generated scenarios, not production incidents.",
+      "The first 80 cases reuse known diagnosis keywords.",
+      "Adversarial examples are limited and manually constructed.",
+      "Results do not establish production accuracy."
+    ]
+  },
+  "extra_cases": [
+    {
+      "id": "multi-0",
+      "category": "multiple_failures",
+      "expected": [
+        [
+          "connection_failed",
+          "e33b63be-a1ce-5672-94be-3526f2b46b10"
+        ],
+        [
+          "rate_limited",
+          "8234e5bd-7518-519f-8b7a-fa259085eb10"
+        ]
+      ],
+      "predicted": [
+        [
+          "rate_limited",
+          "8234e5bd-7518-519f-8b7a-fa259085eb10"
+        ],
+        [
+          "connection_failed",
+          "e33b63be-a1ce-5672-94be-3526f2b46b10"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "id": "multi-1",
+      "category": "multiple_failures",
+      "expected": [
+        [
+          "connection_failed",
+          "c1549647-75c9-5e59-8ad6-a87213426555"
+        ],
+        [
+          "rate_limited",
+          "fe70c282-1d83-5adf-9525-6a00ff0314ab"
+        ]
+      ],
+      "predicted": [
+        [
+          "rate_limited",
+          "fe70c282-1d83-5adf-9525-6a00ff0314ab"
+        ],
+        [
+          "connection_failed",
+          "c1549647-75c9-5e59-8ad6-a87213426555"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "id": "multi-2",
+      "category": "multiple_failures",
+      "expected": [
+        [
+          "connection_failed",
+          "d2b87632-9814-57b5-be30-80ede346dbfd"
+        ],
+        [
+          "rate_limited",
+          "a720e514-5672-518f-8989-c9a09e70870d"
+        ]
+      ],
+      "predicted": [
+        [
+          "rate_limited",
+          "a720e514-5672-518f-8989-c9a09e70870d"
+        ],
+        [
+          "connection_failed",
+          "d2b87632-9814-57b5-be30-80ede346dbfd"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "id": "multi-3",
+      "category": "multiple_failures",
+      "expected": [
+        [
+          "connection_failed",
+          "1c06f7f9-493b-541b-a3ac-92794b0d4bbb"
+        ],
+        [
+          "rate_limited",
+          "61898417-5485-57ba-bed3-72d1e371bd0c"
+        ]
+      ],
+      "predicted": [
+        [
+          "rate_limited",
+          "61898417-5485-57ba-bed3-72d1e371bd0c"
+        ],
+        [
+          "connection_failed",
+          "1c06f7f9-493b-541b-a3ac-92794b0d4bbb"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "id": "multi-4",
+      "category": "multiple_failures",
+      "expected": [
+        [
+          "connection_failed",
+          "7821e312-4fc3-567f-9fa4-a8d9c8f3d001"
+        ],
+        [
+          "rate_limited",
+          "07de03ad-96d4-55ae-a4d4-985c51760355"
+        ]
+      ],
+      "predicted": [
+        [
+          "rate_limited",
+          "07de03ad-96d4-55ae-a4d4-985c51760355"
+        ],
+        [
+          "connection_failed",
+          "7821e312-4fc3-567f-9fa4-a8d9c8f3d001"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "id": "multi-5",
+      "category": "multiple_failures",
+      "expected": [
+        [
+          "connection_failed",
+          "84465557-2209-548d-96fc-44da609b4c56"
+        ],
+        [
+          "rate_limited",
+          "f7a632fa-0097-5fc7-97f2-20c57c60716e"
+        ]
+      ],
+      "predicted": [
+        [
+          "rate_limited",
+          "f7a632fa-0097-5fc7-97f2-20c57c60716e"
+        ],
+        [
+          "connection_failed",
+          "84465557-2209-548d-96fc-44da609b4c56"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "id": "multi-6",
+      "category": "multiple_failures",
+      "expected": [
+        [
+          "connection_failed",
+          "a3c8b0db-10af-5981-8e95-1124f0d25cb7"
+        ],
+        [
+          "rate_limited",
+          "435160f5-4aa7-5115-acdf-6266f20b68c9"
+        ]
+      ],
+      "predicted": [
+        [
+          "rate_limited",
+          "435160f5-4aa7-5115-acdf-6266f20b68c9"
+        ],
+        [
+          "connection_failed",
+          "a3c8b0db-10af-5981-8e95-1124f0d25cb7"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "id": "multi-7",
+      "category": "multiple_failures",
+      "expected": [
+        [
+          "connection_failed",
+          "13f8c551-bfd6-5995-b48f-0dd9c10d0db5"
+        ],
+        [
+          "rate_limited",
+          "e6eb3ea0-4016-5a2e-a828-82d6c79e1858"
+        ]
+      ],
+      "predicted": [
+        [
+          "rate_limited",
+          "e6eb3ea0-4016-5a2e-a828-82d6c79e1858"
+        ],
+        [
+          "connection_failed",
+          "13f8c551-bfd6-5995-b48f-0dd9c10d0db5"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "id": "multi-8",
+      "category": "multiple_failures",
+      "expected": [
+        [
+          "connection_failed",
+          "a23914c3-c786-54b0-b31f-0f607e857d39"
+        ],
+        [
+          "rate_limited",
+          "5f13d4e8-a6e5-55ba-af82-89d7d4114260"
+        ]
+      ],
+      "predicted": [
+        [
+          "rate_limited",
+          "5f13d4e8-a6e5-55ba-af82-89d7d4114260"
+        ],
+        [
+          "connection_failed",
+          "a23914c3-c786-54b0-b31f-0f607e857d39"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "id": "multi-9",
+      "category": "multiple_failures",
+      "expected": [
+        [
+          "connection_failed",
+          "d4ab2b86-edfe-5c68-8850-69707c060a05"
+        ],
+        [
+          "rate_limited",
+          "31b3154c-133e-5e23-a89e-110b0088bb0f"
+        ]
+      ],
+      "predicted": [
+        [
+          "rate_limited",
+          "31b3154c-133e-5e23-a89e-110b0088bb0f"
+        ],
+        [
+          "connection_failed",
+          "d4ab2b86-edfe-5c68-8850-69707c060a05"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "id": "ambiguous-0",
+      "category": "ambiguous",
+      "expected": [
+        [
+          "unknown_error",
+          "0cc2dee3-7ce9-5740-a531-d670e1f63f41"
+        ]
+      ],
+      "predicted": [
+        [
+          "unknown_error",
+          "0cc2dee3-7ce9-5740-a531-d670e1f63f41"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "id": "ambiguous-1",
+      "category": "ambiguous",
+      "expected": [
+        [
+          "unknown_error",
+          "0b6c5aba-5274-5e81-8bea-9ebb17a2a544"
+        ]
+      ],
+      "predicted": [
+        [
+          "unknown_error",
+          "0b6c5aba-5274-5e81-8bea-9ebb17a2a544"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "id": "ambiguous-2",
+      "category": "ambiguous",
+      "expected": [
+        [
+          "unknown_error",
+          "1d65dc79-e4e3-562a-8fd0-ae9035e6af0c"
+        ]
+      ],
+      "predicted": [
+        [
+          "unknown_error",
+          "1d65dc79-e4e3-562a-8fd0-ae9035e6af0c"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "id": "ambiguous-3",
+      "category": "ambiguous",
+      "expected": [
+        [
+          "unknown_error",
+          "6fe37c6d-3071-567c-b44a-5c46d1725aa2"
+        ]
+      ],
+      "predicted": [
+        [
+          "unknown_error",
+          "6fe37c6d-3071-567c-b44a-5c46d1725aa2"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "id": "ambiguous-4",
+      "category": "ambiguous",
+      "expected": [
+        [
+          "unknown_error",
+          "c3987dff-f91e-5989-91e2-0c8a2a3be8dd"
+        ]
+      ],
+      "predicted": [
+        [
+          "unknown_error",
+          "c3987dff-f91e-5989-91e2-0c8a2a3be8dd"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "id": "ambiguous-5",
+      "category": "ambiguous",
+      "expected": [
+        [
+          "unknown_error",
+          "2ae8ac71-d06d-530a-89e6-e04a449d6756"
+        ]
+      ],
+      "predicted": [
+        [
+          "unknown_error",
+          "2ae8ac71-d06d-530a-89e6-e04a449d6756"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "id": "ambiguous-6",
+      "category": "ambiguous",
+      "expected": [
+        [
+          "unknown_error",
+          "68c42959-3438-5952-b163-3ca364b332e1"
+        ]
+      ],
+      "predicted": [
+        [
+          "unknown_error",
+          "68c42959-3438-5952-b163-3ca364b332e1"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "id": "ambiguous-7",
+      "category": "ambiguous",
+      "expected": [
+        [
+          "unknown_error",
+          "b56f15da-e1cf-510e-b7a4-0bd5f3c1af0b"
+        ]
+      ],
+      "predicted": [
+        [
+          "unknown_error",
+          "b56f15da-e1cf-510e-b7a4-0bd5f3c1af0b"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "id": "ambiguous-8",
+      "category": "ambiguous",
+      "expected": [
+        [
+          "unknown_error",
+          "4e366f1e-de21-5bd4-8c85-e5c10fabd85d"
+        ]
+      ],
+      "predicted": [
+        [
+          "unknown_error",
+          "4e366f1e-de21-5bd4-8c85-e5c10fabd85d"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "id": "ambiguous-9",
+      "category": "ambiguous",
+      "expected": [
+        [
+          "unknown_error",
+          "ce4c9f75-40b4-57d5-b9f5-6a19255db4f3"
+        ]
+      ],
+      "predicted": [
+        [
+          "unknown_error",
+          "ce4c9f75-40b4-57d5-b9f5-6a19255db4f3"
+        ]
+      ],
+      "passed": true
+    }
+  ]
+}

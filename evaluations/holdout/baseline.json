@@ -1,0 +1,1987 @@
+{
+  "summary": {
+    "engine_sha256": "dbe09b53a4f882ce2dc0aaeed259c907306d73c075fe960920b2ad29709da9e3",
+    "dataset_sha256": "32a903b339b07eb02fb4f0f1698bc0a3aeec093dcef82024bd31309df4d2d153",
+    "total_cases": 100,
+    "category_counts": {
+      "wording": 20,
+      "providers": 15,
+      "nested": 15,
+      "conflicts": 15,
+      "missing_metadata": 10,
+      "duplicates": 10,
+      "multiple": 10,
+      "mixed": 5
+    },
+    "exact_cases_passed": 86,
+    "true_positives": 105,
+    "false_positives": 14,
+    "false_negatives": 14,
+    "precision": 0.8824,
+    "recall": 0.8824,
+    "f1": 0.8824,
+    "evidence_accuracy": 0.8824,
+    "evidence_correct": 105,
+    "evidence_total": 119,
+    "exceptions": 0,
+    "limitations": [
+      "Synthetic, manually designed holdout cases.",
+      "Not a production incident sample.",
+      "Some cases share patterns with development tests.",
+      "Labels and assumptions require review.",
+      "Do not interpret results as production accuracy."
+    ]
+  },
+  "cases": [
+    {
+      "id": "wording-00",
+      "category": "wording",
+      "passed": false,
+      "expected": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "c4395313-a667-5fcb-948e-a38847863ddf"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "c4395313-a667-5fcb-948e-a38847863ddf"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "wording-01",
+      "category": "wording",
+      "passed": false,
+      "expected": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "ed3cdf0e-fba9-5e53-a45c-b326521203f1"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "ed3cdf0e-fba9-5e53-a45c-b326521203f1"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "wording-02",
+      "category": "wording",
+      "passed": false,
+      "expected": [
+        {
+          "code": "rate_limited",
+          "span_id": "3f099dcd-3b2f-5346-82a2-4d8ab34ba465"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "3f099dcd-3b2f-5346-82a2-4d8ab34ba465"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "wording-03",
+      "category": "wording",
+      "passed": false,
+      "expected": [
+        {
+          "code": "rate_limited",
+          "span_id": "52211e64-503a-51f1-8136-bf1c45d11400"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "52211e64-503a-51f1-8136-bf1c45d11400"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "wording-04",
+      "category": "wording",
+      "passed": false,
+      "expected": [
+        {
+          "code": "authentication_failed",
+          "span_id": "51bc5f85-0ec7-56a9-bd03-ca9c765dd200"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "51bc5f85-0ec7-56a9-bd03-ca9c765dd200"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "wording-05",
+      "category": "wording",
+      "passed": false,
+      "expected": [
+        {
+          "code": "authentication_failed",
+          "span_id": "81c282e8-4430-5819-8a29-1e38480981a1"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "81c282e8-4430-5819-8a29-1e38480981a1"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "wording-06",
+      "category": "wording",
+      "passed": false,
+      "expected": [
+        {
+          "code": "timeout",
+          "span_id": "f2eeec39-425c-5598-bb4c-e9d2fb658f7e"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "f2eeec39-425c-5598-bb4c-e9d2fb658f7e"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "wording-07",
+      "category": "wording",
+      "passed": false,
+      "expected": [
+        {
+          "code": "timeout",
+          "span_id": "4a34f0fb-10c9-56f7-b245-2c9b4b94eed9"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "4a34f0fb-10c9-56f7-b245-2c9b4b94eed9"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "wording-08",
+      "category": "wording",
+      "passed": false,
+      "expected": [
+        {
+          "code": "connection_failed",
+          "span_id": "3f996680-66da-54d0-a0a0-52af56e5db14"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "3f996680-66da-54d0-a0a0-52af56e5db14"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "wording-09",
+      "category": "wording",
+      "passed": false,
+      "expected": [
+        {
+          "code": "connection_failed",
+          "span_id": "dfc2cc7b-6b42-5963-9ff9-a8bccc6f6fb8"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "dfc2cc7b-6b42-5963-9ff9-a8bccc6f6fb8"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "wording-10",
+      "category": "wording",
+      "passed": true,
+      "expected": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "9e7c7463-07c4-5593-b783-96a1cf779294"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "9e7c7463-07c4-5593-b783-96a1cf779294"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "wording-11",
+      "category": "wording",
+      "passed": true,
+      "expected": [
+        {
+          "code": "rate_limited",
+          "span_id": "5d02689a-6603-516f-a30a-71fb384db959"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "rate_limited",
+          "span_id": "5d02689a-6603-516f-a30a-71fb384db959"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "wording-12",
+      "category": "wording",
+      "passed": true,
+      "expected": [
+        {
+          "code": "authentication_failed",
+          "span_id": "1b37761c-ab7f-5903-98fe-72179b5b7e9d"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "authentication_failed",
+          "span_id": "1b37761c-ab7f-5903-98fe-72179b5b7e9d"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "wording-13",
+      "category": "wording",
+      "passed": true,
+      "expected": [
+        {
+          "code": "timeout",
+          "span_id": "389c55c7-bd16-513c-a49f-e7d5d6a76cb0"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "timeout",
+          "span_id": "389c55c7-bd16-513c-a49f-e7d5d6a76cb0"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "wording-14",
+      "category": "wording",
+      "passed": true,
+      "expected": [
+        {
+          "code": "connection_failed",
+          "span_id": "abc4e76a-0c17-5b3e-b99c-0d009c962952"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "connection_failed",
+          "span_id": "abc4e76a-0c17-5b3e-b99c-0d009c962952"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "wording-15",
+      "category": "wording",
+      "passed": true,
+      "expected": [
+        {
+          "code": "unknown_error",
+          "span_id": "8196bcaa-91be-5b3c-9e0e-ff6dfe6057b1"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "8196bcaa-91be-5b3c-9e0e-ff6dfe6057b1"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "wording-16",
+      "category": "wording",
+      "passed": true,
+      "expected": [
+        {
+          "code": "unknown_error",
+          "span_id": "36c43d85-7c8a-56ee-ab9f-8d822a1d0636"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "36c43d85-7c8a-56ee-ab9f-8d822a1d0636"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "wording-17",
+      "category": "wording",
+      "passed": true,
+      "expected": [
+        {
+          "code": "unknown_error",
+          "span_id": "a2067d39-5e0f-5eff-88ac-2d09a9bbba75"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "a2067d39-5e0f-5eff-88ac-2d09a9bbba75"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "wording-18",
+      "category": "wording",
+      "passed": true,
+      "expected": [
+        {
+          "code": "unknown_error",
+          "span_id": "3dad4031-4efe-528e-a216-5cfedc3f4641"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "3dad4031-4efe-528e-a216-5cfedc3f4641"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "wording-19",
+      "category": "wording",
+      "passed": true,
+      "expected": [
+        {
+          "code": "unknown_error",
+          "span_id": "21b1a887-d124-56f7-818c-b2955d7ebc42"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "21b1a887-d124-56f7-818c-b2955d7ebc42"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "providers-00",
+      "category": "providers",
+      "passed": true,
+      "expected": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "85df0ece-3537-5e86-8b60-ca90bd9ecdfa"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "85df0ece-3537-5e86-8b60-ca90bd9ecdfa"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "providers-01",
+      "category": "providers",
+      "passed": true,
+      "expected": [
+        {
+          "code": "rate_limited",
+          "span_id": "a49e67ed-a017-55e8-801d-df00eb55b951"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "rate_limited",
+          "span_id": "a49e67ed-a017-55e8-801d-df00eb55b951"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "providers-02",
+      "category": "providers",
+      "passed": true,
+      "expected": [
+        {
+          "code": "authentication_failed",
+          "span_id": "c0442458-a6c5-542c-ad1e-0d21cffa6fe3"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "authentication_failed",
+          "span_id": "c0442458-a6c5-542c-ad1e-0d21cffa6fe3"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "providers-03",
+      "category": "providers",
+      "passed": true,
+      "expected": [
+        {
+          "code": "timeout",
+          "span_id": "24295018-6154-51e3-ab2a-342ce2000a29"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "timeout",
+          "span_id": "24295018-6154-51e3-ab2a-342ce2000a29"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "providers-04",
+      "category": "providers",
+      "passed": true,
+      "expected": [
+        {
+          "code": "connection_failed",
+          "span_id": "cead5eab-bf76-5a63-b282-04085fe02339"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "connection_failed",
+          "span_id": "cead5eab-bf76-5a63-b282-04085fe02339"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "providers-05",
+      "category": "providers",
+      "passed": true,
+      "expected": [
+        {
+          "code": "rate_limited",
+          "span_id": "50a34a02-1b5c-5da5-8e4b-356ef041edc6"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "rate_limited",
+          "span_id": "50a34a02-1b5c-5da5-8e4b-356ef041edc6"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "providers-06",
+      "category": "providers",
+      "passed": false,
+      "expected": [
+        {
+          "code": "authentication_failed",
+          "span_id": "c94f3c3e-f71f-5d4b-9ebc-467e18df1d78"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "c94f3c3e-f71f-5d4b-9ebc-467e18df1d78"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "providers-07",
+      "category": "providers",
+      "passed": false,
+      "expected": [
+        {
+          "code": "rate_limited",
+          "span_id": "f77b8ecb-afc4-56e9-b79b-8c4d0bb79d11"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "f77b8ecb-afc4-56e9-b79b-8c4d0bb79d11"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "providers-08",
+      "category": "providers",
+      "passed": false,
+      "expected": [
+        {
+          "code": "authentication_failed",
+          "span_id": "e044a6bb-3687-56cb-92a7-02ede482053b"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "e044a6bb-3687-56cb-92a7-02ede482053b"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "providers-09",
+      "category": "providers",
+      "passed": true,
+      "expected": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "088fd447-13fd-51dd-9b56-42c8e110d14d"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "088fd447-13fd-51dd-9b56-42c8e110d14d"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "providers-10",
+      "category": "providers",
+      "passed": true,
+      "expected": [
+        {
+          "code": "rate_limited",
+          "span_id": "632ff439-3ba6-58fd-8bd2-26a2b381afa3"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "rate_limited",
+          "span_id": "632ff439-3ba6-58fd-8bd2-26a2b381afa3"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "providers-11",
+      "category": "providers",
+      "passed": true,
+      "expected": [
+        {
+          "code": "authentication_failed",
+          "span_id": "4afdb168-3148-54bf-b62f-7728e0035c5e"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "authentication_failed",
+          "span_id": "4afdb168-3148-54bf-b62f-7728e0035c5e"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "providers-12",
+      "category": "providers",
+      "passed": true,
+      "expected": [
+        {
+          "code": "timeout",
+          "span_id": "1b6bdb4c-a28f-53d5-b98b-0182271630ea"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "timeout",
+          "span_id": "1b6bdb4c-a28f-53d5-b98b-0182271630ea"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "providers-13",
+      "category": "providers",
+      "passed": true,
+      "expected": [
+        {
+          "code": "connection_failed",
+          "span_id": "a6e13e0e-ec0b-5d26-8b42-36389ee12fc2"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "connection_failed",
+          "span_id": "a6e13e0e-ec0b-5d26-8b42-36389ee12fc2"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "providers-14",
+      "category": "providers",
+      "passed": true,
+      "expected": [
+        {
+          "code": "unknown_error",
+          "span_id": "91c39724-b6cf-55c3-bf65-7fd7259b9337"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "91c39724-b6cf-55c3-bf65-7fd7259b9337"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "nested-00",
+      "category": "nested",
+      "passed": true,
+      "expected": [
+        {
+          "code": "rate_limited",
+          "span_id": "ff0461af-2db2-53a9-b715-c3b851000e5d"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "rate_limited",
+          "span_id": "ff0461af-2db2-53a9-b715-c3b851000e5d"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "nested-01",
+      "category": "nested",
+      "passed": true,
+      "expected": [
+        {
+          "code": "timeout",
+          "span_id": "acd34238-abe4-5c03-86e0-b16b900b6aaa"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "timeout",
+          "span_id": "acd34238-abe4-5c03-86e0-b16b900b6aaa"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "nested-02",
+      "category": "nested",
+      "passed": true,
+      "expected": [
+        {
+          "code": "connection_failed",
+          "span_id": "bf0a2fdb-e685-58df-8c87-188b9c57e6d1"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "connection_failed",
+          "span_id": "bf0a2fdb-e685-58df-8c87-188b9c57e6d1"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "nested-03",
+      "category": "nested",
+      "passed": true,
+      "expected": [
+        {
+          "code": "rate_limited",
+          "span_id": "6dde85ec-ac19-50d2-877f-255d4329e220"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "rate_limited",
+          "span_id": "6dde85ec-ac19-50d2-877f-255d4329e220"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "nested-04",
+      "category": "nested",
+      "passed": true,
+      "expected": [
+        {
+          "code": "timeout",
+          "span_id": "ce8f0e02-a111-5da9-97ed-9f3be2debca0"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "timeout",
+          "span_id": "ce8f0e02-a111-5da9-97ed-9f3be2debca0"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "nested-05",
+      "category": "nested",
+      "passed": true,
+      "expected": [
+        {
+          "code": "connection_failed",
+          "span_id": "5ed061e8-3b2a-5ffd-a312-4c642ffe48d4"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "connection_failed",
+          "span_id": "5ed061e8-3b2a-5ffd-a312-4c642ffe48d4"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "nested-06",
+      "category": "nested",
+      "passed": true,
+      "expected": [
+        {
+          "code": "rate_limited",
+          "span_id": "0a017dd7-0ca3-597e-ad1d-bf8b7c1b41fd"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "rate_limited",
+          "span_id": "0a017dd7-0ca3-597e-ad1d-bf8b7c1b41fd"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "nested-07",
+      "category": "nested",
+      "passed": true,
+      "expected": [
+        {
+          "code": "timeout",
+          "span_id": "0b10f8fa-48a2-50ac-b735-4427f9a7e537"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "timeout",
+          "span_id": "0b10f8fa-48a2-50ac-b735-4427f9a7e537"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "nested-08",
+      "category": "nested",
+      "passed": true,
+      "expected": [
+        {
+          "code": "connection_failed",
+          "span_id": "b678b2ee-2f8e-5d54-8e00-d6bea18d2a66"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "connection_failed",
+          "span_id": "b678b2ee-2f8e-5d54-8e00-d6bea18d2a66"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "nested-09",
+      "category": "nested",
+      "passed": true,
+      "expected": [
+        {
+          "code": "rate_limited",
+          "span_id": "8b7ab973-057c-5fcd-94f1-85f1001d09fb"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "rate_limited",
+          "span_id": "8b7ab973-057c-5fcd-94f1-85f1001d09fb"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "nested-10",
+      "category": "nested",
+      "passed": true,
+      "expected": [
+        {
+          "code": "timeout",
+          "span_id": "37501b6c-40ec-5f01-a894-86396667a8e6"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "timeout",
+          "span_id": "37501b6c-40ec-5f01-a894-86396667a8e6"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "nested-11",
+      "category": "nested",
+      "passed": true,
+      "expected": [
+        {
+          "code": "connection_failed",
+          "span_id": "cabeca05-7310-5f9a-b8f3-8e23e768139c"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "connection_failed",
+          "span_id": "cabeca05-7310-5f9a-b8f3-8e23e768139c"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "nested-12",
+      "category": "nested",
+      "passed": true,
+      "expected": [
+        {
+          "code": "rate_limited",
+          "span_id": "30963148-d94f-5521-b8b0-c0ce7d6b99ff"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "rate_limited",
+          "span_id": "30963148-d94f-5521-b8b0-c0ce7d6b99ff"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "nested-13",
+      "category": "nested",
+      "passed": true,
+      "expected": [
+        {
+          "code": "timeout",
+          "span_id": "3657a9cd-0740-595e-bc02-17385f0a55ef"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "timeout",
+          "span_id": "3657a9cd-0740-595e-bc02-17385f0a55ef"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "nested-14",
+      "category": "nested",
+      "passed": true,
+      "expected": [
+        {
+          "code": "connection_failed",
+          "span_id": "c4c860fb-a91b-5465-909b-b84dc3a2e13b"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "connection_failed",
+          "span_id": "c4c860fb-a91b-5465-909b-b84dc3a2e13b"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "conflicts-00",
+      "category": "conflicts",
+      "passed": true,
+      "expected": [
+        {
+          "code": "rate_limited",
+          "span_id": "d5ed2e39-f61a-5406-bf65-99a03e6890e7"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "rate_limited",
+          "span_id": "d5ed2e39-f61a-5406-bf65-99a03e6890e7"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "conflicts-01",
+      "category": "conflicts",
+      "passed": true,
+      "expected": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "dcbabccd-6faf-51e6-86bc-f03460b5011f"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "dcbabccd-6faf-51e6-86bc-f03460b5011f"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "conflicts-02",
+      "category": "conflicts",
+      "passed": true,
+      "expected": [
+        {
+          "code": "authentication_failed",
+          "span_id": "98d97f35-f452-5db0-9be9-a348afe1e87a"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "authentication_failed",
+          "span_id": "98d97f35-f452-5db0-9be9-a348afe1e87a"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "conflicts-03",
+      "category": "conflicts",
+      "passed": true,
+      "expected": [
+        {
+          "code": "timeout",
+          "span_id": "5d3d7517-0e8c-5a71-ab97-af5309584a83"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "timeout",
+          "span_id": "5d3d7517-0e8c-5a71-ab97-af5309584a83"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "conflicts-04",
+      "category": "conflicts",
+      "passed": true,
+      "expected": [
+        {
+          "code": "connection_failed",
+          "span_id": "f8b1c489-199b-536b-9f1c-5d93737a1720"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "connection_failed",
+          "span_id": "f8b1c489-199b-536b-9f1c-5d93737a1720"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "conflicts-05",
+      "category": "conflicts",
+      "passed": true,
+      "expected": [
+        {
+          "code": "rate_limited",
+          "span_id": "8d63136b-0eb7-5acb-b11a-714da8337a28"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "rate_limited",
+          "span_id": "8d63136b-0eb7-5acb-b11a-714da8337a28"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "conflicts-06",
+      "category": "conflicts",
+      "passed": true,
+      "expected": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "b6fdb5a5-9774-51bf-a9e0-e0b10e9e40c4"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "b6fdb5a5-9774-51bf-a9e0-e0b10e9e40c4"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "conflicts-07",
+      "category": "conflicts",
+      "passed": true,
+      "expected": [
+        {
+          "code": "authentication_failed",
+          "span_id": "2d1503d7-2247-5079-bd5a-33c5e2cb6a1b"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "authentication_failed",
+          "span_id": "2d1503d7-2247-5079-bd5a-33c5e2cb6a1b"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "conflicts-08",
+      "category": "conflicts",
+      "passed": true,
+      "expected": [
+        {
+          "code": "timeout",
+          "span_id": "63fcc743-7644-5ff0-8060-b6ec6b4e05ae"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "timeout",
+          "span_id": "63fcc743-7644-5ff0-8060-b6ec6b4e05ae"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "conflicts-09",
+      "category": "conflicts",
+      "passed": true,
+      "expected": [
+        {
+          "code": "connection_failed",
+          "span_id": "48fc2c80-f0ff-5fb2-bf68-e0404daaa79b"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "connection_failed",
+          "span_id": "48fc2c80-f0ff-5fb2-bf68-e0404daaa79b"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "conflicts-10",
+      "category": "conflicts",
+      "passed": true,
+      "expected": [
+        {
+          "code": "rate_limited",
+          "span_id": "81f14ade-da71-5c8c-bb45-1ad91c3fbe7b"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "rate_limited",
+          "span_id": "81f14ade-da71-5c8c-bb45-1ad91c3fbe7b"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "conflicts-11",
+      "category": "conflicts",
+      "passed": true,
+      "expected": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "5b0ee472-b5b1-5b96-a2e7-931315556579"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "5b0ee472-b5b1-5b96-a2e7-931315556579"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "conflicts-12",
+      "category": "conflicts",
+      "passed": true,
+      "expected": [
+        {
+          "code": "authentication_failed",
+          "span_id": "2309fcca-7d75-5122-9709-4f1b61d57fca"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "authentication_failed",
+          "span_id": "2309fcca-7d75-5122-9709-4f1b61d57fca"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "conflicts-13",
+      "category": "conflicts",
+      "passed": true,
+      "expected": [
+        {
+          "code": "timeout",
+          "span_id": "0fff0c82-7bc6-5c3c-a06b-72341095c9ce"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "timeout",
+          "span_id": "0fff0c82-7bc6-5c3c-a06b-72341095c9ce"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "conflicts-14",
+      "category": "conflicts",
+      "passed": true,
+      "expected": [
+        {
+          "code": "connection_failed",
+          "span_id": "4f296a25-48cc-509d-a00e-f0ce9c800b84"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "connection_failed",
+          "span_id": "4f296a25-48cc-509d-a00e-f0ce9c800b84"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "missing_metadata-00",
+      "category": "missing_metadata",
+      "passed": true,
+      "expected": [
+        {
+          "code": "unknown_error",
+          "span_id": "dd4fbcae-4bea-5de4-bfcc-3614e98643f1"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "dd4fbcae-4bea-5de4-bfcc-3614e98643f1"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "missing_metadata-01",
+      "category": "missing_metadata",
+      "passed": true,
+      "expected": [
+        {
+          "code": "unknown_error",
+          "span_id": "e51da9cd-266e-5e88-a4f2-fc8c955796f5"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "e51da9cd-266e-5e88-a4f2-fc8c955796f5"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "missing_metadata-02",
+      "category": "missing_metadata",
+      "passed": true,
+      "expected": [
+        {
+          "code": "unknown_error",
+          "span_id": "df55ef90-f2ee-5104-9829-d7e452b6ce7c"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "df55ef90-f2ee-5104-9829-d7e452b6ce7c"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "missing_metadata-03",
+      "category": "missing_metadata",
+      "passed": true,
+      "expected": [
+        {
+          "code": "unknown_error",
+          "span_id": "42106b02-0aec-5bf9-9f0e-05a4474a4e94"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "42106b02-0aec-5bf9-9f0e-05a4474a4e94"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "missing_metadata-04",
+      "category": "missing_metadata",
+      "passed": false,
+      "expected": [
+        {
+          "code": "unknown_error",
+          "span_id": "55a549f1-380e-5490-b14a-13eb6e918786"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "timeout",
+          "span_id": "55a549f1-380e-5490-b14a-13eb6e918786"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "missing_metadata-05",
+      "category": "missing_metadata",
+      "passed": true,
+      "expected": [
+        {
+          "code": "unknown_error",
+          "span_id": "7a269948-b00b-5267-a9e7-2ad26011d4ef"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "7a269948-b00b-5267-a9e7-2ad26011d4ef"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "missing_metadata-06",
+      "category": "missing_metadata",
+      "passed": true,
+      "expected": [
+        {
+          "code": "unknown_error",
+          "span_id": "9add13c1-e886-5966-b062-f0503b0cd835"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "9add13c1-e886-5966-b062-f0503b0cd835"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "missing_metadata-07",
+      "category": "missing_metadata",
+      "passed": true,
+      "expected": [
+        {
+          "code": "unknown_error",
+          "span_id": "2cec8a45-1a3f-554a-9e33-56eb82e67d82"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "2cec8a45-1a3f-554a-9e33-56eb82e67d82"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "missing_metadata-08",
+      "category": "missing_metadata",
+      "passed": true,
+      "expected": [
+        {
+          "code": "unknown_error",
+          "span_id": "75835d1e-712d-54ee-a689-95afe106bb62"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "75835d1e-712d-54ee-a689-95afe106bb62"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "missing_metadata-09",
+      "category": "missing_metadata",
+      "passed": true,
+      "expected": [
+        {
+          "code": "unknown_error",
+          "span_id": "e2b3387c-f556-5698-ad2e-12ec0012e3d8"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "unknown_error",
+          "span_id": "e2b3387c-f556-5698-ad2e-12ec0012e3d8"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "duplicates-00",
+      "category": "duplicates",
+      "passed": true,
+      "expected": [
+        {
+          "code": "timeout",
+          "span_id": "f416a840-ec7e-5c2e-80c8-65f59370ded2"
+        },
+        {
+          "code": "timeout",
+          "span_id": "67b47f17-d29d-5f60-baea-4f0b92d1aa5f"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "timeout",
+          "span_id": "f416a840-ec7e-5c2e-80c8-65f59370ded2"
+        },
+        {
+          "code": "timeout",
+          "span_id": "67b47f17-d29d-5f60-baea-4f0b92d1aa5f"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "duplicates-01",
+      "category": "duplicates",
+      "passed": true,
+      "expected": [
+        {
+          "code": "rate_limited",
+          "span_id": "e433eca2-4535-5d15-9042-64cf554fbb41"
+        },
+        {
+          "code": "rate_limited",
+          "span_id": "2971cff4-373a-5c8a-a68d-582f14aec3b1"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "rate_limited",
+          "span_id": "e433eca2-4535-5d15-9042-64cf554fbb41"
+        },
+        {
+          "code": "rate_limited",
+          "span_id": "2971cff4-373a-5c8a-a68d-582f14aec3b1"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "duplicates-02",
+      "category": "duplicates",
+      "passed": true,
+      "expected": [
+        {
+          "code": "timeout",
+          "span_id": "00a98a6a-9eb0-5eec-b8c7-1577e328a6b4"
+        },
+        {
+          "code": "timeout",
+          "span_id": "ac09fc6c-7b1b-5dec-b847-dc5e4fc1c7c0"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "timeout",
+          "span_id": "00a98a6a-9eb0-5eec-b8c7-1577e328a6b4"
+        },
+        {
+          "code": "timeout",
+          "span_id": "ac09fc6c-7b1b-5dec-b847-dc5e4fc1c7c0"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "duplicates-03",
+      "category": "duplicates",
+      "passed": true,
+      "expected": [
+        {
+          "code": "rate_limited",
+          "span_id": "f1279177-a7d8-5b58-bfe2-0350295571d3"
+        },
+        {
+          "code": "rate_limited",
+          "span_id": "7846ece5-6692-52fa-bf28-c9746f4728f7"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "rate_limited",
+          "span_id": "f1279177-a7d8-5b58-bfe2-0350295571d3"
+        },
+        {
+          "code": "rate_limited",
+          "span_id": "7846ece5-6692-52fa-bf28-c9746f4728f7"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "duplicates-04",
+      "category": "duplicates",
+      "passed": true,
+      "expected": [
+        {
+          "code": "timeout",
+          "span_id": "cbb9c570-47b4-509d-a975-c6a997876f54"
+        },
+        {
+          "code": "timeout",
+          "span_id": "c902c6a2-4b45-5b8c-b1bb-fa7da31092fb"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "timeout",
+          "span_id": "cbb9c570-47b4-509d-a975-c6a997876f54"
+        },
+        {
+          "code": "timeout",
+          "span_id": "c902c6a2-4b45-5b8c-b1bb-fa7da31092fb"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "duplicates-05",
+      "category": "duplicates",
+      "passed": true,
+      "expected": [
+        {
+          "code": "rate_limited",
+          "span_id": "d31d2bef-3798-52c1-99f4-0a5b25b53ae0"
+        },
+        {
+          "code": "rate_limited",
+          "span_id": "b63de75e-0b75-5212-b0d1-be0541b23f65"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "rate_limited",
+          "span_id": "d31d2bef-3798-52c1-99f4-0a5b25b53ae0"
+        },
+        {
+          "code": "rate_limited",
+          "span_id": "b63de75e-0b75-5212-b0d1-be0541b23f65"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "duplicates-06",
+      "category": "duplicates",
+      "passed": true,
+      "expected": [
+        {
+          "code": "timeout",
+          "span_id": "4ff6bdcc-8925-5c62-8b1a-3e2ed01fde57"
+        },
+        {
+          "code": "timeout",
+          "span_id": "885630ca-fc5f-5ea9-8e8e-721a4f35b640"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "timeout",
+          "span_id": "4ff6bdcc-8925-5c62-8b1a-3e2ed01fde57"
+        },
+        {
+          "code": "timeout",
+          "span_id": "885630ca-fc5f-5ea9-8e8e-721a4f35b640"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "duplicates-07",
+      "category": "duplicates",
+      "passed": true,
+      "expected": [
+        {
+          "code": "rate_limited",
+          "span_id": "39de6ffd-253e-5a83-8f56-a2191853f16b"
+        },
+        {
+          "code": "rate_limited",
+          "span_id": "ea2bf254-276f-5cb4-99a3-1b8778c310ae"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "rate_limited",
+          "span_id": "39de6ffd-253e-5a83-8f56-a2191853f16b"
+        },
+        {
+          "code": "rate_limited",
+          "span_id": "ea2bf254-276f-5cb4-99a3-1b8778c310ae"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "duplicates-08",
+      "category": "duplicates",
+      "passed": true,
+      "expected": [
+        {
+          "code": "timeout",
+          "span_id": "c81acd7c-9caa-52c9-91d1-4d55388cf0b8"
+        },
+        {
+          "code": "timeout",
+          "span_id": "43545440-e8ec-5849-abc4-ebdfd0b6425f"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "timeout",
+          "span_id": "c81acd7c-9caa-52c9-91d1-4d55388cf0b8"
+        },
+        {
+          "code": "timeout",
+          "span_id": "43545440-e8ec-5849-abc4-ebdfd0b6425f"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "duplicates-09",
+      "category": "duplicates",
+      "passed": true,
+      "expected": [
+        {
+          "code": "rate_limited",
+          "span_id": "06fbc1b3-8fd3-53ae-b4b2-46cb73c41aac"
+        },
+        {
+          "code": "rate_limited",
+          "span_id": "7136def2-7b0e-552f-8809-c347e17e2ade"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "rate_limited",
+          "span_id": "06fbc1b3-8fd3-53ae-b4b2-46cb73c41aac"
+        },
+        {
+          "code": "rate_limited",
+          "span_id": "7136def2-7b0e-552f-8809-c347e17e2ade"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "multiple-00",
+      "category": "multiple",
+      "passed": true,
+      "expected": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "3bf89189-72d9-5e7d-9dcb-a55c6f40d953"
+        },
+        {
+          "code": "connection_failed",
+          "span_id": "4f2f4ee9-7bcf-5aa8-a6ba-98469b23a476"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "3bf89189-72d9-5e7d-9dcb-a55c6f40d953"
+        },
+        {
+          "code": "connection_failed",
+          "span_id": "4f2f4ee9-7bcf-5aa8-a6ba-98469b23a476"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "multiple-01",
+      "category": "multiple",
+      "passed": true,
+      "expected": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "bdb45a3b-e021-5221-935f-bedfd7c1e07b"
+        },
+        {
+          "code": "connection_failed",
+          "span_id": "508b1cd3-37c8-57c5-b311-fb3591918970"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "bdb45a3b-e021-5221-935f-bedfd7c1e07b"
+        },
+        {
+          "code": "connection_failed",
+          "span_id": "508b1cd3-37c8-57c5-b311-fb3591918970"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "multiple-02",
+      "category": "multiple",
+      "passed": true,
+      "expected": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "80b80e45-1ce0-50fc-a1ad-1706948412bf"
+        },
+        {
+          "code": "connection_failed",
+          "span_id": "bdf17201-fc05-592d-a7e6-4a795cfc0086"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "80b80e45-1ce0-50fc-a1ad-1706948412bf"
+        },
+        {
+          "code": "connection_failed",
+          "span_id": "bdf17201-fc05-592d-a7e6-4a795cfc0086"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "multiple-03",
+      "category": "multiple",
+      "passed": true,
+      "expected": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "a0f61a8b-982e-5dea-8ca7-5144ffaf3ba6"
+        },
+        {
+          "code": "connection_failed",
+          "span_id": "ac8ea2cc-9995-5110-b634-dbe50236a378"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "a0f61a8b-982e-5dea-8ca7-5144ffaf3ba6"
+        },
+        {
+          "code": "connection_failed",
+          "span_id": "ac8ea2cc-9995-5110-b634-dbe50236a378"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "multiple-04",
+      "category": "multiple",
+      "passed": true,
+      "expected": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "d43d6efc-563a-509b-b5f8-862310bc992f"
+        },
+        {
+          "code": "connection_failed",
+          "span_id": "52a9aa7f-c5e9-5cdf-88aa-611626f86663"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "d43d6efc-563a-509b-b5f8-862310bc992f"
+        },
+        {
+          "code": "connection_failed",
+          "span_id": "52a9aa7f-c5e9-5cdf-88aa-611626f86663"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "multiple-05",
+      "category": "multiple",
+      "passed": true,
+      "expected": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "81d198f4-5e1e-5e87-93c1-2b9f213ff414"
+        },
+        {
+          "code": "connection_failed",
+          "span_id": "920667a7-8233-504b-bdf4-d65b396a2095"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "81d198f4-5e1e-5e87-93c1-2b9f213ff414"
+        },
+        {
+          "code": "connection_failed",
+          "span_id": "920667a7-8233-504b-bdf4-d65b396a2095"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "multiple-06",
+      "category": "multiple",
+      "passed": true,
+      "expected": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "c6cd62fb-db90-5324-bdd6-02fe965fe401"
+        },
+        {
+          "code": "connection_failed",
+          "span_id": "28417e8d-58d2-52ba-9b51-9b7b92561415"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "c6cd62fb-db90-5324-bdd6-02fe965fe401"
+        },
+        {
+          "code": "connection_failed",
+          "span_id": "28417e8d-58d2-52ba-9b51-9b7b92561415"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "multiple-07",
+      "category": "multiple",
+      "passed": true,
+      "expected": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "fe80086d-1dbb-569a-ad69-8d2fa928235a"
+        },
+        {
+          "code": "connection_failed",
+          "span_id": "8ad21703-f3a4-5c56-960b-df1ab72b4d58"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "fe80086d-1dbb-569a-ad69-8d2fa928235a"
+        },
+        {
+          "code": "connection_failed",
+          "span_id": "8ad21703-f3a4-5c56-960b-df1ab72b4d58"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "multiple-08",
+      "category": "multiple",
+      "passed": true,
+      "expected": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "267099ed-8299-5292-a884-cc22180e4eaa"
+        },
+        {
+          "code": "connection_failed",
+          "span_id": "6b3ff823-b681-5588-96b2-838a05180b9f"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "267099ed-8299-5292-a884-cc22180e4eaa"
+        },
+        {
+          "code": "connection_failed",
+          "span_id": "6b3ff823-b681-5588-96b2-838a05180b9f"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "multiple-09",
+      "category": "multiple",
+      "passed": true,
+      "expected": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "4a23d4f4-045a-5e6b-9ebd-75c6e08d0955"
+        },
+        {
+          "code": "connection_failed",
+          "span_id": "255d4321-95b7-5747-94ae-8275c726c2e1"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "quota_exhausted",
+          "span_id": "4a23d4f4-045a-5e6b-9ebd-75c6e08d0955"
+        },
+        {
+          "code": "connection_failed",
+          "span_id": "255d4321-95b7-5747-94ae-8275c726c2e1"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "mixed-00",
+      "category": "mixed",
+      "passed": true,
+      "expected": [],
+      "predicted": [],
+      "exception": null
+    },
+    {
+      "id": "mixed-01",
+      "category": "mixed",
+      "passed": true,
+      "expected": [
+        {
+          "code": "timeout",
+          "span_id": "d154db3a-7bac-5711-9705-acdf33abb5c7"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "timeout",
+          "span_id": "d154db3a-7bac-5711-9705-acdf33abb5c7"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "mixed-02",
+      "category": "mixed",
+      "passed": true,
+      "expected": [
+        {
+          "code": "timeout",
+          "span_id": "a4f09d5b-f023-56df-85a2-b8a57151c604"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "timeout",
+          "span_id": "a4f09d5b-f023-56df-85a2-b8a57151c604"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "mixed-03",
+      "category": "mixed",
+      "passed": true,
+      "expected": [
+        {
+          "code": "timeout",
+          "span_id": "0b0c53d3-8dc0-51d1-87cc-d9b8fc835612"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "timeout",
+          "span_id": "0b0c53d3-8dc0-51d1-87cc-d9b8fc835612"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "id": "mixed-04",
+      "category": "mixed",
+      "passed": true,
+      "expected": [
+        {
+          "code": "timeout",
+          "span_id": "32912034-51c5-5c2e-8c89-3fedda470585"
+        }
+      ],
+      "predicted": [
+        {
+          "code": "timeout",
+          "span_id": "32912034-51c5-5c2e-8c89-3fedda470585"
+        }
+      ],
+      "exception": null
+    }
+  ]
+}

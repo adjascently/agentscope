@@ -1,0 +1,3192 @@
+[
+  {
+    "id": "wording-00",
+    "category": "wording",
+    "spans": [
+      {
+        "span_id": "c4395313-a667-5fcb-948e-a38847863ddf",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Billing quota has been depleted"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "quota_exhausted",
+        "span_id": "c4395313-a667-5fcb-948e-a38847863ddf"
+      }
+    ]
+  },
+  {
+    "id": "wording-01",
+    "category": "wording",
+    "spans": [
+      {
+        "span_id": "ed3cdf0e-fba9-5e53-a45c-b326521203f1",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "No remaining credits for this project"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "quota_exhausted",
+        "span_id": "ed3cdf0e-fba9-5e53-a45c-b326521203f1"
+      }
+    ]
+  },
+  {
+    "id": "wording-02",
+    "category": "wording",
+    "spans": [
+      {
+        "span_id": "3f099dcd-3b2f-5346-82a2-4d8ab34ba465",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "HTTP 429 Too Many Requests"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "rate_limited",
+        "span_id": "3f099dcd-3b2f-5346-82a2-4d8ab34ba465"
+      }
+    ]
+  },
+  {
+    "id": "wording-03",
+    "category": "wording",
+    "spans": [
+      {
+        "span_id": "52211e64-503a-51f1-8136-bf1c45d11400",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request throttled by upstream provider"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "rate_limited",
+        "span_id": "52211e64-503a-51f1-8136-bf1c45d11400"
+      }
+    ]
+  },
+  {
+    "id": "wording-04",
+    "category": "wording",
+    "spans": [
+      {
+        "span_id": "51bc5f85-0ec7-56a9-bd03-ca9c765dd200",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "HTTP 401 invalid credentials"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "authentication_failed",
+        "span_id": "51bc5f85-0ec7-56a9-bd03-ca9c765dd200"
+      }
+    ]
+  },
+  {
+    "id": "wording-05",
+    "category": "wording",
+    "spans": [
+      {
+        "span_id": "81c282e8-4430-5819-8a29-1e38480981a1",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Unauthorized: expired API token"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "authentication_failed",
+        "span_id": "81c282e8-4430-5819-8a29-1e38480981a1"
+      }
+    ]
+  },
+  {
+    "id": "wording-06",
+    "category": "wording",
+    "spans": [
+      {
+        "span_id": "f2eeec39-425c-5598-bb4c-e9d2fb658f7e",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "DeadlineExceeded after 30 seconds"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "timeout",
+        "span_id": "f2eeec39-425c-5598-bb4c-e9d2fb658f7e"
+      }
+    ]
+  },
+  {
+    "id": "wording-07",
+    "category": "wording",
+    "spans": [
+      {
+        "span_id": "4a34f0fb-10c9-56f7-b245-2c9b4b94eed9",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request deadline was exceeded"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "timeout",
+        "span_id": "4a34f0fb-10c9-56f7-b245-2c9b4b94eed9"
+      }
+    ]
+  },
+  {
+    "id": "wording-08",
+    "category": "wording",
+    "spans": [
+      {
+        "span_id": "3f996680-66da-54d0-a0a0-52af56e5db14",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "ECONNRESET by peer"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "connection_failed",
+        "span_id": "3f996680-66da-54d0-a0a0-52af56e5db14"
+      }
+    ]
+  },
+  {
+    "id": "wording-09",
+    "category": "wording",
+    "spans": [
+      {
+        "span_id": "dfc2cc7b-6b42-5963-9ff9-a8bccc6f6fb8",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "DNS resolution failed"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "connection_failed",
+        "span_id": "dfc2cc7b-6b42-5963-9ff9-a8bccc6f6fb8"
+      }
+    ]
+  },
+  {
+    "id": "wording-10",
+    "category": "wording",
+    "spans": [
+      {
+        "span_id": "9e7c7463-07c4-5593-b783-96a1cf779294",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "insufficient_quota"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "quota_exhausted",
+        "span_id": "9e7c7463-07c4-5593-b783-96a1cf779294"
+      }
+    ]
+  },
+  {
+    "id": "wording-11",
+    "category": "wording",
+    "spans": [
+      {
+        "span_id": "5d02689a-6603-516f-a30a-71fb384db959",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "rate_limited",
+        "span_id": "5d02689a-6603-516f-a30a-71fb384db959"
+      }
+    ]
+  },
+  {
+    "id": "wording-12",
+    "category": "wording",
+    "spans": [
+      {
+        "span_id": "1b37761c-ab7f-5903-98fe-72179b5b7e9d",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "invalid_api_key"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "authentication_failed",
+        "span_id": "1b37761c-ab7f-5903-98fe-72179b5b7e9d"
+      }
+    ]
+  },
+  {
+    "id": "wording-13",
+    "category": "wording",
+    "spans": [
+      {
+        "span_id": "389c55c7-bd16-513c-a49f-e7d5d6a76cb0",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "ReadTimeout while fetching response"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "timeout",
+        "span_id": "389c55c7-bd16-513c-a49f-e7d5d6a76cb0"
+      }
+    ]
+  },
+  {
+    "id": "wording-14",
+    "category": "wording",
+    "spans": [
+      {
+        "span_id": "abc4e76a-0c17-5b3e-b99c-0d009c962952",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused by localhost"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "connection_failed",
+        "span_id": "abc4e76a-0c17-5b3e-b99c-0d009c962952"
+      }
+    ]
+  },
+  {
+    "id": "wording-15",
+    "category": "wording",
+    "spans": [
+      {
+        "span_id": "8196bcaa-91be-5b3c-9e0e-ff6dfe6057b1",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Unexpected serialization exception"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "unknown_error",
+        "span_id": "8196bcaa-91be-5b3c-9e0e-ff6dfe6057b1"
+      }
+    ]
+  },
+  {
+    "id": "wording-16",
+    "category": "wording",
+    "spans": [
+      {
+        "span_id": "36c43d85-7c8a-56ee-ab9f-8d822a1d0636",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Tool returned invalid JSON"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "unknown_error",
+        "span_id": "36c43d85-7c8a-56ee-ab9f-8d822a1d0636"
+      }
+    ]
+  },
+  {
+    "id": "wording-17",
+    "category": "wording",
+    "spans": [
+      {
+        "span_id": "a2067d39-5e0f-5eff-88ac-2d09a9bbba75",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Unrecognized plugin response"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "unknown_error",
+        "span_id": "a2067d39-5e0f-5eff-88ac-2d09a9bbba75"
+      }
+    ]
+  },
+  {
+    "id": "wording-18",
+    "category": "wording",
+    "spans": [
+      {
+        "span_id": "3dad4031-4efe-528e-a216-5cfedc3f4641",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "ValueError in tool arguments"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "unknown_error",
+        "span_id": "3dad4031-4efe-528e-a216-5cfedc3f4641"
+      }
+    ]
+  },
+  {
+    "id": "wording-19",
+    "category": "wording",
+    "spans": [
+      {
+        "span_id": "21b1a887-d124-56f7-818c-b2955d7ebc42",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Agent failed for unspecified reason"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "unknown_error",
+        "span_id": "21b1a887-d124-56f7-818c-b2955d7ebc42"
+      }
+    ]
+  },
+  {
+    "id": "providers-00",
+    "category": "providers",
+    "spans": [
+      {
+        "span_id": "85df0ece-3537-5e86-8b60-ca90bd9ecdfa",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_code": "insufficient_quota"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "quota_exhausted",
+        "span_id": "85df0ece-3537-5e86-8b60-ca90bd9ecdfa"
+      }
+    ]
+  },
+  {
+    "id": "providers-01",
+    "category": "providers",
+    "spans": [
+      {
+        "span_id": "a49e67ed-a017-55e8-801d-df00eb55b951",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_code": "rate_limit_exceeded"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "rate_limited",
+        "span_id": "a49e67ed-a017-55e8-801d-df00eb55b951"
+      }
+    ]
+  },
+  {
+    "id": "providers-02",
+    "category": "providers",
+    "spans": [
+      {
+        "span_id": "c0442458-a6c5-542c-ad1e-0d21cffa6fe3",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_code": "invalid_api_key"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "authentication_failed",
+        "span_id": "c0442458-a6c5-542c-ad1e-0d21cffa6fe3"
+      }
+    ]
+  },
+  {
+    "id": "providers-03",
+    "category": "providers",
+    "spans": [
+      {
+        "span_id": "24295018-6154-51e3-ab2a-342ce2000a29",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_type": "APITimeoutError"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "timeout",
+        "span_id": "24295018-6154-51e3-ab2a-342ce2000a29"
+      }
+    ]
+  },
+  {
+    "id": "providers-04",
+    "category": "providers",
+    "spans": [
+      {
+        "span_id": "cead5eab-bf76-5a63-b282-04085fe02339",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_type": "APIConnectionError"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "connection_failed",
+        "span_id": "cead5eab-bf76-5a63-b282-04085fe02339"
+      }
+    ]
+  },
+  {
+    "id": "providers-05",
+    "category": "providers",
+    "spans": [
+      {
+        "span_id": "50a34a02-1b5c-5da5-8e4b-356ef041edc6",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Anthropic: rate_limit_error"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "rate_limited",
+        "span_id": "50a34a02-1b5c-5da5-8e4b-356ef041edc6"
+      }
+    ]
+  },
+  {
+    "id": "providers-06",
+    "category": "providers",
+    "spans": [
+      {
+        "span_id": "c94f3c3e-f71f-5d4b-9ebc-467e18df1d78",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Anthropic authentication_error"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "authentication_failed",
+        "span_id": "c94f3c3e-f71f-5d4b-9ebc-467e18df1d78"
+      }
+    ]
+  },
+  {
+    "id": "providers-07",
+    "category": "providers",
+    "spans": [
+      {
+        "span_id": "f77b8ecb-afc4-56e9-b79b-8c4d0bb79d11",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Gemini RESOURCE_EXHAUSTED"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "rate_limited",
+        "span_id": "f77b8ecb-afc4-56e9-b79b-8c4d0bb79d11"
+      }
+    ]
+  },
+  {
+    "id": "providers-08",
+    "category": "providers",
+    "spans": [
+      {
+        "span_id": "e044a6bb-3687-56cb-92a7-02ede482053b",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Gemini UNAUTHENTICATED"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "authentication_failed",
+        "span_id": "e044a6bb-3687-56cb-92a7-02ede482053b"
+      }
+    ]
+  },
+  {
+    "id": "providers-09",
+    "category": "providers",
+    "spans": [
+      {
+        "span_id": "088fd447-13fd-51dd-9b56-42c8e110d14d",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "OpenAI insufficient_quota"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "quota_exhausted",
+        "span_id": "088fd447-13fd-51dd-9b56-42c8e110d14d"
+      }
+    ]
+  },
+  {
+    "id": "providers-10",
+    "category": "providers",
+    "spans": [
+      {
+        "span_id": "632ff439-3ba6-58fd-8bd2-26a2b381afa3",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "OpenAI rate_limit_exceeded"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "rate_limited",
+        "span_id": "632ff439-3ba6-58fd-8bd2-26a2b381afa3"
+      }
+    ]
+  },
+  {
+    "id": "providers-11",
+    "category": "providers",
+    "spans": [
+      {
+        "span_id": "4afdb168-3148-54bf-b62f-7728e0035c5e",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "OpenAI invalid_api_key"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "authentication_failed",
+        "span_id": "4afdb168-3148-54bf-b62f-7728e0035c5e"
+      }
+    ]
+  },
+  {
+    "id": "providers-12",
+    "category": "providers",
+    "spans": [
+      {
+        "span_id": "1b6bdb4c-a28f-53d5-b98b-0182271630ea",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Anthropic request timed out"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "timeout",
+        "span_id": "1b6bdb4c-a28f-53d5-b98b-0182271630ea"
+      }
+    ]
+  },
+  {
+    "id": "providers-13",
+    "category": "providers",
+    "spans": [
+      {
+        "span_id": "a6e13e0e-ec0b-5d26-8b42-36389ee12fc2",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Gemini connection error"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "connection_failed",
+        "span_id": "a6e13e0e-ec0b-5d26-8b42-36389ee12fc2"
+      }
+    ]
+  },
+  {
+    "id": "providers-14",
+    "category": "providers",
+    "spans": [
+      {
+        "span_id": "91c39724-b6cf-55c3-bf65-7fd7259b9337",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Provider INTERNAL server failure"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "unknown_error",
+        "span_id": "91c39724-b6cf-55c3-bf65-7fd7259b9337"
+      }
+    ]
+  },
+  {
+    "id": "nested-00",
+    "category": "nested",
+    "spans": [
+      {
+        "span_id": "5582c70e-08b2-506e-8a13-be0bab3b103f",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      },
+      {
+        "span_id": "0d9e15ad-c1f2-5ae3-b2ca-438461896cd2",
+        "parent_span_id": "5582c70e-08b2-506e-8a13-be0bab3b103f",
+        "name": "planner",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      },
+      {
+        "span_id": "b00121c1-8fb7-5201-869f-43e3ed24a31e",
+        "parent_span_id": "0d9e15ad-c1f2-5ae3-b2ca-438461896cd2",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      },
+      {
+        "span_id": "ff0461af-2db2-53a9-b715-c3b851000e5d",
+        "parent_span_id": "b00121c1-8fb7-5201-869f-43e3ed24a31e",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "rate_limited",
+        "span_id": "ff0461af-2db2-53a9-b715-c3b851000e5d"
+      }
+    ]
+  },
+  {
+    "id": "nested-01",
+    "category": "nested",
+    "spans": [
+      {
+        "span_id": "faaeb909-be79-58ca-b73a-3e47c86279cd",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      },
+      {
+        "span_id": "bee2a25b-07a9-5bb8-912e-f3cfed90368c",
+        "parent_span_id": "faaeb909-be79-58ca-b73a-3e47c86279cd",
+        "name": "planner",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      },
+      {
+        "span_id": "17ff2849-7777-58d2-8a85-d9c3e44cf613",
+        "parent_span_id": "bee2a25b-07a9-5bb8-912e-f3cfed90368c",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      },
+      {
+        "span_id": "acd34238-abe4-5c03-86e0-b16b900b6aaa",
+        "parent_span_id": "17ff2849-7777-58d2-8a85-d9c3e44cf613",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "timeout",
+        "span_id": "acd34238-abe4-5c03-86e0-b16b900b6aaa"
+      }
+    ]
+  },
+  {
+    "id": "nested-02",
+    "category": "nested",
+    "spans": [
+      {
+        "span_id": "45fc06fd-b4c7-5689-81a4-3946d6995093",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      },
+      {
+        "span_id": "c31a9bcc-73fb-5add-825b-20996da0dcd6",
+        "parent_span_id": "45fc06fd-b4c7-5689-81a4-3946d6995093",
+        "name": "planner",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      },
+      {
+        "span_id": "94744ffa-3abc-53b7-ba81-5fdc121475b4",
+        "parent_span_id": "c31a9bcc-73fb-5add-825b-20996da0dcd6",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      },
+      {
+        "span_id": "bf0a2fdb-e685-58df-8c87-188b9c57e6d1",
+        "parent_span_id": "94744ffa-3abc-53b7-ba81-5fdc121475b4",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "connection_failed",
+        "span_id": "bf0a2fdb-e685-58df-8c87-188b9c57e6d1"
+      }
+    ]
+  },
+  {
+    "id": "nested-03",
+    "category": "nested",
+    "spans": [
+      {
+        "span_id": "64b7a447-b13e-5a46-8093-5b675b72f71d",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      },
+      {
+        "span_id": "09bb7e5d-0f6d-5495-a0fe-795b76a23ba6",
+        "parent_span_id": "64b7a447-b13e-5a46-8093-5b675b72f71d",
+        "name": "planner",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      },
+      {
+        "span_id": "30d10f8e-c20c-5757-926c-415f14a7a822",
+        "parent_span_id": "09bb7e5d-0f6d-5495-a0fe-795b76a23ba6",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      },
+      {
+        "span_id": "6dde85ec-ac19-50d2-877f-255d4329e220",
+        "parent_span_id": "30d10f8e-c20c-5757-926c-415f14a7a822",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "rate_limited",
+        "span_id": "6dde85ec-ac19-50d2-877f-255d4329e220"
+      }
+    ]
+  },
+  {
+    "id": "nested-04",
+    "category": "nested",
+    "spans": [
+      {
+        "span_id": "8525cf6d-d82f-5e53-ab0f-7f8694299fe4",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      },
+      {
+        "span_id": "bdad379b-3566-5e18-8575-92ff0fe843b1",
+        "parent_span_id": "8525cf6d-d82f-5e53-ab0f-7f8694299fe4",
+        "name": "planner",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      },
+      {
+        "span_id": "6698ec56-eb25-58b7-a599-1a05641ebb4c",
+        "parent_span_id": "bdad379b-3566-5e18-8575-92ff0fe843b1",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      },
+      {
+        "span_id": "ce8f0e02-a111-5da9-97ed-9f3be2debca0",
+        "parent_span_id": "6698ec56-eb25-58b7-a599-1a05641ebb4c",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "timeout",
+        "span_id": "ce8f0e02-a111-5da9-97ed-9f3be2debca0"
+      }
+    ]
+  },
+  {
+    "id": "nested-05",
+    "category": "nested",
+    "spans": [
+      {
+        "span_id": "d9697750-8831-5540-8d55-2a92b647a6c9",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      },
+      {
+        "span_id": "d582a19f-40a7-5a81-80f1-691dbeb6fe39",
+        "parent_span_id": "d9697750-8831-5540-8d55-2a92b647a6c9",
+        "name": "planner",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      },
+      {
+        "span_id": "0217c3a8-5589-5272-89d6-13dea28657b6",
+        "parent_span_id": "d582a19f-40a7-5a81-80f1-691dbeb6fe39",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      },
+      {
+        "span_id": "5ed061e8-3b2a-5ffd-a312-4c642ffe48d4",
+        "parent_span_id": "0217c3a8-5589-5272-89d6-13dea28657b6",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "connection_failed",
+        "span_id": "5ed061e8-3b2a-5ffd-a312-4c642ffe48d4"
+      }
+    ]
+  },
+  {
+    "id": "nested-06",
+    "category": "nested",
+    "spans": [
+      {
+        "span_id": "784dc5ff-9028-5a66-a344-652090dd9aa6",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      },
+      {
+        "span_id": "5edf2257-6d62-5b7c-be8a-a618e1708a1e",
+        "parent_span_id": "784dc5ff-9028-5a66-a344-652090dd9aa6",
+        "name": "planner",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      },
+      {
+        "span_id": "7f639b35-c44f-5d79-b690-79edccf6c54f",
+        "parent_span_id": "5edf2257-6d62-5b7c-be8a-a618e1708a1e",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      },
+      {
+        "span_id": "0a017dd7-0ca3-597e-ad1d-bf8b7c1b41fd",
+        "parent_span_id": "7f639b35-c44f-5d79-b690-79edccf6c54f",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "rate_limited",
+        "span_id": "0a017dd7-0ca3-597e-ad1d-bf8b7c1b41fd"
+      }
+    ]
+  },
+  {
+    "id": "nested-07",
+    "category": "nested",
+    "spans": [
+      {
+        "span_id": "2509e65d-dbd1-5007-a776-9ddcc744929c",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      },
+      {
+        "span_id": "9b4c4d64-473a-5ef9-938a-d40fc5920620",
+        "parent_span_id": "2509e65d-dbd1-5007-a776-9ddcc744929c",
+        "name": "planner",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      },
+      {
+        "span_id": "4fc1269e-c1f3-5dc1-bf89-c0c7cfb67044",
+        "parent_span_id": "9b4c4d64-473a-5ef9-938a-d40fc5920620",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      },
+      {
+        "span_id": "0b10f8fa-48a2-50ac-b735-4427f9a7e537",
+        "parent_span_id": "4fc1269e-c1f3-5dc1-bf89-c0c7cfb67044",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "timeout",
+        "span_id": "0b10f8fa-48a2-50ac-b735-4427f9a7e537"
+      }
+    ]
+  },
+  {
+    "id": "nested-08",
+    "category": "nested",
+    "spans": [
+      {
+        "span_id": "6fdd1745-ca1b-5283-96bb-fbfa0ec0cf8d",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      },
+      {
+        "span_id": "6ade49f1-21e1-5921-aabb-259ca2eb4a55",
+        "parent_span_id": "6fdd1745-ca1b-5283-96bb-fbfa0ec0cf8d",
+        "name": "planner",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      },
+      {
+        "span_id": "2d09ea00-d4a0-554c-a8a1-329c8670c610",
+        "parent_span_id": "6ade49f1-21e1-5921-aabb-259ca2eb4a55",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      },
+      {
+        "span_id": "b678b2ee-2f8e-5d54-8e00-d6bea18d2a66",
+        "parent_span_id": "2d09ea00-d4a0-554c-a8a1-329c8670c610",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "connection_failed",
+        "span_id": "b678b2ee-2f8e-5d54-8e00-d6bea18d2a66"
+      }
+    ]
+  },
+  {
+    "id": "nested-09",
+    "category": "nested",
+    "spans": [
+      {
+        "span_id": "f04b823e-7106-582b-a7fc-ebf0d095efa1",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      },
+      {
+        "span_id": "543c403e-36ce-509c-90cf-989002eb4bae",
+        "parent_span_id": "f04b823e-7106-582b-a7fc-ebf0d095efa1",
+        "name": "planner",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      },
+      {
+        "span_id": "256cae6b-bb1f-5f87-a8c0-d4a32d9ad3b5",
+        "parent_span_id": "543c403e-36ce-509c-90cf-989002eb4bae",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      },
+      {
+        "span_id": "8b7ab973-057c-5fcd-94f1-85f1001d09fb",
+        "parent_span_id": "256cae6b-bb1f-5f87-a8c0-d4a32d9ad3b5",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "rate_limited",
+        "span_id": "8b7ab973-057c-5fcd-94f1-85f1001d09fb"
+      }
+    ]
+  },
+  {
+    "id": "nested-10",
+    "category": "nested",
+    "spans": [
+      {
+        "span_id": "511bbaf5-e671-5330-b187-d8c6ea0f7d02",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      },
+      {
+        "span_id": "fd14eb4c-ed09-5f6b-87be-19ea0a5902a6",
+        "parent_span_id": "511bbaf5-e671-5330-b187-d8c6ea0f7d02",
+        "name": "planner",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      },
+      {
+        "span_id": "75614dd4-e6d0-5de4-ab02-86eeff1fdfa2",
+        "parent_span_id": "fd14eb4c-ed09-5f6b-87be-19ea0a5902a6",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      },
+      {
+        "span_id": "37501b6c-40ec-5f01-a894-86396667a8e6",
+        "parent_span_id": "75614dd4-e6d0-5de4-ab02-86eeff1fdfa2",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "timeout",
+        "span_id": "37501b6c-40ec-5f01-a894-86396667a8e6"
+      }
+    ]
+  },
+  {
+    "id": "nested-11",
+    "category": "nested",
+    "spans": [
+      {
+        "span_id": "67118b17-bb1a-5e8d-8921-cda6daa0faec",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      },
+      {
+        "span_id": "87915fd2-a5c3-54b8-8c16-ff4514a04827",
+        "parent_span_id": "67118b17-bb1a-5e8d-8921-cda6daa0faec",
+        "name": "planner",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      },
+      {
+        "span_id": "961a8f16-b541-5aba-aefb-7616598f48ca",
+        "parent_span_id": "87915fd2-a5c3-54b8-8c16-ff4514a04827",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      },
+      {
+        "span_id": "cabeca05-7310-5f9a-b8f3-8e23e768139c",
+        "parent_span_id": "961a8f16-b541-5aba-aefb-7616598f48ca",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "connection_failed",
+        "span_id": "cabeca05-7310-5f9a-b8f3-8e23e768139c"
+      }
+    ]
+  },
+  {
+    "id": "nested-12",
+    "category": "nested",
+    "spans": [
+      {
+        "span_id": "64856cea-acc1-596b-a0f8-01d14df6e453",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      },
+      {
+        "span_id": "eb73e936-e6eb-5119-b1f4-1f39fa8dd079",
+        "parent_span_id": "64856cea-acc1-596b-a0f8-01d14df6e453",
+        "name": "planner",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      },
+      {
+        "span_id": "f75b5fda-407f-5c38-964a-6755e3b1c6dd",
+        "parent_span_id": "eb73e936-e6eb-5119-b1f4-1f39fa8dd079",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      },
+      {
+        "span_id": "30963148-d94f-5521-b8b0-c0ce7d6b99ff",
+        "parent_span_id": "f75b5fda-407f-5c38-964a-6755e3b1c6dd",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "rate_limited",
+        "span_id": "30963148-d94f-5521-b8b0-c0ce7d6b99ff"
+      }
+    ]
+  },
+  {
+    "id": "nested-13",
+    "category": "nested",
+    "spans": [
+      {
+        "span_id": "78a4ce77-a183-5338-862d-b0e47469f0d6",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      },
+      {
+        "span_id": "e0b88c2a-704f-599c-a9d7-d3b92b5359e5",
+        "parent_span_id": "78a4ce77-a183-5338-862d-b0e47469f0d6",
+        "name": "planner",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      },
+      {
+        "span_id": "7ec811ed-3c4c-5a07-81cf-bb731fc8ceff",
+        "parent_span_id": "e0b88c2a-704f-599c-a9d7-d3b92b5359e5",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      },
+      {
+        "span_id": "3657a9cd-0740-595e-bc02-17385f0a55ef",
+        "parent_span_id": "7ec811ed-3c4c-5a07-81cf-bb731fc8ceff",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "timeout",
+        "span_id": "3657a9cd-0740-595e-bc02-17385f0a55ef"
+      }
+    ]
+  },
+  {
+    "id": "nested-14",
+    "category": "nested",
+    "spans": [
+      {
+        "span_id": "338a161c-68d5-5c12-aa3d-d379cbf6d87f",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      },
+      {
+        "span_id": "59e54cea-077a-5fda-805e-6adbc87059d6",
+        "parent_span_id": "338a161c-68d5-5c12-aa3d-d379cbf6d87f",
+        "name": "planner",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      },
+      {
+        "span_id": "32711289-393e-5ada-a474-046d3e0f68b8",
+        "parent_span_id": "59e54cea-077a-5fda-805e-6adbc87059d6",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      },
+      {
+        "span_id": "c4c860fb-a91b-5465-909b-b84dc3a2e13b",
+        "parent_span_id": "32711289-393e-5ada-a474-046d3e0f68b8",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "connection_failed",
+        "span_id": "c4c860fb-a91b-5465-909b-b84dc3a2e13b"
+      }
+    ]
+  },
+  {
+    "id": "conflicts-00",
+    "category": "conflicts",
+    "spans": [
+      {
+        "span_id": "d5ed2e39-f61a-5406-bf65-99a03e6890e7",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_code": "rate_limit_exceeded",
+          "error_message": "Request timed out"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "rate_limited",
+        "span_id": "d5ed2e39-f61a-5406-bf65-99a03e6890e7"
+      }
+    ]
+  },
+  {
+    "id": "conflicts-01",
+    "category": "conflicts",
+    "spans": [
+      {
+        "span_id": "dcbabccd-6faf-51e6-86bc-f03460b5011f",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_code": "insufficient_quota",
+          "error_message": "rate limit exceeded"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "quota_exhausted",
+        "span_id": "dcbabccd-6faf-51e6-86bc-f03460b5011f"
+      }
+    ]
+  },
+  {
+    "id": "conflicts-02",
+    "category": "conflicts",
+    "spans": [
+      {
+        "span_id": "98d97f35-f452-5db0-9be9-a348afe1e87a",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_code": "invalid_api_key",
+          "error_message": "Connection refused"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "authentication_failed",
+        "span_id": "98d97f35-f452-5db0-9be9-a348afe1e87a"
+      }
+    ]
+  },
+  {
+    "id": "conflicts-03",
+    "category": "conflicts",
+    "spans": [
+      {
+        "span_id": "5d3d7517-0e8c-5a71-ab97-af5309584a83",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_type": "APITimeoutError",
+          "error_message": "Connection refused"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "timeout",
+        "span_id": "5d3d7517-0e8c-5a71-ab97-af5309584a83"
+      }
+    ]
+  },
+  {
+    "id": "conflicts-04",
+    "category": "conflicts",
+    "spans": [
+      {
+        "span_id": "f8b1c489-199b-536b-9f1c-5d93737a1720",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_type": "APIConnectionError",
+          "error_message": "Request timed out"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "connection_failed",
+        "span_id": "f8b1c489-199b-536b-9f1c-5d93737a1720"
+      }
+    ]
+  },
+  {
+    "id": "conflicts-05",
+    "category": "conflicts",
+    "spans": [
+      {
+        "span_id": "8d63136b-0eb7-5acb-b11a-714da8337a28",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_code": "rate_limit_exceeded",
+          "error_message": "Request timed out"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "rate_limited",
+        "span_id": "8d63136b-0eb7-5acb-b11a-714da8337a28"
+      }
+    ]
+  },
+  {
+    "id": "conflicts-06",
+    "category": "conflicts",
+    "spans": [
+      {
+        "span_id": "b6fdb5a5-9774-51bf-a9e0-e0b10e9e40c4",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_code": "insufficient_quota",
+          "error_message": "rate limit exceeded"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "quota_exhausted",
+        "span_id": "b6fdb5a5-9774-51bf-a9e0-e0b10e9e40c4"
+      }
+    ]
+  },
+  {
+    "id": "conflicts-07",
+    "category": "conflicts",
+    "spans": [
+      {
+        "span_id": "2d1503d7-2247-5079-bd5a-33c5e2cb6a1b",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_code": "invalid_api_key",
+          "error_message": "Connection refused"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "authentication_failed",
+        "span_id": "2d1503d7-2247-5079-bd5a-33c5e2cb6a1b"
+      }
+    ]
+  },
+  {
+    "id": "conflicts-08",
+    "category": "conflicts",
+    "spans": [
+      {
+        "span_id": "63fcc743-7644-5ff0-8060-b6ec6b4e05ae",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_type": "APITimeoutError",
+          "error_message": "Connection refused"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "timeout",
+        "span_id": "63fcc743-7644-5ff0-8060-b6ec6b4e05ae"
+      }
+    ]
+  },
+  {
+    "id": "conflicts-09",
+    "category": "conflicts",
+    "spans": [
+      {
+        "span_id": "48fc2c80-f0ff-5fb2-bf68-e0404daaa79b",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_type": "APIConnectionError",
+          "error_message": "Request timed out"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "connection_failed",
+        "span_id": "48fc2c80-f0ff-5fb2-bf68-e0404daaa79b"
+      }
+    ]
+  },
+  {
+    "id": "conflicts-10",
+    "category": "conflicts",
+    "spans": [
+      {
+        "span_id": "81f14ade-da71-5c8c-bb45-1ad91c3fbe7b",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_code": "rate_limit_exceeded",
+          "error_message": "Request timed out"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "rate_limited",
+        "span_id": "81f14ade-da71-5c8c-bb45-1ad91c3fbe7b"
+      }
+    ]
+  },
+  {
+    "id": "conflicts-11",
+    "category": "conflicts",
+    "spans": [
+      {
+        "span_id": "5b0ee472-b5b1-5b96-a2e7-931315556579",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_code": "insufficient_quota",
+          "error_message": "rate limit exceeded"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "quota_exhausted",
+        "span_id": "5b0ee472-b5b1-5b96-a2e7-931315556579"
+      }
+    ]
+  },
+  {
+    "id": "conflicts-12",
+    "category": "conflicts",
+    "spans": [
+      {
+        "span_id": "2309fcca-7d75-5122-9709-4f1b61d57fca",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_code": "invalid_api_key",
+          "error_message": "Connection refused"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "authentication_failed",
+        "span_id": "2309fcca-7d75-5122-9709-4f1b61d57fca"
+      }
+    ]
+  },
+  {
+    "id": "conflicts-13",
+    "category": "conflicts",
+    "spans": [
+      {
+        "span_id": "0fff0c82-7bc6-5c3c-a06b-72341095c9ce",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_type": "APITimeoutError",
+          "error_message": "Connection refused"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "timeout",
+        "span_id": "0fff0c82-7bc6-5c3c-a06b-72341095c9ce"
+      }
+    ]
+  },
+  {
+    "id": "conflicts-14",
+    "category": "conflicts",
+    "spans": [
+      {
+        "span_id": "4f296a25-48cc-509d-a00e-f0ce9c800b84",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_type": "APIConnectionError",
+          "error_message": "Request timed out"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "connection_failed",
+        "span_id": "4f296a25-48cc-509d-a00e-f0ce9c800b84"
+      }
+    ]
+  },
+  {
+    "id": "missing_metadata-00",
+    "category": "missing_metadata",
+    "spans": [
+      {
+        "span_id": "dd4fbcae-4bea-5de4-bfcc-3614e98643f1",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {}
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "unknown_error",
+        "span_id": "dd4fbcae-4bea-5de4-bfcc-3614e98643f1"
+      }
+    ]
+  },
+  {
+    "id": "missing_metadata-01",
+    "category": "missing_metadata",
+    "spans": [
+      {
+        "span_id": "e51da9cd-266e-5e88-a4f2-fc8c955796f5",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": ""
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "unknown_error",
+        "span_id": "e51da9cd-266e-5e88-a4f2-fc8c955796f5"
+      }
+    ]
+  },
+  {
+    "id": "missing_metadata-02",
+    "category": "missing_metadata",
+    "spans": [
+      {
+        "span_id": "df55ef90-f2ee-5104-9829-d7e452b6ce7c",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": null
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "unknown_error",
+        "span_id": "df55ef90-f2ee-5104-9829-d7e452b6ce7c"
+      }
+    ]
+  },
+  {
+    "id": "missing_metadata-03",
+    "category": "missing_metadata",
+    "spans": [
+      {
+        "span_id": "42106b02-0aec-5bf9-9f0e-05a4474a4e94",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": 500
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "unknown_error",
+        "span_id": "42106b02-0aec-5bf9-9f0e-05a4474a4e94"
+      }
+    ]
+  },
+  {
+    "id": "missing_metadata-04",
+    "category": "missing_metadata",
+    "spans": [
+      {
+        "span_id": "55a549f1-380e-5490-b14a-13eb6e918786",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": {
+            "detail": "timeout"
+          }
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "unknown_error",
+        "span_id": "55a549f1-380e-5490-b14a-13eb6e918786"
+      }
+    ]
+  },
+  {
+    "id": "missing_metadata-05",
+    "category": "missing_metadata",
+    "spans": [
+      {
+        "span_id": "7a269948-b00b-5267-a9e7-2ad26011d4ef",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_code": "unrecognized"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "unknown_error",
+        "span_id": "7a269948-b00b-5267-a9e7-2ad26011d4ef"
+      }
+    ]
+  },
+  {
+    "id": "missing_metadata-06",
+    "category": "missing_metadata",
+    "spans": [
+      {
+        "span_id": "9add13c1-e886-5966-b062-f0503b0cd835",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_type": "UnexpectedException"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "unknown_error",
+        "span_id": "9add13c1-e886-5966-b062-f0503b0cd835"
+      }
+    ]
+  },
+  {
+    "id": "missing_metadata-07",
+    "category": "missing_metadata",
+    "spans": [
+      {
+        "span_id": "2cec8a45-1a3f-554a-9e33-56eb82e67d82",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": []
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "unknown_error",
+        "span_id": "2cec8a45-1a3f-554a-9e33-56eb82e67d82"
+      }
+    ]
+  },
+  {
+    "id": "missing_metadata-08",
+    "category": "missing_metadata",
+    "spans": [
+      {
+        "span_id": "75835d1e-712d-54ee-a689-95afe106bb62",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": " "
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "unknown_error",
+        "span_id": "75835d1e-712d-54ee-a689-95afe106bb62"
+      }
+    ]
+  },
+  {
+    "id": "missing_metadata-09",
+    "category": "missing_metadata",
+    "spans": [
+      {
+        "span_id": "e2b3387c-f556-5698-ad2e-12ec0012e3d8",
+        "parent_span_id": null,
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "unclassified failure"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "unknown_error",
+        "span_id": "e2b3387c-f556-5698-ad2e-12ec0012e3d8"
+      }
+    ]
+  },
+  {
+    "id": "duplicates-00",
+    "category": "duplicates",
+    "spans": [
+      {
+        "span_id": "f416a840-ec7e-5c2e-80c8-65f59370ded2",
+        "parent_span_id": null,
+        "name": "tool_a",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      },
+      {
+        "span_id": "67b47f17-d29d-5f60-baea-4f0b92d1aa5f",
+        "parent_span_id": null,
+        "name": "tool_b",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "timeout",
+        "span_id": "f416a840-ec7e-5c2e-80c8-65f59370ded2"
+      },
+      {
+        "code": "timeout",
+        "span_id": "67b47f17-d29d-5f60-baea-4f0b92d1aa5f"
+      }
+    ]
+  },
+  {
+    "id": "duplicates-01",
+    "category": "duplicates",
+    "spans": [
+      {
+        "span_id": "e433eca2-4535-5d15-9042-64cf554fbb41",
+        "parent_span_id": null,
+        "name": "tool_a",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      },
+      {
+        "span_id": "2971cff4-373a-5c8a-a68d-582f14aec3b1",
+        "parent_span_id": null,
+        "name": "tool_b",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "rate_limited",
+        "span_id": "e433eca2-4535-5d15-9042-64cf554fbb41"
+      },
+      {
+        "code": "rate_limited",
+        "span_id": "2971cff4-373a-5c8a-a68d-582f14aec3b1"
+      }
+    ]
+  },
+  {
+    "id": "duplicates-02",
+    "category": "duplicates",
+    "spans": [
+      {
+        "span_id": "00a98a6a-9eb0-5eec-b8c7-1577e328a6b4",
+        "parent_span_id": null,
+        "name": "tool_a",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      },
+      {
+        "span_id": "ac09fc6c-7b1b-5dec-b847-dc5e4fc1c7c0",
+        "parent_span_id": null,
+        "name": "tool_b",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "timeout",
+        "span_id": "00a98a6a-9eb0-5eec-b8c7-1577e328a6b4"
+      },
+      {
+        "code": "timeout",
+        "span_id": "ac09fc6c-7b1b-5dec-b847-dc5e4fc1c7c0"
+      }
+    ]
+  },
+  {
+    "id": "duplicates-03",
+    "category": "duplicates",
+    "spans": [
+      {
+        "span_id": "f1279177-a7d8-5b58-bfe2-0350295571d3",
+        "parent_span_id": null,
+        "name": "tool_a",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      },
+      {
+        "span_id": "7846ece5-6692-52fa-bf28-c9746f4728f7",
+        "parent_span_id": null,
+        "name": "tool_b",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "rate_limited",
+        "span_id": "f1279177-a7d8-5b58-bfe2-0350295571d3"
+      },
+      {
+        "code": "rate_limited",
+        "span_id": "7846ece5-6692-52fa-bf28-c9746f4728f7"
+      }
+    ]
+  },
+  {
+    "id": "duplicates-04",
+    "category": "duplicates",
+    "spans": [
+      {
+        "span_id": "cbb9c570-47b4-509d-a975-c6a997876f54",
+        "parent_span_id": null,
+        "name": "tool_a",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      },
+      {
+        "span_id": "c902c6a2-4b45-5b8c-b1bb-fa7da31092fb",
+        "parent_span_id": null,
+        "name": "tool_b",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "timeout",
+        "span_id": "cbb9c570-47b4-509d-a975-c6a997876f54"
+      },
+      {
+        "code": "timeout",
+        "span_id": "c902c6a2-4b45-5b8c-b1bb-fa7da31092fb"
+      }
+    ]
+  },
+  {
+    "id": "duplicates-05",
+    "category": "duplicates",
+    "spans": [
+      {
+        "span_id": "d31d2bef-3798-52c1-99f4-0a5b25b53ae0",
+        "parent_span_id": null,
+        "name": "tool_a",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      },
+      {
+        "span_id": "b63de75e-0b75-5212-b0d1-be0541b23f65",
+        "parent_span_id": null,
+        "name": "tool_b",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "rate_limited",
+        "span_id": "d31d2bef-3798-52c1-99f4-0a5b25b53ae0"
+      },
+      {
+        "code": "rate_limited",
+        "span_id": "b63de75e-0b75-5212-b0d1-be0541b23f65"
+      }
+    ]
+  },
+  {
+    "id": "duplicates-06",
+    "category": "duplicates",
+    "spans": [
+      {
+        "span_id": "4ff6bdcc-8925-5c62-8b1a-3e2ed01fde57",
+        "parent_span_id": null,
+        "name": "tool_a",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      },
+      {
+        "span_id": "885630ca-fc5f-5ea9-8e8e-721a4f35b640",
+        "parent_span_id": null,
+        "name": "tool_b",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "timeout",
+        "span_id": "4ff6bdcc-8925-5c62-8b1a-3e2ed01fde57"
+      },
+      {
+        "code": "timeout",
+        "span_id": "885630ca-fc5f-5ea9-8e8e-721a4f35b640"
+      }
+    ]
+  },
+  {
+    "id": "duplicates-07",
+    "category": "duplicates",
+    "spans": [
+      {
+        "span_id": "39de6ffd-253e-5a83-8f56-a2191853f16b",
+        "parent_span_id": null,
+        "name": "tool_a",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      },
+      {
+        "span_id": "ea2bf254-276f-5cb4-99a3-1b8778c310ae",
+        "parent_span_id": null,
+        "name": "tool_b",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "rate_limited",
+        "span_id": "39de6ffd-253e-5a83-8f56-a2191853f16b"
+      },
+      {
+        "code": "rate_limited",
+        "span_id": "ea2bf254-276f-5cb4-99a3-1b8778c310ae"
+      }
+    ]
+  },
+  {
+    "id": "duplicates-08",
+    "category": "duplicates",
+    "spans": [
+      {
+        "span_id": "c81acd7c-9caa-52c9-91d1-4d55388cf0b8",
+        "parent_span_id": null,
+        "name": "tool_a",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      },
+      {
+        "span_id": "43545440-e8ec-5849-abc4-ebdfd0b6425f",
+        "parent_span_id": null,
+        "name": "tool_b",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "timeout",
+        "span_id": "c81acd7c-9caa-52c9-91d1-4d55388cf0b8"
+      },
+      {
+        "code": "timeout",
+        "span_id": "43545440-e8ec-5849-abc4-ebdfd0b6425f"
+      }
+    ]
+  },
+  {
+    "id": "duplicates-09",
+    "category": "duplicates",
+    "spans": [
+      {
+        "span_id": "06fbc1b3-8fd3-53ae-b4b2-46cb73c41aac",
+        "parent_span_id": null,
+        "name": "tool_a",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      },
+      {
+        "span_id": "7136def2-7b0e-552f-8809-c347e17e2ade",
+        "parent_span_id": null,
+        "name": "tool_b",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "rate_limit_exceeded"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "rate_limited",
+        "span_id": "06fbc1b3-8fd3-53ae-b4b2-46cb73c41aac"
+      },
+      {
+        "code": "rate_limited",
+        "span_id": "7136def2-7b0e-552f-8809-c347e17e2ade"
+      }
+    ]
+  },
+  {
+    "id": "multiple-00",
+    "category": "multiple",
+    "spans": [
+      {
+        "span_id": "9cb2bd01-3e65-594f-9357-0f1699f15623",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "ok",
+        "metadata": {}
+      },
+      {
+        "span_id": "3bf89189-72d9-5e7d-9dcb-a55c6f40d953",
+        "parent_span_id": "9cb2bd01-3e65-594f-9357-0f1699f15623",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "insufficient_quota"
+        }
+      },
+      {
+        "span_id": "4f2f4ee9-7bcf-5aa8-a6ba-98469b23a476",
+        "parent_span_id": "9cb2bd01-3e65-594f-9357-0f1699f15623",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "quota_exhausted",
+        "span_id": "3bf89189-72d9-5e7d-9dcb-a55c6f40d953"
+      },
+      {
+        "code": "connection_failed",
+        "span_id": "4f2f4ee9-7bcf-5aa8-a6ba-98469b23a476"
+      }
+    ]
+  },
+  {
+    "id": "multiple-01",
+    "category": "multiple",
+    "spans": [
+      {
+        "span_id": "1df3a055-71f6-57c5-a3b2-b7f2dbe1376e",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "ok",
+        "metadata": {}
+      },
+      {
+        "span_id": "bdb45a3b-e021-5221-935f-bedfd7c1e07b",
+        "parent_span_id": "1df3a055-71f6-57c5-a3b2-b7f2dbe1376e",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "insufficient_quota"
+        }
+      },
+      {
+        "span_id": "508b1cd3-37c8-57c5-b311-fb3591918970",
+        "parent_span_id": "1df3a055-71f6-57c5-a3b2-b7f2dbe1376e",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "quota_exhausted",
+        "span_id": "bdb45a3b-e021-5221-935f-bedfd7c1e07b"
+      },
+      {
+        "code": "connection_failed",
+        "span_id": "508b1cd3-37c8-57c5-b311-fb3591918970"
+      }
+    ]
+  },
+  {
+    "id": "multiple-02",
+    "category": "multiple",
+    "spans": [
+      {
+        "span_id": "83103cd2-5778-5d62-8a1f-4beab32b5d99",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "ok",
+        "metadata": {}
+      },
+      {
+        "span_id": "80b80e45-1ce0-50fc-a1ad-1706948412bf",
+        "parent_span_id": "83103cd2-5778-5d62-8a1f-4beab32b5d99",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "insufficient_quota"
+        }
+      },
+      {
+        "span_id": "bdf17201-fc05-592d-a7e6-4a795cfc0086",
+        "parent_span_id": "83103cd2-5778-5d62-8a1f-4beab32b5d99",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "quota_exhausted",
+        "span_id": "80b80e45-1ce0-50fc-a1ad-1706948412bf"
+      },
+      {
+        "code": "connection_failed",
+        "span_id": "bdf17201-fc05-592d-a7e6-4a795cfc0086"
+      }
+    ]
+  },
+  {
+    "id": "multiple-03",
+    "category": "multiple",
+    "spans": [
+      {
+        "span_id": "7cbcbdb5-97cf-518e-8c99-eacc22cd65c2",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "ok",
+        "metadata": {}
+      },
+      {
+        "span_id": "a0f61a8b-982e-5dea-8ca7-5144ffaf3ba6",
+        "parent_span_id": "7cbcbdb5-97cf-518e-8c99-eacc22cd65c2",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "insufficient_quota"
+        }
+      },
+      {
+        "span_id": "ac8ea2cc-9995-5110-b634-dbe50236a378",
+        "parent_span_id": "7cbcbdb5-97cf-518e-8c99-eacc22cd65c2",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "quota_exhausted",
+        "span_id": "a0f61a8b-982e-5dea-8ca7-5144ffaf3ba6"
+      },
+      {
+        "code": "connection_failed",
+        "span_id": "ac8ea2cc-9995-5110-b634-dbe50236a378"
+      }
+    ]
+  },
+  {
+    "id": "multiple-04",
+    "category": "multiple",
+    "spans": [
+      {
+        "span_id": "56a9e584-950e-5ecf-bfec-cbe2b0bcf462",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "ok",
+        "metadata": {}
+      },
+      {
+        "span_id": "d43d6efc-563a-509b-b5f8-862310bc992f",
+        "parent_span_id": "56a9e584-950e-5ecf-bfec-cbe2b0bcf462",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "insufficient_quota"
+        }
+      },
+      {
+        "span_id": "52a9aa7f-c5e9-5cdf-88aa-611626f86663",
+        "parent_span_id": "56a9e584-950e-5ecf-bfec-cbe2b0bcf462",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "quota_exhausted",
+        "span_id": "d43d6efc-563a-509b-b5f8-862310bc992f"
+      },
+      {
+        "code": "connection_failed",
+        "span_id": "52a9aa7f-c5e9-5cdf-88aa-611626f86663"
+      }
+    ]
+  },
+  {
+    "id": "multiple-05",
+    "category": "multiple",
+    "spans": [
+      {
+        "span_id": "1bb37d35-7592-54ed-af61-6357dd514cb1",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "ok",
+        "metadata": {}
+      },
+      {
+        "span_id": "81d198f4-5e1e-5e87-93c1-2b9f213ff414",
+        "parent_span_id": "1bb37d35-7592-54ed-af61-6357dd514cb1",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "insufficient_quota"
+        }
+      },
+      {
+        "span_id": "920667a7-8233-504b-bdf4-d65b396a2095",
+        "parent_span_id": "1bb37d35-7592-54ed-af61-6357dd514cb1",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "quota_exhausted",
+        "span_id": "81d198f4-5e1e-5e87-93c1-2b9f213ff414"
+      },
+      {
+        "code": "connection_failed",
+        "span_id": "920667a7-8233-504b-bdf4-d65b396a2095"
+      }
+    ]
+  },
+  {
+    "id": "multiple-06",
+    "category": "multiple",
+    "spans": [
+      {
+        "span_id": "5c4ab5fd-a129-5c05-81c8-08c8e6a85bdf",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "ok",
+        "metadata": {}
+      },
+      {
+        "span_id": "c6cd62fb-db90-5324-bdd6-02fe965fe401",
+        "parent_span_id": "5c4ab5fd-a129-5c05-81c8-08c8e6a85bdf",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "insufficient_quota"
+        }
+      },
+      {
+        "span_id": "28417e8d-58d2-52ba-9b51-9b7b92561415",
+        "parent_span_id": "5c4ab5fd-a129-5c05-81c8-08c8e6a85bdf",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "quota_exhausted",
+        "span_id": "c6cd62fb-db90-5324-bdd6-02fe965fe401"
+      },
+      {
+        "code": "connection_failed",
+        "span_id": "28417e8d-58d2-52ba-9b51-9b7b92561415"
+      }
+    ]
+  },
+  {
+    "id": "multiple-07",
+    "category": "multiple",
+    "spans": [
+      {
+        "span_id": "868909b5-b666-5351-aa56-91bba5b17e96",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "ok",
+        "metadata": {}
+      },
+      {
+        "span_id": "fe80086d-1dbb-569a-ad69-8d2fa928235a",
+        "parent_span_id": "868909b5-b666-5351-aa56-91bba5b17e96",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "insufficient_quota"
+        }
+      },
+      {
+        "span_id": "8ad21703-f3a4-5c56-960b-df1ab72b4d58",
+        "parent_span_id": "868909b5-b666-5351-aa56-91bba5b17e96",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "quota_exhausted",
+        "span_id": "fe80086d-1dbb-569a-ad69-8d2fa928235a"
+      },
+      {
+        "code": "connection_failed",
+        "span_id": "8ad21703-f3a4-5c56-960b-df1ab72b4d58"
+      }
+    ]
+  },
+  {
+    "id": "multiple-08",
+    "category": "multiple",
+    "spans": [
+      {
+        "span_id": "4a6b94d0-b45f-5fa0-b8e5-812d455c05e8",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "ok",
+        "metadata": {}
+      },
+      {
+        "span_id": "267099ed-8299-5292-a884-cc22180e4eaa",
+        "parent_span_id": "4a6b94d0-b45f-5fa0-b8e5-812d455c05e8",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "insufficient_quota"
+        }
+      },
+      {
+        "span_id": "6b3ff823-b681-5588-96b2-838a05180b9f",
+        "parent_span_id": "4a6b94d0-b45f-5fa0-b8e5-812d455c05e8",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "quota_exhausted",
+        "span_id": "267099ed-8299-5292-a884-cc22180e4eaa"
+      },
+      {
+        "code": "connection_failed",
+        "span_id": "6b3ff823-b681-5588-96b2-838a05180b9f"
+      }
+    ]
+  },
+  {
+    "id": "multiple-09",
+    "category": "multiple",
+    "spans": [
+      {
+        "span_id": "89a26c91-f6a1-5b57-b5fc-ebc37617a4c0",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "ok",
+        "metadata": {}
+      },
+      {
+        "span_id": "4a23d4f4-045a-5e6b-9ebd-75c6e08d0955",
+        "parent_span_id": "89a26c91-f6a1-5b57-b5fc-ebc37617a4c0",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "error",
+        "metadata": {
+          "error_message": "insufficient_quota"
+        }
+      },
+      {
+        "span_id": "255d4321-95b7-5747-94ae-8275c726c2e1",
+        "parent_span_id": "89a26c91-f6a1-5b57-b5fc-ebc37617a4c0",
+        "name": "tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Connection refused"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "quota_exhausted",
+        "span_id": "4a23d4f4-045a-5e6b-9ebd-75c6e08d0955"
+      },
+      {
+        "code": "connection_failed",
+        "span_id": "255d4321-95b7-5747-94ae-8275c726c2e1"
+      }
+    ]
+  },
+  {
+    "id": "mixed-00",
+    "category": "mixed",
+    "spans": [
+      {
+        "span_id": "416cbd0e-b0ee-5a86-a616-3fde1f62e92c",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "ok",
+        "metadata": {}
+      },
+      {
+        "span_id": "9bf56311-4179-52e5-956e-0e14e46602fb",
+        "parent_span_id": "416cbd0e-b0ee-5a86-a616-3fde1f62e92c",
+        "name": "llm",
+        "span_type": "llm",
+        "status": "ok",
+        "metadata": {}
+      }
+    ],
+    "expected_status": "ok",
+    "expected": []
+  },
+  {
+    "id": "mixed-01",
+    "category": "mixed",
+    "spans": [
+      {
+        "span_id": "a129431b-6b5b-5d67-98b9-4c25d77584ca",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "ok",
+        "metadata": {}
+      },
+      {
+        "span_id": "16cd83e2-0c37-5376-ba82-e3730e114a65",
+        "parent_span_id": "a129431b-6b5b-5d67-98b9-4c25d77584ca",
+        "name": "successful_tool",
+        "span_type": "tool",
+        "status": "ok",
+        "metadata": {}
+      },
+      {
+        "span_id": "d154db3a-7bac-5711-9705-acdf33abb5c7",
+        "parent_span_id": "a129431b-6b5b-5d67-98b9-4c25d77584ca",
+        "name": "failed_tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "timeout",
+        "span_id": "d154db3a-7bac-5711-9705-acdf33abb5c7"
+      }
+    ]
+  },
+  {
+    "id": "mixed-02",
+    "category": "mixed",
+    "spans": [
+      {
+        "span_id": "4b91a99a-b318-55cf-8eb8-bb366a607899",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "ok",
+        "metadata": {}
+      },
+      {
+        "span_id": "6c090645-2fb3-5491-bcf2-90f711e9212f",
+        "parent_span_id": "4b91a99a-b318-55cf-8eb8-bb366a607899",
+        "name": "successful_tool",
+        "span_type": "tool",
+        "status": "ok",
+        "metadata": {}
+      },
+      {
+        "span_id": "a4f09d5b-f023-56df-85a2-b8a57151c604",
+        "parent_span_id": "4b91a99a-b318-55cf-8eb8-bb366a607899",
+        "name": "failed_tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "timeout",
+        "span_id": "a4f09d5b-f023-56df-85a2-b8a57151c604"
+      }
+    ]
+  },
+  {
+    "id": "mixed-03",
+    "category": "mixed",
+    "spans": [
+      {
+        "span_id": "605bd0c1-93a9-54ed-ac4b-1ea73d51f10e",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "ok",
+        "metadata": {}
+      },
+      {
+        "span_id": "f1fc8219-f0ec-5376-86e8-9df3707e382d",
+        "parent_span_id": "605bd0c1-93a9-54ed-ac4b-1ea73d51f10e",
+        "name": "successful_tool",
+        "span_type": "tool",
+        "status": "ok",
+        "metadata": {}
+      },
+      {
+        "span_id": "0b0c53d3-8dc0-51d1-87cc-d9b8fc835612",
+        "parent_span_id": "605bd0c1-93a9-54ed-ac4b-1ea73d51f10e",
+        "name": "failed_tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "timeout",
+        "span_id": "0b0c53d3-8dc0-51d1-87cc-d9b8fc835612"
+      }
+    ]
+  },
+  {
+    "id": "mixed-04",
+    "category": "mixed",
+    "spans": [
+      {
+        "span_id": "c3dedc8b-294d-5990-b27e-c1987662675e",
+        "parent_span_id": null,
+        "name": "agent",
+        "span_type": "tool",
+        "status": "ok",
+        "metadata": {}
+      },
+      {
+        "span_id": "89dbb2a6-212b-5ffa-8e78-c57277c383f7",
+        "parent_span_id": "c3dedc8b-294d-5990-b27e-c1987662675e",
+        "name": "successful_tool",
+        "span_type": "tool",
+        "status": "ok",
+        "metadata": {}
+      },
+      {
+        "span_id": "32912034-51c5-5c2e-8c89-3fedda470585",
+        "parent_span_id": "c3dedc8b-294d-5990-b27e-c1987662675e",
+        "name": "failed_tool",
+        "span_type": "tool",
+        "status": "error",
+        "metadata": {
+          "error_message": "Request timed out"
+        }
+      }
+    ],
+    "expected_status": "error",
+    "expected": [
+      {
+        "code": "timeout",
+        "span_id": "32912034-51c5-5c2e-8c89-3fedda470585"
+      }
+    ]
+  }
+]
