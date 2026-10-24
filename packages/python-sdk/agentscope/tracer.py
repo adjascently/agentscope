@@ -72,7 +72,7 @@ class AgentScope:
         start = time.perf_counter()
 
         status = "ok"
-        details = dict(metadata or {})
+        details = metadata if metadata is not None else {}
 
         try:
             yield

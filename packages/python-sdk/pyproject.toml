@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentscope-observability"
+version = "0.2.0"
+description = "Python tracing SDK for AgentScope AI agent observability"
+requires-python = ">=3.10"
+dependencies = [
+    "requests>=2.31,<3",
+]
+
+[project.optional-dependencies]
+openai = [
+    "openai>=1.0,<3",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["agentscope*"]

@@ -1,238 +1,202 @@
+
 # AgentScope
 
-### See inside your AI agents. Understand every step.
+### Real-Time Observability for AI Agents
 
-**AgentScope** is an open-source, self-hosted observability platform for AI-agent workflows. Capture execution traces, inspect nested LLM and tool calls, analyze latency and token usage, and monitor the infrastructure behind your agents.
+**AgentScope** is an open-source distributed observability platform for AI-agent workflows. It captures agent, LLM, and tool execution spans, streams them through Apache Kafka, persists them in PostgreSQL, and visualizes execution traces through a Next.js dashboard.
 
-Built for developers who want to understand **what happened, where time was spent, and what failed**—without treating agent execution as a black box.
+With **v0.2**, AgentScope also supports automatic OpenAI Chat Completions instrumentation, capturing model calls, token usage, latency, and API errors without requiring developers to manually instrument every LLM call.
 
-[**GitHub Repository**](https://github.com/adjascently/agentscope) · [**Quick Start**](#quick-start) · [**Architecture**](#architecture) · [**SDK Usage**](#python-sdk)
+The platform includes Prometheus metrics, Grafana monitoring, and Kubernetes deployment manifests.
 
-![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
-![Apache Kafka](https://img.shields.io/badge/Apache_Kafka-231F20?logo=apachekafka&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
-![Next.js](https://img.shields.io/badge/Next.js-000000?logo=nextdotjs&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?logo=kubernetes&logoColor=white)
-![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?logo=prometheus&logoColor=white)
-![Grafana](https://img.shields.io/badge/Grafana-F46800?logo=grafana&logoColor=white)
-
----
-
-## Why AgentScope?
-
-AI agents rarely execute as a single operation. They plan, call language models, retrieve information, invoke tools, and retry failed steps.
-
-When something goes wrong, ordinary application logs often make it difficult to reconstruct the full execution.
-
-AgentScope brings those operations together into one observable workflow.
-
-| Without AgentScope | With AgentScope |
-|---|---|
-| Scattered logs across agent components | Structured traces grouped by execution run |
-| Unclear execution bottlenecks | Span-level latency and waterfall views |
-| Limited visibility into LLM usage | Token and estimated cost summaries from recorded metadata |
-| Difficult failure investigation | Error status and execution metadata |
-| No visibility into ingestion backlog | Kafka lag and consumer metrics |
-
-**The goal:** Make AI-agent execution easier to inspect, debug, and measure.
-
----
-
-## Product Preview
-
-### 01 — Agent Run Dashboard
-
-Browse recorded agent runs, inspect execution status, and review aggregate activity.
-
-![AgentScope Run Dashboard](docs/images/dashboard.png)
-
-### 02 — Execution Trace Waterfall
-
-Explore individual agent runs through nested spans, including LLM calls, tool executions, duration, and errors.
-
-![AgentScope Trace Waterfall](docs/images/trace-waterfall.png)
-
-### 03 — Infrastructure Monitoring
-
-Monitor ingestion activity, consumer processing, errors, and Kafka backlog using Prometheus and Grafana.
-
-![AgentScope Grafana Monitoring](docs/images/grafana.png)
-
-> **Screenshot note:** These paths are placeholders. Add actual screenshots from your running application to `docs/images/` before publishing this section.
-
----
-
-## Features
-
-### End-to-End Agent Tracing
-
-- Capture agent, LLM, and tool execution spans
-- Correlate operations using run and span identifiers
-- Preserve parent-child execution relationships
-- Record duration, status, and structured metadata
-- Inspect completed runs through the web dashboard
-
-### Lightweight Python SDK
-
-- Context-managed traces and nested spans
-- Automatic span duration measurement
-- Exception and error capture
-- Parent-span propagation within execution context
-- HTTP-based trace publishing
-
-### Real-Time Event Pipeline
-
-- FastAPI trace ingestion
-- Apache Kafka event streaming
-- Independent database-writing consumer
-- PostgreSQL persistence with JSONB metadata
-- Consumer offset commits after successful database writes
-
-### Developer Dashboard
-
-- Run summaries and execution details
-- Trace waterfall visualization
-- Span status and timing
-- Token usage summaries
-- Estimated LLM costs based on supplied metadata
-
-### Infrastructure Observability
-
-- Prometheus application metrics
-- Kafka exporter integration
-- Grafana monitoring
-- Kafka consumer lag visibility
-- Docker Compose and Kubernetes deployment configurations
+**Built with:** Python · FastAPI · Apache Kafka · PostgreSQL · Next.js · TypeScript · Docker · Kubernetes · Prometheus · Grafana
 
 ---
 
 ## Architecture
 
-AgentScope separates event collection, asynchronous processing, storage, and visualization.
-
 ```mermaid
-flowchart TD
-    A["AI Agent / Python SDK"]
-    B["FastAPI Ingestion API"]
-    C[("Apache Kafka")]
-    D["Kafka Consumer"]
-    E[("PostgreSQL")]
-    F["FastAPI Query API"]
-    G["Next.js Dashboard"]
+flowchart LR
+    A["AI Agent / Python SDK"] --> B["FastAPI Ingestion API"]
+    B --> C["Apache Kafka"]
+    C --> D["Kafka Consumer"]
+    D --> E[("PostgreSQL")]
+    E --> F["FastAPI Query API"]
+    F --> G["Next.js Dashboard"]
 
-    H["Prometheus"]
-    I["Kafka Exporter"]
-    J["Grafana"]
-
-    A -->|"HTTP traces"| B
-    B -->|"Publish events"| C
-    C -->|"Consume events"| D
-    D -->|"Persist spans"| E
-    E --> F
-    F --> G
-
-    B -.->|"Metrics"| H
-    D -.->|"Metrics"| H
-    C -.-> I
-    I -.-> H
-    H --> J
-
-    classDef source fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
-    classDef pipeline fill:#ede9fe,stroke:#7c3aed,color:#4c1d95
-    classDef storage fill:#dcfce7,stroke:#16a34a,color:#14532d
-    classDef ui fill:#fef3c7,stroke:#d97706,color:#78350f
-
-    class A,B source
-    class C,D pipeline
-    class E storage
-    class F,G,H,I,J ui
+    B --> H["Prometheus"]
+    D --> H
+    C --> I["Kafka Exporter"]
+    I --> H
+    H --> J["Grafana"]
 ```
 
-### How a trace moves through AgentScope
+Kafka decouples ingestion from persistence, allowing trace events to accumulate while the database-writing consumer is temporarily unavailable.
 
-1. **Instrument:** The Python SDK captures an agent operation and its execution metadata.
-2. **Ingest:** FastAPI accepts the trace event and publishes it to Kafka.
-3. **Buffer:** Kafka retains events independently of the database-writing consumer.
-4. **Persist:** The consumer writes spans to PostgreSQL and commits offsets after successful processing.
-5. **Explore:** The Next.js dashboard retrieves stored runs and displays their execution details.
-6. **Monitor:** Prometheus and Grafana expose the health of the ingestion pipeline.
+### How It Works
 
-This separation allows trace ingestion and database persistence to operate independently.
+1. An AI application generates execution spans using the AgentScope Python SDK.
+2. The FastAPI ingestion endpoint validates and publishes spans to Kafka.
+3. A separate Kafka consumer processes events and persists them in PostgreSQL.
+4. The FastAPI query endpoints retrieve stored runs and spans.
+5. The Next.js dashboard displays execution timelines, metadata, and errors.
+6. Prometheus and Grafana provide infrastructure-level monitoring.
 
 ---
 
-## Quick Start
+## Features
+
+### Distributed Trace Ingestion
+
+- HTTP-based trace ingestion through FastAPI
+- Kafka-backed asynchronous processing
+- Agent, LLM, and tool span classification
+- Unique run and span identifiers
+- Parent-child span relationships
+- Structured JSON metadata stored in PostgreSQL
+
+### Python Instrumentation SDK
+
+The Python SDK supports:
+
+- Context-managed traces and nested spans
+- Automatic execution latency measurement
+- Error status and exception-message capture
+- Parent-span propagation within an execution context
+- HTTP publishing to the AgentScope ingestion API
+- Automatic OpenAI Chat Completions instrumentation (v0.2)
+
+### Automatic OpenAI Instrumentation
+
+AgentScope can automatically capture synchronous OpenAI Chat Completions calls inside an active trace.
+
+Captured information includes:
+
+- Model name and provider
+- Request latency
+- Prompt tokens, completion tokens, and total tokens
+- API exceptions and error messages
+- Parent-child relationships between agent and LLM spans
+
+This allows developers to inspect model execution without manually creating an LLM span around every API call.
+
+### Trace Visualization
+
+The Next.js dashboard provides:
+
+- Agent execution run summaries
+- Run-level trace inspection
+- Span status and execution details
+- Trace waterfall visualization
+- Error highlighting and exception messages
+- Token usage and estimated LLM costs from recorded metadata
+
+### Infrastructure Observability
+
+Prometheus collects metrics from the ingestion API, Kafka consumer, and Kafka exporter.
+
+Grafana visualizes:
+
+- Total traces ingested
+- Ingestion errors
+- Consumer processing counts
+- Kafka consumer lag
+
+### Reliability
+
+- Kafka consumer offsets committed after database writes
+- PostgreSQL duplicate protection using `ON CONFLICT DO NOTHING`
+- Kafka-backed buffering during consumer downtime
+- Persistent Kafka and PostgreSQL Docker volumes
+- Kubernetes deployment manifests for local cluster testing
+
+---
+
+## Getting Started
 
 ### Prerequisites
 
-- Docker and Docker Compose
-- Python 3.11+ for local demo scripts
-- Git
+- Docker with Docker Compose
+- Python 3.11+ for running the SDK and examples
+- An OpenAI API key for live OpenAI requests (optional)
 
-### 1. Clone the repository
+### Start the Platform
+
+Clone the repository:
 
 ```bash
 git clone https://github.com/adjascently/agentscope.git
 cd agentscope
 ```
 
-### 2. Build the application images
+Build the application images:
 
 ```bash
 docker build -f apps/api/Dockerfile -t agentscope-api:day3 .
 docker build -f apps/web/Dockerfile -t agentscope-web:day2 .
 ```
 
-### 3. Initialize persistent storage
+Create the persistent Kafka volume:
 
 ```bash
 docker volume create agentscope_kafka_data
 ```
 
-### 4. Start AgentScope
+Start the services:
 
 ```bash
-docker compose \
-  -f docker-compose.yml \
-  -f docker-compose.monitoring.yml \
-  up -d
+docker compose -f docker-compose.yml -f docker-compose.monitoring.yml up -d
 ```
 
-The Docker Compose configuration includes a Kafka initialization service that creates the `agent-traces` topic when needed.
+The `kafka-init` service automatically creates the `agent-traces` Kafka topic during startup.
 
-### 5. Generate sample agent activity
+### Service URLs
 
-```bash
-python3 examples/demo-agent/generate_traces.py
-```
-
-The demo generator produces **15 synthetic spans across three workflows**:
-
-| Workflow | Spans | Simulated activity |
-|---|---:|---|
-| Research Assistant | 5 | Planning, LLM calls, web search, response |
-| Code Review Agent | 6 | Repository inspection, analysis, test failure, recovery |
-| Customer Support Agent | 4 | Planning, knowledge-base lookup, response |
-
-### 6. Explore the platform
-
-| Service | Local URL |
+| Service | URL |
 |---|---|
-| AgentScope Dashboard | http://localhost:3000 |
+| Next.js Dashboard | http://localhost:3000 |
 | FastAPI Documentation | http://localhost:8000/docs |
 | FastAPI Metrics | http://localhost:8000/metrics |
 | Prometheus | http://localhost:9091 |
 | Grafana | http://localhost:3001 |
 
-Grafana uses local development credentials defined in Docker Compose. Change them before exposing the service beyond your development environment.
+Grafana uses development credentials configured in Docker Compose. Change them before deploying outside a local environment.
+
+### Generate Demo Traces
+
+With the platform running, execute:
+
+```bash
+python3 examples/demo-agent/generate_traces.py
+```
+
+The generator publishes three simulated workflows:
+
+1. **Research Assistant:** Planning, LLM calls, web search, and final response.
+2. **Code Review Agent:** Repository inspection, LLM analysis, simulated test failure, and recovery.
+3. **Customer Support Agent:** Planning, knowledge-base search, LLM response, and final answer.
+
+The script generates **15 synthetic spans** across these three workflows.
+
+Open http://localhost:3000 to inspect the generated runs.
 
 ---
 
 ## Python SDK
 
-Instrument custom Python workflows with context-managed traces and spans.
+### Installation
+
+From the repository root:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e "./packages/python-sdk[openai]"
+```
+
+The package distribution is named `agentscope-observability`, while the Python import remains `agentscope`.
+
+### Manual Tracing
 
 ```python
 from agentscope import AgentScope
@@ -240,17 +204,13 @@ from agentscope import AgentScope
 tracer = AgentScope(endpoint="http://127.0.0.1:8000")
 
 with tracer.trace("research-agent") as run_id:
-
     with tracer.span("plan", span_type="agent"):
         print("Planning research")
 
     with tracer.span(
         "llm.generate",
         span_type="llm",
-        metadata={
-            "model": "gpt-4o",
-            "tokens": 150,
-        },
+        metadata={"model": "gpt-4o", "tokens": 150},
     ):
         print("Generating response")
 
@@ -260,90 +220,159 @@ with tracer.trace("research-agent") as run_id:
 print("Run ID:", run_id)
 ```
 
-The SDK records execution timing, captures exceptions, maintains parent-span context, and sends completed spans to the ingestion API.
+The SDK measures span duration, captures errors, and publishes completed spans to the ingestion API.
 
-The current SDK requires the `requests` package and is included in the repository under `packages/python-sdk/`. Automatic framework instrumentation is not yet implemented.
+### Automatic OpenAI Instrumentation (v0.2)
+
+Instead of manually wrapping every OpenAI request, developers can instrument an OpenAI client.
+
+```python
+from openai import OpenAI
+from agentscope import AgentScope, instrument_openai
+
+tracer = AgentScope(endpoint="http://localhost:8000")
+client = instrument_openai(OpenAI(), tracer)
+
+with tracer.trace("research-assistant") as run_id:
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {
+                "role": "user",
+                "content": "Explain Apache Kafka in two sentences."
+            }
+        ],
+    )
+
+    print(response.choices[0].message.content)
+
+print("Run ID:", run_id)
+```
+
+Set `OPENAI_API_KEY` in your environment before running.
+
+OpenAI API billing is separate from ChatGPT subscriptions.
+
+#### What Gets Recorded?
+
+Each instrumented request creates an LLM span with metadata such as:
+
+```json
+{
+  "provider": "openai",
+  "model": "gpt-4o-mini",
+  "prompt_tokens": 20,
+  "completion_tokens": 15,
+  "tokens": 35,
+  "latency_ms": 125.4
+}
+```
+
+The values above are illustrative. Actual token usage and latency depend on the request.
+
+On an API exception, AgentScope records the span with `status: error` and captures the exception message.
+
+#### Current Instrumentation Scope
+
+- Synchronous, non-streaming OpenAI Chat Completions
+- Requires an active `AgentScope.trace()` context
+- Streaming and asynchronous instrumentation are not yet supported
+- Other LLM providers are not yet automatically instrumented
+
+See `examples/openai-agent/main.py` for an executable example.
 
 ---
 
-## Reliability Engineering
+## Integration Verification
 
-AgentScope was tested against controlled consumer failures and duplicate event submissions.
+### Live OpenAI API Failure
 
-### Consumer Failure Recovery
+A real OpenAI API request was executed using `gpt-4o-mini`.
 
-**Experiment:** Stop the Kafka consumer, submit trace events, observe the backlog, and restart processing.
+The request returned HTTP 429 with the error code `credit_balance_exhausted` because the API project had no remaining credits.
 
-| Measurement | Observed result |
+AgentScope successfully captured:
+
+- An agent span and nested LLM span
+- The OpenAI model name
+- Request execution latency
+- The API exception and error message
+- The parent-child relationship
+- Both failed spans in the Next.js dashboard
+
+**Observed result:** 2 spans, 2 error statuses, and a 2.26-second overall execution timeline.
+
+These represent one underlying API failure propagated through two execution spans, not two independent failed API requests.
+
+### Mocked Successful OpenAI Response
+
+A mocked OpenAI response was used to validate successful-response instrumentation without consuming API credits.
+
+The mock returned:
+
+| Metric | Recorded value |
 |---|---:|
-| Trace events submitted | 30 |
-| Successful ingestion responses | 30/30 |
-| Kafka consumer lag during outage | 30 |
-| Consumer lag after recovery | 0 |
-| Events recovered in PostgreSQL | 30/30 |
-| Ingestion errors observed | 0 |
+| Prompt tokens | 20 |
+| Completion tokens | 15 |
+| Total tokens | 35 |
+| Captured spans | 2 |
+| Error spans | 0 |
 
-**Result:** All 30 events were successfully persisted after the consumer restarted in this test.
+The test verified that the OpenAI instrumentation extracts token usage and publishes it through the existing AgentScope pipeline.
 
-```mermaid
-flowchart LR
-    A["Consumer stopped"]
-    B["30 traces ingested"]
-    C["Kafka lag: 30"]
-    D["Consumer restarted"]
-    E["30 traces persisted"]
-    F["Kafka lag: 0"]
+**Verification boundary:** Live API error tracing and mocked successful-response tracing have been verified. A successful live OpenAI API response has not yet been tested.
 
-    A --> B --> C --> D --> E --> F
+---
 
-    style C fill:#fef3c7,stroke:#d97706,color:#78350f
-    style F fill:#dcfce7,stroke:#16a34a,color:#14532d
-```
+## Reliability Testing
 
-### Duplicate Event Protection
+### Kafka Consumer Failure Recovery
+
+A controlled experiment was performed to validate Kafka buffering and consumer recovery.
+
+**Procedure:**
+
+1. Stop the Kafka consumer.
+2. Submit 30 trace events through the FastAPI ingestion endpoint.
+3. Confirm that Kafka consumer lag increases.
+4. Restart the consumer.
+5. Verify that queued events are processed and persisted.
+
+**Observed results:**
+
+| Metric | Result |
+|---|---|
+| Trace submissions | 30 |
+| Successful HTTP submissions | 30/30 |
+| Observed consumer lag during downtime | 30 |
+| Observed lag after recovery | 0 |
+| Traces recovered in PostgreSQL | 30/30 |
+| Observed ingestion errors | 0 |
+
+This experiment demonstrated successful buffering and recovery under the tested consumer-downtime scenario.
+
+### Duplicate Protection
 
 The same trace event was submitted twice using an identical `span_id`.
 
-- Both ingestion requests were accepted.
-- PostgreSQL stored one row for the span identifier.
-- Duplicate inserts were handled using `ON CONFLICT DO NOTHING`.
+Both requests were accepted by the ingestion API, while PostgreSQL stored one row for that span identifier.
 
-This provides database-level idempotency for duplicate span IDs.
-
-**Reliability design:** Kafka offsets are committed after database persistence, allowing uncommitted events to be reprocessed following consumer failures.
-
-These experiments validate specific failure scenarios, not production-scale reliability or throughput.
+This demonstrates database-level idempotency for duplicate span IDs.
 
 ---
 
-## API Reference
+## API Overview
 
-| Method | Endpoint | Description |
+| Endpoint | Method | Purpose |
 |---|---|---|
-| `GET` | `/health` | API health check |
-| `POST` | `/v1/traces` | Ingest a trace event |
-| `GET` | `/v1/runs` | List recorded runs |
-| `GET` | `/v1/traces/{run_id}` | Retrieve spans associated with a run |
-| `GET` | `/metrics` | Prometheus metrics |
-| `GET` | `/docs` | Interactive API documentation |
+| `/health` | GET | API health check |
+| `/v1/traces` | POST | Ingest a trace event |
+| `/v1/runs` | GET | List recorded runs |
+| Run-detail endpoint | GET | Retrieve spans for a run |
+| `/metrics` | GET | Prometheus metrics |
+| `/docs` | GET | Interactive API documentation |
 
-See the local FastAPI documentation for request and response schemas.
-
----
-
-## Technology Stack
-
-| Layer | Technologies |
-|---|---|
-| Instrumentation | Python, context managers, ContextVar |
-| API | FastAPI, Uvicorn |
-| Streaming | Apache Kafka |
-| Persistence | PostgreSQL, JSONB |
-| Frontend | Next.js, React, TypeScript |
-| Metrics | Prometheus, Kafka Exporter |
-| Monitoring | Grafana |
-| Containerization | Docker, Docker Compose |
-| Orchestration | Kubernetes, kind |
+The exact run-detail endpoint is documented in the running FastAPI OpenAPI specification at `/docs`.
 
 ---
 
@@ -352,21 +381,24 @@ See the local FastAPI documentation for request and response schemas.
 ```text
 agentscope/
 ├── apps/
-│   ├── api/                 # FastAPI ingestion and consumer
-│   └── web/                 # Next.js dashboard
-│
+│   ├── api/                      # FastAPI API and Kafka consumer
+│   └── web/                      # Next.js dashboard
 ├── packages/
-│   └── python-sdk/          # Python tracing SDK
-│
+│   └── python-sdk/
+│       ├── pyproject.toml
+│       └── agentscope/
+│           ├── __init__.py
+│           ├── tracer.py
+│           └── openai_instrumentation.py
 ├── examples/
-│   └── demo-agent/          # Synthetic agent workflows
-│
+│   ├── demo-agent/               # Synthetic trace generator
+│   └── openai-agent/             # OpenAI integration example
 ├── infra/
-│   ├── grafana/             # Grafana datasource provisioning
-│   ├── prometheus/          # Prometheus configuration
-│   └── k8s/                 # Kubernetes manifests
-│
+│   ├── grafana/                  # Grafana provisioning
+│   ├── prometheus/               # Prometheus scrape configuration
+│   └── k8s/                      # Kubernetes manifests
 ├── tests/
+│   └── test_openai_integration.py
 ├── docker-compose.yml
 ├── docker-compose.monitoring.yml
 └── README.md
@@ -374,61 +406,86 @@ agentscope/
 
 ---
 
-## Engineering Trade-offs
+## Engineering Decisions
 
-**Why Kafka instead of direct database writes?**
+**Why Kafka?**
 
-Kafka decouples ingestion from persistence and provides a buffer during temporary consumer outages.
+Kafka decouples trace ingestion from database writes and allows the consumer to recover queued events after temporary downtime.
 
 **Why PostgreSQL?**
 
-PostgreSQL supports indexed run lookups, structured queries, and flexible JSONB metadata storage.
+PostgreSQL provides structured querying, indexes for run lookups, and JSONB storage for flexible span metadata.
 
 **Why a separate consumer?**
 
-Independent ingestion and persistence components allow failures and processing delays to be handled separately.
-
-**Why manual offset commits?**
-
-Offsets are committed after successful database operations so events can be retried if processing fails before acknowledgment.
+Separating ingestion from persistence allows the API and database writer to run independently.
 
 **Why Prometheus and Grafana?**
 
-They provide operational visibility into ingestion, consumer activity, errors, and event backlog.
+Together they provide visibility into ingestion activity, consumer processing, errors, and Kafka backlog.
+
+**Why a Python SDK?**
+
+A dedicated SDK provides a consistent interface for recording agent execution spans and makes integration easier than manually constructing trace events.
+
+**Why automatic OpenAI instrumentation?**
+
+Manually wrapping every model call introduces repetitive instrumentation work. Automatic interception allows developers to collect LLM execution metadata with less application-level tracing code.
 
 ---
 
 ## Current Limitations
 
-AgentScope is currently intended for local development and demonstration.
-
-- Single Kafka broker with replication factor one
-- No authentication or multi-tenancy
-- SDK HTTP failures are logged without automatic retries
-- Token usage and cost estimates depend on recorded metadata
-- Synthetic demo workflows do not invoke live LLM providers
-- Grafana dashboard setup may require manual configuration
-- Production security, scalability, and operational hardening remain future work
+- The current setup is intended for local development and demonstration, not production deployment.
+- Kafka runs as a single broker with replication factor one.
+- The SDK logs failed HTTP submissions but does not currently retry them.
+- Token usage and cost estimates depend on recorded metadata and available pricing assumptions.
+- The synthetic demo generator remains available alongside OpenAI instrumentation.
+- Automatic OpenAI instrumentation currently supports synchronous, non-streaming Chat Completions only.
+- A successful live OpenAI API response has not yet been verified.
+- Authentication, multi-tenancy, and production-grade security controls are not implemented.
+- Automatic failure diagnosis and remediation recommendations are planned, not yet implemented.
 
 ---
 
-## Stop the Platform
+## Roadmap
+
+### v0.2 — OpenAI Instrumentation
+
+- [x] Installable Python SDK
+- [x] Automatic OpenAI Chat Completions tracing
+- [x] Token usage and latency capture
+- [x] API error instrumentation
+- [x] Live failure tracing verification
+- [x] Mocked successful-response verification
+
+### Next — Actionable Failure Diagnosis
+
+- [ ] Detect common agent execution failures
+- [ ] Identify likely root causes
+- [ ] Link diagnoses to supporting span evidence
+- [ ] Provide actionable remediation suggestions
+- [ ] Evaluate detection precision and recall using labeled scenarios
+- [ ] Display diagnoses in the Next.js dashboard
+
+### Future Improvements
+
+- [ ] Streaming and async OpenAI instrumentation
+- [ ] Additional LLM provider integrations
+- [ ] Configurable sampling and batching
+- [ ] Authentication and multi-tenant isolation
+- [ ] Production deployment hardening
+
+---
+
+## Stopping the Platform
 
 ```bash
-docker compose \
-  -f docker-compose.yml \
-  -f docker-compose.monitoring.yml \
-  down
+docker compose -f docker-compose.yml -f docker-compose.monitoring.yml down
 ```
 
-Persistent volumes are retained unless explicitly removed.
+Persistent Docker volumes are retained unless explicitly removed.
 
 ---
 
-## Project Links
-
-**Repository:** [github.com/adjascently/agentscope](https://github.com/adjascently/agentscope)
-
-**AgentScope** — Making AI-agent execution observable, debuggable, and measurable.
-
-*Built with a focus on event-driven architecture, developer tooling, and distributed-system reliability.*
+**AgentScope — Built to make AI-agent execution observable, debuggable, and measurable.**
