@@ -1,0 +1,45 @@
+{
+  "original_baseline": {
+    "engine_sha256": "ca6c4cebb473aa49bbbd10600d8cef75d6584e7e6493a64d23057bcf5d137b93",
+    "dataset_sha256": "cc7b5a05a04a044e99553b3db1978eba670c6f3344f1c838e8a10fe417374d26",
+    "total_cases": 150,
+    "exact_cases_passed": 138,
+    "exact_case_accuracy": 0.92,
+    "true_positives": 143,
+    "false_positives": 12,
+    "false_negatives": 12,
+    "precision": 0.9226,
+    "recall": 0.9226,
+    "f1": 0.9226,
+    "evidence_accuracy": 0.9226,
+    "evidence_correct": 143,
+    "evidence_total": 155,
+    "exceptions": 0,
+    "category_counts": {
+      "providers": 30,
+      "conflicting": 25,
+      "nested": 25,
+      "multiple": 20,
+      "malformed": 20,
+      "success": 15,
+      "unusual": 15
+    },
+    "limitations": [
+      "Synthetic, manually constructed cases.",
+      "Designed with knowledge of the existing engine.",
+      "Some examples reuse known patterns.",
+      "Not representative of production incidents.",
+      "First-run results are preserved without retuning."
+    ]
+  },
+  "post_tuning": {
+    "total_cases": 150,
+    "exact_cases_passed": 150,
+    "exact_case_accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "evidence_accuracy": 1.0
+  },
+  "remaining_failures": []
+}

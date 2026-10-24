@@ -38,72 +38,126 @@ RULES = {
 
 
 def classify_error(metadata: dict) -> str:
-    message = str(metadata.get("error_message") or "")
-    lower = message.lower()
+    """Classify provider failures using structured evidence first."""
+    import re
 
-    # Prefer explicit structured provider metadata when available.
-    error_code = str(
-        metadata.get("error_code")
-        or metadata.get("provider_error_code")
-        or ""
-    ).lower()
-
-    error_type = str(metadata.get("error_type") or "").lower()
-
-    if error_code in {"credit_balance_exhausted", "insufficient_quota"}:
-        return "quota_exhausted"
-
-    if error_code in {"rate_limit_exceeded", "rate_limit_error"}:
-        return "rate_limited"
-
-    if error_code in {"invalid_api_key", "authentication_error"}:
-        return "authentication_failed"
-
-    if error_type in {"timeouterror", "apitimeouterror"}:
-        return "timeout"
-
-    if error_type in {"connectionerror", "apiconnectionerror"}:
-        return "connection_failed"
-
-    # Validation/parser errors can quote keywords without indicating
-    # the actual cause. Do not classify quoted content as provider failure.
-    if (
-        re.search(r"\b(validation failed|parser error|schema error)\b", lower)
-        and not error_code
-        and not error_type
-    ):
+    if not isinstance(metadata, dict):
         return "unknown_error"
 
-    if (
-        "credit_balance_exhausted" in lower
-        or "insufficient_quota" in lower
-    ):
-        return "quota_exhausted"
+    def normalize(value):
+        return value.lower().strip() if isinstance(value, str) else ""
 
-    if (
-        "rate_limit_exceeded" in lower
-        or "rate_limit_error" in lower
-        or "rate limit" in lower
-    ):
-        return "rate_limited"
+    message = normalize(metadata.get("error_message"))
+    code = normalize(
+        metadata.get("error_code")
+        or metadata.get("provider_error_code")
+    )
+    error_type = normalize(metadata.get("error_type"))
 
-    if (
-        "authenticationerror" in lower
-        or "invalid_api_key" in lower
-        or "incorrect api key" in lower
-        or "401 unauthorized" in lower
-    ):
+    # Explicit provider codes have the highest priority.
+    code_map = {
+        "credit_balance_exhausted": "quota_exhausted",
+        "insufficient_quota": "quota_exhausted",
+        "billing_hard_limit_reached": "quota_exhausted",
+        "rate_limit_exceeded": "rate_limited",
+        "rate_limit_error": "rate_limited",
+        "resource_exhausted": "rate_limited",
+        "invalid_api_key": "authentication_failed",
+        "authentication_error": "authentication_failed",
+        "unauthenticated": "authentication_failed",
+    }
+
+    if code in code_map:
+        return code_map[code]
+
+    type_map = {
+        "apitimeouterror": "timeout",
+        "timeouterror": "timeout",
+        "deadlineexceeded": "timeout",
+        "deadline_exceeded": "timeout",
+        "apiconnectionerror": "connection_failed",
+        "connectionerror": "connection_failed",
+    }
+
+    if error_type in type_map:
+        return type_map[error_type]
+
+    # Explicit HTTP status metadata, when present.
+    status = metadata.get("http_status") or metadata.get("status_code")
+
+    if status is not None:
+        try:
+            status = int(status)
+        except (TypeError, ValueError):
+            status = None
+
+    if status == 401:
         return "authentication_failed"
 
-    if "timeout" in lower or "timed out" in lower:
+    if status == 429:
+        return "rate_limited"
+
+    if status in (408, 504):
         return "timeout"
 
-    if (
-        "connection refused" in lower
-        or "connectionerror" in lower
-        or "connection error" in lower
-    ):
-        return "connection_failed"
+    # Avoid interpreting quoted keywords inside parser errors.
+    if any(x in message for x in (
+        "validation failed",
+        "parser error",
+        "schema error",
+    )):
+        return "unknown_error"
+
+    patterns = [
+        ("quota_exhausted", [
+            r"credit_balance_exhausted",
+            r"insufficient_quota",
+            r"billing_hard_limit_reached",
+            r"monthly spend limit reached",
+            r"project credits depleted",
+            r"billing quota.*depleted",
+            r"no remaining credits",
+        ]),
+        ("rate_limited", [
+            r"rate[_ ]limit",
+            r"too many requests",
+            r"\b429\b",
+            r"resource_exhausted",
+            r"request throttled",
+            r"upstream throttling",
+            r"overloaded_error",
+        ]),
+        ("authentication_failed", [
+            r"authenticationerror",
+            r"authentication_error",
+            r"invalid_api_key",
+            r"incorrect api key",
+            r"\b401\b",
+            r"unauthenticated",
+            r"expired api token",
+            r"permissiondenied.*invalid token",
+        ]),
+        ("timeout", [
+            r"timeout",
+            r"timed out",
+            r"deadline.?exceeded",
+            r"deadline was exceeded",
+            r"gateway timeout",
+        ]),
+        ("connection_failed", [
+            r"connection refused",
+            r"connectionerror",
+            r"connection error",
+            r"econnreset",
+            r"econnrefused",
+            r"dns (resolution|lookup) fail",
+            r"tls handshake failed",
+        ]),
+    ]
+
+    for diagnosis, expressions in patterns:
+        if any(re.search(pattern, message) for pattern in expressions):
+            return diagnosis
 
     return "unknown_error"
 

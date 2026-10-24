@@ -1,0 +1,48 @@
+{
+  "baseline_summary": {
+    "engine_sha256": "dbe09b53a4f882ce2dc0aaeed259c907306d73c075fe960920b2ad29709da9e3",
+    "dataset_sha256": "32a903b339b07eb02fb4f0f1698bc0a3aeec093dcef82024bd31309df4d2d153",
+    "total_cases": 100,
+    "category_counts": {
+      "wording": 20,
+      "providers": 15,
+      "nested": 15,
+      "conflicts": 15,
+      "missing_metadata": 10,
+      "duplicates": 10,
+      "multiple": 10,
+      "mixed": 5
+    },
+    "exact_cases_passed": 86,
+    "true_positives": 105,
+    "false_positives": 14,
+    "false_negatives": 14,
+    "precision": 0.8824,
+    "recall": 0.8824,
+    "f1": 0.8824,
+    "evidence_accuracy": 0.8824,
+    "evidence_correct": 105,
+    "evidence_total": 119,
+    "exceptions": 0,
+    "limitations": [
+      "Synthetic, manually designed holdout cases.",
+      "Not a production incident sample.",
+      "Some cases share patterns with development tests.",
+      "Labels and assumptions require review.",
+      "Do not interpret results as production accuracy."
+    ]
+  },
+  "updated_summary": {
+    "engine_sha256": "ca6c4cebb473aa49bbbd10600d8cef75d6584e7e6493a64d23057bcf5d137b93",
+    "total_cases": 100,
+    "exact_cases_passed": 100,
+    "true_positives": 119,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "evidence_accuracy": 1.0
+  },
+  "remaining_failures": []
+}

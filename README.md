@@ -112,6 +112,120 @@ Grafana visualizes:
 
 ---
 
+## Automated Root-Cause Diagnosis
+
+AgentScope goes beyond displaying execution traces: it analyzes failed
+agent workflows and identifies likely root causes using structured
+provider errors, execution context, and trace relationships.
+
+### Diagnosis Capabilities
+
+- **Provider-aware error classification:** Recognizes quota exhaustion,
+  rate limiting, authentication failures, timeouts, and connection errors.
+- **Structured error precedence:** Uses provider error codes and types
+  before falling back to message-based heuristics.
+- **Root-cause localization:** Uses parent-child span relationships to
+  distinguish originating failures from propagated errors.
+- **Multiple failure detection:** Identifies independent failures
+  within the same agent execution.
+- **Evidence-backed explanations:** Returns the originating span,
+  failure classification, explanation, and suggested remediation.
+- **Defensive metadata handling:** Handles missing and malformed
+  error metadata without crashing the diagnosis engine.
+
+The dashboard displays diagnosis findings alongside execution
+waterfalls, making it easier to investigate failed agent runs.
+
+### Diagnosis API
+
+```http
+GET /v1/runs/{run_id}/diagnosis
+```
+
+The endpoint returns the run status, diagnosis count, and a list
+of findings with supporting span evidence.
+
+---
+
+## Evaluation and Validation
+
+The diagnosis engine was evaluated using deterministic, labeled
+synthetic agent execution scenarios.
+
+### Results
+
+| Evaluation | Scenarios | Exact-case accuracy | Precision | Recall | F1 |
+|---|---:|---:|---:|---:|---:|
+| Development regression | 100 | 100% | 100% | 100% | 1.00 |
+| Initial holdout baseline | 100 | 86% | 88.24% | 88.24% | 0.8824 |
+| Initial holdout after tuning | 100 | 100% | 100% | 100% | 1.00 |
+| Additional holdout baseline | 150 | 92% | 92.26% | 92.26% | 0.9226 |
+| Additional holdout after tuning | 150 | 100% | 100% | 100% | 1.00 |
+
+**Metric definitions:**
+
+- **Exact-case accuracy:** Percentage of scenarios with the expected
+  run status and exact set of diagnosis codes and originating spans.
+- **Precision and recall:** Calculated from expected and predicted
+  diagnosis classifications.
+- **Evidence accuracy:** Measures whether the correct originating
+  spans were identified.
+
+### Evaluation Methodology
+
+The development suite contains 100 synthetic scenarios covering
+provider failures, successful runs, and propagated errors.
+
+An initial 100-case holdout identified gaps in provider-specific
+error handling. After targeted improvements, all 100 cases passed
+the post-tuning regression.
+
+A separate 150-case synthetic evaluation covered:
+
+| Category | Scenarios |
+|---|---:|
+| Provider-specific errors | 30 |
+| Conflicting evidence | 25 |
+| Nested failure chains | 25 |
+| Multiple independent failures | 20 |
+| Missing and malformed metadata | 20 |
+| Successful runs and false-positive traps | 15 |
+| Unusual error formats | 15 |
+| **Total** | **150** |
+
+The frozen diagnosis engine initially passed **138/150 scenarios
+(92%)**. All 12 failures involved provider-specific error wording.
+
+After introducing provider-aware normalization and additional
+error patterns, the engine passed **150/150 scenarios (100%)**
+on the same dataset.
+
+### Reproduce the Evaluations
+
+Run the development regression suite:
+
+```bash
+PYTHONPATH=. python3 evaluations/run_all.py
+```
+
+Run the post-tuning comparison against the preserved 150-case baseline:
+
+```bash
+PYTHONPATH=. python3 evaluations/final_holdout/compare.py
+```
+
+The evaluation artifacts are stored under `evaluations/`, including
+the original baselines, labeled scenarios, and comparison results.
+
+**Limitations:** These are synthetic, manually constructed scenarios,
+not production incidents. The post-tuning scores were obtained on
+datasets already examined during development and must not be
+interpreted as independent holdout or production accuracy.
+The additional 150-case dataset was also designed with knowledge
+of the existing diagnosis engine.
+
+---
+
 ## Getting Started
 
 ### Prerequisites

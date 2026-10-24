@@ -1,18 +1,21 @@
+
 import os
 import json
 from time import perf_counter
 from contextlib import asynccontextmanager
 from datetime import datetime
 from uuid import UUID
+from typing import Literal
 
 import psycopg
-from typing import Literal
 from psycopg.rows import dict_row
 from confluent_kafka import Producer
 from fastapi import FastAPI, HTTPException, Query
 from prometheus_fastapi_instrumentator import Instrumentator
 from apps.api.app.metrics import (
-    TRACES_INGESTED, INGESTION_ERRORS, INGESTION_LATENCY
+    TRACES_INGESTED,
+    INGESTION_ERRORS,
+    INGESTION_LATENCY,
 )
 from pydantic import BaseModel, Field
 
@@ -56,8 +59,11 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+Instrumentator().instrument(app).expose(
+    app,
+    endpoint="/metrics",
+)
 
-Instrumentator().instrument(app).expose(app, endpoint="/metrics")
 
 @app.get("/")
 def root():
@@ -75,6 +81,7 @@ def health():
 @app.post("/v1/traces", status_code=202)
 def ingest_trace(event: TraceEvent):
     started = perf_counter()
+
     try:
         producer.produce(
             topic="agent-traces",
@@ -90,6 +97,7 @@ def ingest_trace(event: TraceEvent):
             raise RuntimeError("Kafka delivery timed out")
 
         TRACES_INGESTED.inc()
+
         return {
             "message": "Trace accepted",
             "span_id": str(event.span_id),
@@ -97,13 +105,16 @@ def ingest_trace(event: TraceEvent):
 
     except Exception as exc:
         INGESTION_ERRORS.inc()
+
         raise HTTPException(
             status_code=503,
             detail="Kafka ingestion unavailable",
         ) from exc
 
     finally:
-        INGESTION_LATENCY.observe(perf_counter() - started)
+        INGESTION_LATENCY.observe(
+            perf_counter() - started
+        )
 
 
 @app.get("/v1/runs")
@@ -116,6 +127,8 @@ def list_runs(
             DATABASE_URL,
             row_factory=dict_row,
         ) as conn:
+
+            # Fetch the most recent runs, respecting the page limit.
             rows = conn.execute(
                 """
                 SELECT
@@ -123,72 +136,136 @@ def list_runs(
                     COUNT(*) AS span_count,
                     MIN(timestamp) AS started_at,
                     MAX(timestamp) AS last_event_at,
+
                     COUNT(*) FILTER (
-    WHERE status = 'error'
-) AS error_count,
+                        WHERE status = 'error'
+                    ) AS error_count,
 
-COALESCE(
-    SUM(
-        CASE
-            WHEN span_type = 'llm'
-             AND jsonb_typeof(metadata->'input_tokens') = 'number'
-            THEN (metadata->>'input_tokens')::numeric
-            ELSE 0
-        END
-    ),
-    0
-)::bigint AS input_tokens,
+                    COALESCE(
+                        SUM(
+                            CASE
+                                WHEN span_type = 'llm'
+                                 AND jsonb_typeof(
+                                     metadata->'input_tokens'
+                                 ) = 'number'
+                                THEN (
+                                    metadata->>'input_tokens'
+                                )::numeric
+                                ELSE 0
+                            END
+                        ),
+                        0
+                    )::bigint AS input_tokens,
 
-COALESCE(
-    SUM(
-        CASE
-            WHEN span_type = 'llm'
-             AND jsonb_typeof(metadata->'output_tokens') = 'number'
-            THEN (metadata->>'output_tokens')::numeric
-            ELSE 0
-        END
-    ),
-    0
-)::bigint AS output_tokens,
+                    COALESCE(
+                        SUM(
+                            CASE
+                                WHEN span_type = 'llm'
+                                 AND jsonb_typeof(
+                                     metadata->'output_tokens'
+                                 ) = 'number'
+                                THEN (
+                                    metadata->>'output_tokens'
+                                )::numeric
+                                ELSE 0
+                            END
+                        ),
+                        0
+                    )::bigint AS output_tokens,
 
-COALESCE(
-    SUM(
-        CASE
-            WHEN span_type = 'llm'
-             AND jsonb_typeof(metadata->'input_tokens') = 'number'
-             AND jsonb_typeof(metadata->'output_tokens') = 'number'
-             AND jsonb_typeof(metadata->'input_cost_per_million') = 'number'
-             AND jsonb_typeof(metadata->'output_cost_per_million') = 'number'
-            THEN (
-                (metadata->>'input_tokens')::numeric
-                * (metadata->>'input_cost_per_million')::numeric
-                +
-                (metadata->>'output_tokens')::numeric
-                * (metadata->>'output_cost_per_million')::numeric
-            ) / 1000000
-            ELSE 0
-        END
-    ),
-    0
-) AS estimated_cost_usd
+                    COALESCE(
+                        SUM(
+                            CASE
+                                WHEN span_type = 'llm'
+                                 AND jsonb_typeof(
+                                     metadata->'input_tokens'
+                                 ) = 'number'
+                                 AND jsonb_typeof(
+                                     metadata->'output_tokens'
+                                 ) = 'number'
+                                 AND jsonb_typeof(
+                                     metadata->'input_cost_per_million'
+                                 ) = 'number'
+                                 AND jsonb_typeof(
+                                     metadata->'output_cost_per_million'
+                                 ) = 'number'
+                                THEN (
+                                    (
+                                        metadata->>'input_tokens'
+                                    )::numeric
+                                    *
+                                    (
+                                        metadata->>'input_cost_per_million'
+                                    )::numeric
+                                    +
+                                    (
+                                        metadata->>'output_tokens'
+                                    )::numeric
+                                    *
+                                    (
+                                        metadata->>'output_cost_per_million'
+                                    )::numeric
+                                ) / 1000000
+                                ELSE 0
+                            END
+                        ),
+                        0
+                    ) AS estimated_cost_usd
+
                 FROM spans
-GROUP BY run_id
-HAVING (
-    %s::text IS NULL
-    OR (
-        %s = 'error'
-        AND COUNT(*) FILTER (WHERE status = 'error') > 0
-    )
-    OR (
-        %s = 'ok'
-        AND COUNT(*) FILTER (WHERE status = 'error') = 0
-    )
-)
-ORDER BY last_event_at DESC
-LIMIT %s
+
+                GROUP BY run_id
+
+                HAVING (
+                    %s::text IS NULL
+                    OR (
+                        %s = 'error'
+                        AND COUNT(*) FILTER (
+                            WHERE status = 'error'
+                        ) > 0
+                    )
+                    OR (
+                        %s = 'ok'
+                        AND COUNT(*) FILTER (
+                            WHERE status = 'error'
+                        ) = 0
+                    )
+                )
+
+                ORDER BY last_event_at DESC
+                LIMIT %s
                 """,
                 (status, status, status, limit),
             ).fetchall()
+
+            # Count ALL matching runs, not just the returned page.
+            # This also respects the optional status filter.
+            total_count = conn.execute(
+                """
+                SELECT COUNT(*)
+                FROM (
+                    SELECT run_id
+                    FROM spans
+                    GROUP BY run_id
+                    HAVING (
+                        %s::text IS NULL
+                        OR (
+                            %s = 'error'
+                            AND COUNT(*) FILTER (
+                                WHERE status = 'error'
+                            ) > 0
+                        )
+                        OR (
+                            %s = 'ok'
+                            AND COUNT(*) FILTER (
+                                WHERE status = 'error'
+                            ) = 0
+                        )
+                    )
+                ) AS matching_runs
+                """,
+                (status, status, status),
+            ).fetchone()["count"]
 
     except psycopg.Error as exc:
         raise HTTPException(
@@ -197,12 +274,14 @@ LIMIT %s
         ) from exc
 
     return {
-        "count": len(rows),
+        "count": total_count,
         "runs": [
             {
                 **row,
                 "status": (
-                    "error" if row["error_count"] > 0 else "ok"
+                    "error"
+                    if row["error_count"] > 0
+                    else "ok"
                 ),
             }
             for row in rows
@@ -217,21 +296,27 @@ def get_trace(run_id: UUID):
             DATABASE_URL,
             row_factory=dict_row,
         ) as conn:
-            rows = conn.execute("""
-    SELECT
-        span_id,
-        run_id,
-        parent_span_id,
-        name,
-        span_type,
-        status,
-        timestamp,
-        metadata,
-        created_at
-    FROM spans
-    WHERE run_id = %s
-    ORDER BY timestamp ASC, span_id ASC
-""", (run_id,)).fetchall()
+            rows = conn.execute(
+                """
+                SELECT
+                    span_id,
+                    run_id,
+                    parent_span_id,
+                    name,
+                    span_type,
+                    status,
+                    timestamp,
+                    metadata,
+                    created_at
+
+                FROM spans
+
+                WHERE run_id = %s
+
+                ORDER BY timestamp ASC, span_id ASC
+                """,
+                (run_id,),
+            ).fetchall()
 
     except psycopg.Error as exc:
         raise HTTPException(
