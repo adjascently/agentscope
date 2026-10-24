@@ -20,6 +20,88 @@ type TraceResponse = {
   spans: Span[];
 };
 
+
+type Diagnosis = {
+  code: string;
+  title: string;
+  explanation: string;
+  suggested_fix: string;
+  evidence: {
+    span_id: string;
+    span_name: string;
+    error_message: string;
+  };
+};
+
+type DiagnosisResponse = {
+  run_id: string;
+  status: string;
+  diagnosis_count: number;
+  diagnoses: Diagnosis[];
+};
+
+async function getDiagnosis(runId: string): Promise<DiagnosisResponse | null> {
+  const apiBaseUrl =
+    process.env.AGENTSCOPE_API_URL ?? "http://127.0.0.1:8000";
+
+  try {
+    const response = await fetch(
+      `${apiBaseUrl}/v1/runs/${encodeURIComponent(runId)}/diagnosis`,
+      { cache: "no-store" }
+    );
+
+    if (!response.ok) return null;
+    return response.json();
+  } catch {
+    return null;
+  }
+}
+
+function FailureDiagnosis({ result }: { result: DiagnosisResponse | null }) {
+  if (!result || result.diagnoses.length === 0) return null;
+
+  return (
+    <section className="mb-8 rounded-xl border border-rose-900/60 bg-[#101522] p-6">
+      <p className="text-xs font-semibold uppercase tracking-widest text-rose-400">
+        Failure Diagnosis
+      </p>
+      <p className="mt-2 text-sm text-slate-400">
+        Evidence-backed analysis · {result.diagnosis_count} finding(s)
+      </p>
+
+      <div className="mt-5 space-y-5">
+        {result.diagnoses.map((diagnosis) => (
+          <div key={`${diagnosis.code}-${diagnosis.evidence.span_id}`}>
+            <h2 className="text-xl font-semibold text-white">
+              {diagnosis.title}
+            </h2>
+            <p className="mt-2 text-sm text-slate-300">
+              {diagnosis.explanation}
+            </p>
+
+            <div className="mt-4 rounded-lg border border-indigo-900/50 bg-indigo-950/20 p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-indigo-400">
+                Suggested Fix
+              </p>
+              <p className="mt-2 text-sm text-slate-200">
+                {diagnosis.suggested_fix}
+              </p>
+            </div>
+
+            <a
+              href={`#span-${diagnosis.evidence.span_id}`}
+              className="mt-4 inline-block text-xs text-indigo-400 hover:text-indigo-300"
+            >
+              Evidence: {diagnosis.evidence.span_name} ·{" "}
+              {diagnosis.evidence.span_id.slice(0, 8)}… ↗
+            </a>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 type TimelineSpan = {
   span: Span;
   depth: number;
@@ -361,6 +443,7 @@ export default async function RunDetailPage({
 }) {
   const { runId } = await params;
   const trace = await getTrace(runId);
+  const diagnosis = await getDiagnosis(runId);
 
   return (
     <main className="min-h-screen bg-[#080b12] text-white">
@@ -385,6 +468,8 @@ export default async function RunDetailPage({
             {trace.span_count} execution span(s)
           </p>
         </header>
+
+        <FailureDiagnosis result={diagnosis} />
 
         <ExecutionWaterfall spans={trace.spans} />
 

@@ -250,3 +250,16 @@ def get_trace(run_id: UUID):
         "span_count": len(rows),
         "spans": rows,
     }
+
+
+@app.get("/v1/runs/{run_id}/diagnosis")
+def get_run_diagnosis(run_id: UUID):
+    from .diagnosis import diagnose_run
+
+    trace = get_trace(run_id)
+    result = diagnose_run(trace["spans"])
+
+    return {
+        "run_id": str(run_id),
+        **result,
+    }
