@@ -1,0 +1,496 @@
+import Link from "next/link";
+import {
+  Activity, ArrowDownRight, ArrowRight, ArrowUpRight,
+  CheckCircle2, ChevronLeft, ChevronRight, CircleAlert,
+  Clock3, Database, ExternalLink, GitBranch, LayoutDashboard,
+  ListFilter, Search, Terminal, Workflow, Zap
+} from "lucide-react";
+import Charts from "./charts";
+
+export const instant = false;
+
+type Run = {
+  run_id: string;
+  status: string;
+  span_count: number;
+  error_count: number;
+  input_tokens: number;
+  output_tokens: number;
+  started_at: string;
+  last_event_at: string;
+};
+
+type Analytics = {
+  summary: {
+    total_runs: number;
+    total_spans: number;
+    failed_runs: number;
+  };
+  tokens: {
+    input_tokens: number;
+    output_tokens: number;
+  };
+  activity: {
+    hour: string;
+    runs: number;
+    spans: number;
+  }[];
+  errors: {
+    category: string;
+    count: number;
+  }[];
+};
+
+const API = process.env.AGENTSCOPE_API_URL || "http://api:8000";
+const number = (n: number) => n.toLocaleString("en-US");
+const compact = (n: number) =>
+  new Intl.NumberFormat("en-US", {
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(n);
+
+async function fetchJSON<T>(path: string): Promise<T> {
+  const response = await fetch(`${API}${path}`, { cache: "no-store" });
+  if (!response.ok) throw new Error(`API error ${response.status}`);
+  return response.json();
+}
+
+function duration(start: string, end: string) {
+  const ms = new Date(end).getTime() - new Date(start).getTime();
+  if (!Number.isFinite(ms) || ms < 0) return "—";
+  if (ms < 1000) return `${Math.round(ms)} ms`;
+  return `${(ms / 1000).toFixed(2)} s`;
+}
+
+function Metric({
+  label,
+  value,
+  sub,
+  icon: Icon,
+  accent = false,
+}: {
+  label: string;
+  value: string;
+  sub: string;
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  accent?: boolean;
+}) {
+  return (
+    <div className="min-w-0 border-r border-[#262a35] px-6 py-6 last:border-r-0">
+      <div className="flex items-center justify-between gap-3">
+        <span className="text-[12px] font-medium text-[#9297a8]">{label}</span>
+        <Icon size={16} className={accent ? "text-[#a5a2ff]" : "text-[#656b7d]"} />
+      </div>
+      <div className="mt-4 text-[31px] font-semibold tracking-[-0.05em] text-[#f2f2f7]">
+        {value}
+      </div>
+      <p className="mt-1 text-[11px] text-[#777e91]">{sub}</p>
+    </div>
+  );
+}
+
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string; status?: string; q?: string }>;
+}) {
+  const params = await searchParams;
+  const requestedPage = Number(params.page);
+  const page = Number.isFinite(requestedPage)
+    ? Math.max(1, Math.floor(requestedPage))
+    : 1;
+  const status = params.status === "error" || params.status === "ok"
+    ? params.status
+    : "all";
+  const q = (params.q || "").trim();
+
+  const query = new URLSearchParams({
+    limit: "50",
+    offset: String((page - 1) * 50),
+  });
+  if (status !== "all") query.set("status", status);
+
+  let analytics: Analytics | null = null;
+  let result: { count: number; runs: Run[] } = {
+    count: 0,
+    runs: [],
+  };
+  let error = "";
+
+  try {
+    [analytics, result] = await Promise.all([
+      fetchJSON<Analytics>("/v1/analytics"),
+      fetchJSON<{ count: number; runs: Run[] }>(`/v1/runs?${query}`),
+    ]);
+  } catch (e) {
+    error = e instanceof Error ? e.message : "Unable to connect";
+  }
+
+  const summary = analytics?.summary;
+  const tokens = analytics?.tokens;
+  const total = summary?.total_runs ?? 0;
+  const failed = summary?.failed_runs ?? 0;
+  const successful = total - failed;
+  const successRate = total ? (successful / total) * 100 : 0;
+  const pages = Math.max(1, Math.ceil(result.count / 50));
+
+  // Search applies to the currently loaded page.
+  const runs = q
+    ? result.runs.filter((run) =>
+        run.run_id.toLowerCase().includes(q.toLowerCase())
+      )
+    : result.runs;
+
+  function url(nextPage: number, nextStatus = status) {
+    const p = new URLSearchParams({ page: String(nextPage) });
+    if (nextStatus !== "all") p.set("status", nextStatus);
+    if (q) p.set("q", q);
+    return `/?${p.toString()}#runs`;
+  }
+
+  return (
+    <div className="min-h-screen bg-[#0c0e14] font-sans text-[#ececf2] lg:flex">
+      <aside className="shrink-0 border-b border-[#242733] bg-[#101218] lg:sticky lg:top-0 lg:h-screen lg:w-[228px] lg:border-b-0 lg:border-r">
+        <div className="flex h-[72px] items-center gap-3 border-b border-[#242733] px-5">
+          <div className="flex h-9 w-9 items-center justify-center rounded-[11px] bg-[#7772f8] text-white">
+            <Activity size={20} strokeWidth={2.4} />
+          </div>
+          <div>
+            <div className="text-[15px] font-bold tracking-tight">AgentScope</div>
+            <div className="text-[10px] text-[#777e91]">Observability platform</div>
+          </div>
+        </div>
+
+        <div className="px-3 py-6">
+          <div className="px-3 pb-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#626879]">
+            Workspace
+          </div>
+
+          <nav className="space-y-1 text-[13px]">
+            <a
+              href="#overview"
+              className="flex items-center gap-3 rounded-lg bg-[#25233d] px-3 py-2.5 font-medium text-[#c4c0ff]"
+            >
+              <LayoutDashboard size={16} /> Overview
+            </a>
+            <a
+              href="#activity"
+              className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-[#9499a9] transition hover:bg-[#1c1e29] hover:text-white"
+            >
+              <Activity size={16} /> Analytics
+            </a>
+            <a
+              href="#runs"
+              className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-[#9499a9] transition hover:bg-[#1c1e29] hover:text-white"
+            >
+              <GitBranch size={16} /> Traces & runs
+            </a>
+          </nav>
+
+          <div className="mt-10 px-3 pb-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#626879]">
+            Infrastructure
+          </div>
+
+          <div className="space-y-3 px-3 text-[12px] text-[#969bad]">
+            <div className="flex items-center gap-3">
+              <Database size={15} /> PostgreSQL
+            </div>
+            <div className="flex items-center gap-3">
+              <Workflow size={15} /> Kafka ingestion
+            </div>
+            <div className="flex items-center gap-3">
+              <Terminal size={15} /> FastAPI
+            </div>
+          </div>
+        </div>
+
+        <div className="hidden border-t border-[#242733] p-5 lg:absolute lg:bottom-0 lg:block lg:w-full">
+          <div className="text-[11px] font-medium text-[#a4a8b7]">AgentScope</div>
+          <div className="mt-1 text-[10px] text-[#626879]">Developer preview · v0.1</div>
+        </div>
+      </aside>
+
+      <main className="min-w-0 flex-1">
+        <header className="flex h-[72px] items-center justify-between gap-3 border-b border-[#242733] px-6 md:px-9">
+          <div className="flex items-center gap-2 text-[12px] text-[#777e91]">
+            Workspace <span className="text-[#444a5b]">/</span>
+            <span className="font-medium text-[#e0e1e9]">Overview</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="hidden text-[11px] text-[#747b8e] sm:inline">
+              Live database metrics
+            </span>
+            <span className={`flex items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] ${
+              error
+                ? "border-red-500/20 bg-red-500/10 text-red-300"
+                : "border-emerald-500/20 bg-emerald-500/10 text-emerald-400"
+            }`}>
+              <span className={`h-1.5 w-1.5 rounded-full ${
+                error ? "bg-red-400" : "bg-emerald-400"
+              }`} />
+              {error ? "Disconnected" : "Connected"}
+            </span>
+          </div>
+        </header>
+
+        <div className="w-full px-5 py-8 md:px-9 xl:px-11">
+          <section id="overview">
+            <div className="flex flex-wrap items-end justify-between gap-5">
+              <div>
+                <div className="mb-2 flex items-center gap-2 text-[11px] font-medium text-[#9b96ff]">
+                  <Zap size={13} /> OBSERVABILITY / OVERVIEW
+                </div>
+                <h1 className="text-[32px] font-semibold tracking-[-0.045em] md:text-[38px]">
+                  Your agents, at a glance.
+                </h1>
+                <p className="mt-2 text-[13px] text-[#9298a9]">
+                  Monitor executions, investigate failures, and understand usage.
+                </p>
+              </div>
+
+              <a
+                href="#runs"
+                className="flex items-center gap-2 rounded-lg border border-[#35394a] bg-[#1b1e29] px-4 py-2.5 text-[12px] font-medium text-[#e6e6ee] transition hover:bg-[#292d3b]"
+              >
+                Explore traces <ArrowRight size={14} />
+              </a>
+            </div>
+
+            {error && (
+              <div className="mt-6 rounded-lg border border-red-500/25 bg-red-500/10 p-4 text-sm text-red-300">
+                {error}
+              </div>
+            )}
+
+            <div className="mt-8 grid grid-cols-2 overflow-hidden rounded-xl border border-[#292c38] bg-[#151820] md:grid-cols-4">
+              <Metric
+                label="Total executions"
+                value={number(total)}
+                sub="All recorded runs"
+                icon={Workflow}
+                accent
+              />
+              <Metric
+                label="Success rate"
+                value={`${successRate.toFixed(1)}%`}
+                sub={`${number(successful)} successful runs`}
+                icon={CheckCircle2}
+              />
+              <Metric
+                label="Failed runs"
+                value={number(failed)}
+                sub="Runs with errors"
+                icon={CircleAlert}
+              />
+              <Metric
+                label="Total spans"
+                value={number(summary?.total_spans ?? 0)}
+                sub="Recorded trace events"
+                icon={GitBranch}
+              />
+            </div>
+          </section>
+
+          <section id="activity" className="mt-8">
+            <div className="mb-4 flex items-center justify-between">
+              <div>
+                <h2 className="text-[17px] font-semibold tracking-tight">
+                  Execution analytics
+                </h2>
+                <p className="mt-1 text-[12px] text-[#858b9d]">
+                  Historical activity and token usage
+                </p>
+              </div>
+              <span className="rounded-md border border-[#303441] px-3 py-1.5 text-[11px] text-[#9298aa]">
+                All-time data
+              </span>
+            </div>
+
+            <Charts
+              activity={analytics?.activity ?? []}
+              errors={analytics?.errors ?? []}
+              tokens={tokens ?? { input_tokens: 0, output_tokens: 0 }}
+            />
+          </section>
+
+          <section id="runs" className="mt-9">
+            <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <h2 className="text-[19px] font-semibold tracking-tight">
+                  Recent executions
+                </h2>
+                <p className="mt-1 text-[12px] text-[#858b9d]">
+                  Inspect traces, review errors, and debug individual runs.
+                </p>
+              </div>
+              <span className="text-[12px] text-[#9399aa]">
+                {number(result.count)} matching runs
+              </span>
+            </div>
+
+            <div className="overflow-hidden rounded-xl border border-[#292c38] bg-[#151820]">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#292c38] px-5 py-4">
+                <div className="flex items-center gap-1 rounded-lg bg-[#101218] p-1">
+                  {[
+                    ["All runs", "all"],
+                    ["Successful", "ok"],
+                    ["Failed", "error"],
+                  ].map(([label, value]) => (
+                    <Link
+                      key={value}
+                      href={url(1, value)}
+                      className={`rounded-md px-3 py-2 text-[12px] transition ${
+                        status === value
+                          ? "bg-[#2b2a43] font-medium text-[#c4c0ff]"
+                          : "text-[#9298a9] hover:text-white"
+                      }`}
+                    >
+                      {label}
+                    </Link>
+                  ))}
+                </div>
+
+                <form action="/" className="flex items-center gap-2">
+                  <input type="hidden" name="status" value={status} />
+                  <div className="relative">
+                    <Search
+                      size={14}
+                      className="absolute left-3 top-1/2 -translate-y-1/2 text-[#747b8e]"
+                    />
+                    <input
+                      name="q"
+                      defaultValue={q}
+                      placeholder="Find run on this page..."
+                      className="w-44 rounded-lg border border-[#343746] bg-[#101218] py-2.5 pl-9 pr-3 text-[12px] text-white outline-none placeholder:text-[#686e7e] focus:border-[#7772f8] sm:w-56"
+                    />
+                  </div>
+                  <button className="rounded-lg bg-[#7772f8] px-4 py-2.5 text-[12px] font-medium text-white transition hover:bg-[#8984ff]">
+                    Search
+                  </button>
+                </form>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[800px] text-left">
+                  <thead className="bg-[#11141c]">
+                    <tr className="text-[11px] text-[#80879a]">
+                      <th className="px-5 py-4 font-medium">Run / Trace ID</th>
+                      <th className="px-5 py-4 font-medium">Status</th>
+                      <th className="px-5 py-4 font-medium">Spans</th>
+                      <th className="px-5 py-4 font-medium">Duration</th>
+                      <th className="px-5 py-4 font-medium">Tokens</th>
+                      <th className="px-5 py-4 font-medium">Started</th>
+                      <th className="px-5 py-4" />
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {runs.map((run) => (
+                      <tr
+                        key={run.run_id}
+                        className="border-t border-[#242733] transition hover:bg-[#1c202c]"
+                      >
+                        <td className="px-5 py-4">
+                          <Link
+                            href={`/runs/${run.run_id}`}
+                            className="flex items-center gap-2 font-mono text-[12px] font-medium text-[#b1acff] hover:text-white"
+                          >
+                            <GitBranch size={13} />
+                            {run.run_id.slice(0, 20)}…
+                          </Link>
+                        </td>
+                        <td className="px-5 py-4">
+                          <span className={`inline-flex items-center gap-2 rounded-md px-2.5 py-1 text-[11px] font-medium ${
+                            run.status === "ok"
+                              ? "bg-emerald-500/10 text-emerald-400"
+                              : "bg-red-500/10 text-red-400"
+                          }`}>
+                            <span className={`h-1.5 w-1.5 rounded-full ${
+                              run.status === "ok" ? "bg-emerald-400" : "bg-red-400"
+                            }`} />
+                            {run.status === "ok" ? "Success" : "Error"}
+                          </span>
+                        </td>
+                        <td className="px-5 py-4 text-[12px] text-[#c2c6d2]">
+                          {run.span_count}
+                        </td>
+                        <td className="px-5 py-4 font-mono text-[11px] text-[#a0a6b6]">
+                          {duration(run.started_at, run.last_event_at)}
+                        </td>
+                        <td className="px-5 py-4 text-[12px] text-[#c2c6d2]">
+                          {number(run.input_tokens + run.output_tokens)}
+                        </td>
+                        <td className="whitespace-nowrap px-5 py-4 text-[11px] text-[#9298a9]">
+                          {new Date(run.started_at).toLocaleString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            hour: "numeric",
+                            minute: "2-digit",
+                          })}
+                        </td>
+                        <td className="px-5 py-4">
+                          <Link
+                            href={`/runs/${run.run_id}`}
+                            aria-label="Inspect run"
+                            className="text-[#747b8e] hover:text-[#b1acff]"
+                          >
+                            <ArrowUpRight size={16} />
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
+                {runs.length === 0 && (
+                  <div className="py-14 text-center text-[13px] text-[#858b9d]">
+                    No matching executions found.
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[#292c38] px-5 py-4">
+                <span className="text-[11px] text-[#8a90a1]">
+                  Page {page} of {pages} · 50 runs per page
+                </span>
+
+                <div className="flex items-center gap-2">
+                  <Link
+                    href={url(Math.max(1, page - 1))}
+                    aria-disabled={page <= 1}
+                    className={`flex items-center gap-2 rounded-md border border-[#343746] px-3 py-2 text-[11px] ${
+                      page <= 1 ? "pointer-events-none opacity-35" : "hover:bg-[#252937]"
+                    }`}
+                  >
+                    <ChevronLeft size={14} /> Previous
+                  </Link>
+                  <Link
+                    href={url(Math.min(pages, page + 1))}
+                    aria-disabled={page >= pages}
+                    className={`flex items-center gap-2 rounded-md border border-[#343746] px-3 py-2 text-[11px] ${
+                      page >= pages ? "pointer-events-none opacity-35" : "hover:bg-[#252937]"
+                    }`}
+                  >
+                    Next <ChevronRight size={14} />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <footer className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-[#252936] py-6 text-[11px] text-[#72798b]">
+            <span>AgentScope · Built for debugging AI agents</span>
+            <a
+              href="https://github.com/adjascently/agentscope"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 hover:text-white"
+            >
+              View source <ExternalLink size={13} />
+            </a>
+          </footer>
+        </div>
+      </main>
+    </div>
+  );
+}

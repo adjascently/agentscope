@@ -24,3 +24,228 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+/* AgentScope theme system */
+:root {
+  --as-bg: #f7f8fb;
+  --as-surface: #ffffff;
+  --as-surface-alt: #f0f2f7;
+  --as-text: #171923;
+  --as-muted: #626b7d;
+  --as-border: #e1e5ed;
+  --as-accent: #5b5bd6;
+}
+
+html.dark {
+  --as-bg: #0c0e14;
+  --as-surface: #151820;
+  --as-surface-alt: #1c202b;
+  --as-text: #f1f2f7;
+  --as-muted: #9ca3b5;
+  --as-border: #303542;
+  --as-accent: #a5a2ff;
+}
+
+body {
+  font-size: 16px;
+}
+
+.as-app {
+  background: var(--as-bg) !important;
+  color: var(--as-text) !important;
+}
+
+.as-app aside,
+.as-app header,
+.as-app section,
+.as-app footer {
+  transition: background-color .2s, color .2s, border-color .2s;
+}
+
+.as-app .as-card {
+  background: var(--as-surface);
+  border: 1px solid var(--as-border);
+  border-radius: 16px;
+}
+
+.as-app .as-muted {
+  color: var(--as-muted);
+}
+
+.as-app .as-heading {
+  color: var(--as-text);
+}
+
+
+/* AgentScope dashboard light/dark appearance */
+html:not(.dark) .as-app {
+  background: #f7f8fc !important;
+  color: #1d2433 !important;
+}
+html:not(.dark) .as-app aside,
+html:not(.dark) .as-app header,
+html:not(.dark) .as-app section,
+html:not(.dark) .as-app footer {
+  color: #1d2433;
+}
+html:not(.dark) .as-app .bg-\[\#151820\],
+html:not(.dark) .as-app .bg-\[\#101218\],
+html:not(.dark) .as-app .bg-\[\#11141c\] {
+  background-color: #ffffff !important;
+}
+html:not(.dark) .as-app .text-\[\#ececf2\],
+html:not(.dark) .as-app .text-\[\#f2f2f7\] {
+  color: #1d2433 !important;
+}
+html:not(.dark) .as-app .text-\[\#9298a9\],
+html:not(.dark) .as-app .text-\[\#9297a8\] {
+  color: #64748b !important;
+}
+
+/* AgentScope compact layout */
+.as-app aside {
+  font-size: 14px;
+}
+
+.as-app main > div:last-child {
+  padding-top: 18px !important;
+  padding-bottom: 18px !important;
+}
+
+.as-app h1 {
+  font-size: 25px !important;
+  line-height: 1.25 !important;
+}
+
+.as-app h2 {
+  font-size: 18px !important;
+}
+
+.as-app table th,
+.as-app table td {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  font-size: 13px !important;
+}
+
+.as-app input,
+.as-app button {
+  font-size: 13px !important;
+}
+
+.as-app section {
+  margin-top: 18px;
+}
+
+.trace-page main {
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
+}
+
+.trace-page h1 {
+  font-size: 25px !important;
+}
+
+.trace-page h2 {
+  font-size: 19px !important;
+}
+
+.trace-page .trace-panel {
+  border-radius: 10px !important;
+}
+
+.trace-page .trace-panel > div {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.trace-page .trace-timeline-row {
+  padding-top: 7px !important;
+  padding-bottom: 7px !important;
+}
+
+/* Final trace diagnosis alignment */
+.trace-page .trace-panel:has(.trace-diagnosis-card) {
+  width: 100%;
+}
+
+.trace-page .trace-diagnosis-card {
+  margin-inline: auto !important;
+  width: min(100%, 680px) !important;
+}
+
+/* Table row hover — light and dark */
+html:not(.dark) .as-app tbody tr:hover {
+  background-color: #f3f4f8 !important;
+  color: #1d2433 !important;
+}
+
+html.dark .as-app tbody tr:hover {
+  background-color: #252937 !important;
+}
+
+/* Keep run IDs readable on hover */
+html:not(.dark) .as-app tbody tr:hover a {
+  color: #5b5bd6 !important;
+}
+
+/* AgentScope sidebar — light-mode interaction states */
+html:not(.dark) .as-app aside a:hover {
+  background-color: #f0edff !important;
+  color: #5149a7 !important;
+}
+
+html:not(.dark) .as-app aside a[aria-current="page"] {
+  background-color: #f0edff !important;
+  color: #5149a7 !important;
+}
+
+/* Light mode navigation and filter states */
+html:not(.dark) .as-app aside nav a:first-child {
+  background-color: #f0edff !important;
+  color: #5149a7 !important;
+}
+
+html:not(.dark) .as-app aside nav a:hover {
+  background-color: #e7e2ff !important;
+  color: #5149a7 !important;
+}
+
+/* Execution filters — theme-aware backgrounds */
+html:not(.dark) .as-app .execution-filters {
+  background: #f3f1fa !important;
+}
+
+html.dark .as-app .execution-filters {
+  background: #101218 !important;
+}
+
+/* Filter controls: use AgentScope's selected theme */
+html:not(.dark) .as-app .execution-filters {
+  background-color: #f3f1fa !important;
+}
+
+html:not(.dark) .as-app .execution-filters a {
+  color: #667085 !important;
+  background-color: transparent !important;
+}
+
+html:not(.dark) .as-app .execution-filters a[data-active="true"] {
+  background-color: #e7e2ff !important;
+  color: #5149a7 !important;
+}
+
+html:not(.dark) .as-app .execution-filters a:hover {
+  background-color: #eeeaff !important;
+  color: #5149a7 !important;
+}
+
+html.dark .as-app .execution-filters {
+  background-color: #101218 !important;
+}
+
+html.dark .as-app .execution-filters a[data-active="true"] {
+  background-color: #2b2a43 !important;
+  color: #c4c0ff !important;
+}

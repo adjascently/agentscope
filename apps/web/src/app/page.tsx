@@ -1,407 +1,440 @@
-
+import ThemeToggle from "./theme-toggle";
 import Link from "next/link";
-
+import {
+  Activity, ArrowDownRight, ArrowRight, ArrowUpRight,
+  CheckCircle2, ChevronLeft, ChevronRight, CircleAlert,
+  Clock3, Database, ExternalLink, GitBranch, LayoutDashboard,
+  ListFilter, Search, Terminal, Workflow, Zap
+} from "lucide-react";
 export const instant = false;
 
-type RunStatus = "ok" | "error";
-type StatusFilter = "all" | RunStatus;
-
-type AgentRun = {
+type Run = {
   run_id: string;
+  status: string;
   span_count: number;
-  started_at: string;
-  last_event_at: string;
   error_count: number;
   input_tokens: number;
   output_tokens: number;
-  estimated_cost_usd: number;
-  status: RunStatus;
+  started_at: string;
+  last_event_at: string;
 };
 
-type RunsResponse = {
-  count: number;
-  runs: AgentRun[];
+type Analytics = {
+  summary: {
+    total_runs: number;
+    total_spans: number;
+    failed_runs: number;
+  };
+  tokens: {
+    input_tokens: number;
+    output_tokens: number;
+  };
+  activity: {
+    hour: string;
+    runs: number;
+    spans: number;
+  }[];
+  errors: {
+    category: string;
+    count: number;
+  }[];
 };
 
-type HomeProps = {
-  searchParams: Promise<{
-    status?: string | string[];
-  }>;
-};
+const API = process.env.AGENTSCOPE_API_URL || "http://api:8000";
+const number = (n: number) => n.toLocaleString("en-US");
+const compact = (n: number) =>
+  new Intl.NumberFormat("en-US", {
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(n);
 
-async function getRuns(
-  status: StatusFilter
-): Promise<RunsResponse> {
-  const apiBaseUrl =
-  process.env.AGENTSCOPE_API_URL ??
-  "http://127.0.0.1:8000";
-
-const url = new URL(
-  "/v1/runs",
-  apiBaseUrl
-);
-
-  url.searchParams.set("limit", "100");
-
-  if (status !== "all") {
-    url.searchParams.set("status", status);
-  }
-
-  const response = await fetch(url.toString(), {
-    cache: "no-store",
-  });
-
-  if (!response.ok) {
-    throw new Error(
-      `AgentScope API returned ${response.status}`
-    );
-  }
-
+async function fetchJSON<T>(path: string): Promise<T> {
+  const response = await fetch(`${API}${path}`, { cache: "no-store" });
+  if (!response.ok) throw new Error(`API error ${response.status}`);
   return response.json();
 }
 
-function formatCost(cost: number): string {
-  if (cost === 0) return "$0.00000";
-  if (cost < 0.00001) return "<$0.00001";
-  return `$${cost.toFixed(5)}`;
+function duration(start: string, end: string) {
+  const ms = new Date(end).getTime() - new Date(start).getTime();
+  if (!Number.isFinite(ms) || ms < 0) return "—";
+  if (ms < 1000) return `${Math.round(ms)} ms`;
+  return `${(ms / 1000).toFixed(2)} s`;
 }
 
-function formatDate(date: string): string {
+function Metric({
+  label,
+  value,
+  sub,
+  icon: Icon,
+  accent = false,
+}: {
+  label: string;
+  value: string;
+  sub: string;
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  accent?: boolean;
+}) {
   return (
-    new Date(date).toLocaleString("en-US", {
-      timeZone: "UTC",
-    }) + " UTC"
+    <div className="min-w-0 border-r border-[#262a35] px-6 py-6 last:border-r-0">
+      <div className="flex items-center justify-between gap-3">
+        <span className="text-sm font-medium text-[#9297a8]">{label}</span>
+        <Icon size={16} className={accent ? "text-[#a5a2ff]" : "text-[#656b7d]"} />
+      </div>
+      <div className="mt-4 text-[31px] font-semibold tracking-[-0.05em] text-[#f2f2f7]">
+        {value}
+      </div>
+      <p className="mt-1 text-sm text-[#777e91]">{sub}</p>
+    </div>
   );
 }
 
 export default async function Home({
   searchParams,
-}: HomeProps) {
+}: {
+  searchParams: Promise<{ page?: string; status?: string; q?: string }>;
+}) {
   const params = await searchParams;
-  const requestedStatus = Array.isArray(params.status)
-    ? params.status[0]
-    : params.status;
+  const requestedPage = Number(params.page);
+  const page = Number.isFinite(requestedPage)
+    ? Math.max(1, Math.floor(requestedPage))
+    : 1;
+  const status = params.status === "error" || params.status === "ok"
+    ? params.status
+    : "all";
+  const q = (params.q || "").trim();
 
-  const status: StatusFilter =
-    requestedStatus === "ok" ||
-    requestedStatus === "error"
-      ? requestedStatus
-      : "all";
+  const query = new URLSearchParams({
+    limit: "25",
+    offset: String((page - 1) * 25),
+  });
+  if (status !== "all") query.set("status", status);
 
-  let data: RunsResponse = {
+  let analytics: Analytics | null = null;
+  let result: { count: number; runs: Run[] } = {
     count: 0,
     runs: [],
   };
-
-  let error = false;
+  let error = "";
 
   try {
-    data = await getRuns(status);
-  } catch (err) {
-    console.error("Failed to fetch runs:", err);
-    error = true;
+    [analytics, result] = await Promise.all([
+      fetchJSON<Analytics>("/v1/analytics"),
+      fetchJSON<{ count: number; runs: Run[] }>(`/v1/runs?${query}`),
+    ]);
+  } catch (e) {
+    error = e instanceof Error ? e.message : "Unable to connect";
   }
 
-  const totalSpans = data.runs.reduce(
-    (sum, run) => sum + run.span_count,
-    0
-  );
+  const summary = analytics?.summary;
+  const tokens = analytics?.tokens;
+  const total = summary?.total_runs ?? 0;
+  const failed = summary?.failed_runs ?? 0;
+  const successful = total - failed;
+  const successRate = total ? (successful / total) * 100 : 0;
+  const pages = Math.max(1, Math.ceil(result.count / 25));
 
-  const failedRuns = data.runs.filter(
-    (run) => run.status === "error"
-  ).length;
+  // Search applies to the currently loaded page.
+  const runs = q
+    ? result.runs.filter((run) =>
+        run.run_id.toLowerCase().includes(q.toLowerCase())
+      )
+    : result.runs;
 
-  const totalInputTokens = data.runs.reduce(
-    (sum, run) => sum + run.input_tokens,
-    0
-  );
-
-  const totalOutputTokens = data.runs.reduce(
-    (sum, run) => sum + run.output_tokens,
-    0
-  );
-
-  const totalTokens =
-    totalInputTokens + totalOutputTokens;
-
-  const totalCost = data.runs.reduce(
-    (sum, run) =>
-      sum + Number(run.estimated_cost_usd),
-    0
-  );
-
-  const filters: {
-    label: string;
-    value: StatusFilter;
-    href: string;
-  }[] = [
-    {
-      label: "All Runs",
-      value: "all",
-      href: "/",
-    },
-    {
-      label: "Successful",
-      value: "ok",
-      href: "/?status=ok",
-    },
-    {
-      label: "Failed",
-      value: "error",
-      href: "/?status=error",
-    },
-  ];
+  function url(nextPage: number, nextStatus = status) {
+    const p = new URLSearchParams({ page: String(nextPage) });
+    if (nextStatus !== "all") p.set("status", nextStatus);
+    if (q) p.set("q", q);
+    return `/?${p.toString()}#runs`;
+  }
 
   return (
-    <main className="min-h-screen bg-[#080b12] text-white">
-      <div className="mx-auto max-w-7xl px-6 py-12">
-        <header className="mb-12 flex flex-wrap items-center justify-between gap-4">
+    <div className="as-app min-h-screen font-sans lg:flex">
+      <aside className="shrink-0 border-b border-[#242733] bg-[#101218] lg:sticky lg:top-0 lg:h-screen lg:w-[228px] lg:border-b-0 lg:border-r">
+        <div className="flex h-[72px] items-center gap-3 border-b border-[#242733] px-5">
+          <div className="flex h-9 w-9 items-center justify-center rounded-[11px] bg-[#7772f8] text-white">
+            <Activity size={20} strokeWidth={2.4} />
+          </div>
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">
-              AgentScope
-            </h1>
+            <div className="text-base font-bold tracking-tight">AgentScope</div>
+            <div className="text-xs text-[#777e91]">Observability platform</div>
+          </div>
+        </div>
 
-            <p className="mt-2 text-sm text-slate-400">
-              AI Agent Observability Platform
-            </p>
+        <div className="px-3 py-6">
+          <div className="px-3 pb-3 text-xs font-semibold uppercase tracking-[0.15em] text-[#626879]">
+            Workspace
           </div>
 
-          <span
-            className={`rounded-full border px-4 py-2 text-xs ${
+          <nav className="space-y-1 text-base">
+            <a
+              href="#overview"
+              className="flex items-center gap-3 rounded-lg bg-[#f0edff] px-3 py-2.5 font-medium text-[#5149a7] transition hover:bg-[#e7e2ff] dark:bg-[#25233d] dark:text-[#c4c0ff] dark:hover:bg-[#302d4b]"
+            >
+              <LayoutDashboard size={16} /> Overview
+            </a>
+            <a
+              href="#runs"
+              className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-[#9499a9] transition hover:bg-[#f0edff] hover:text-[#5149a7] dark:hover:bg-[#1c1e29] dark:hover:text-white"
+            >
+              <GitBranch size={16} /> Traces
+            </a>
+          </nav>
+        </div>
+      </aside>
+
+      <main className="min-w-0 flex-1">
+        <header className="flex h-[72px] items-center justify-between gap-3 border-b border-[#242733] px-6 md:px-9">
+          <div className="flex items-center gap-2 text-sm text-[#777e91]">
+            Workspace <span className="text-[#444a5b]">/</span>
+            <span className="font-medium text-[#e0e1e9]">Overview</span>
+          </div>
+          <div className="flex items-center gap-4"><ThemeToggle />
+            <span className="hidden text-sm text-[#747b8e] sm:inline">
+              Live database metrics
+            </span>
+            <span className={`flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm ${
               error
-                ? "border-red-500/30 bg-red-500/10 text-red-400"
-                : "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
-            }`}
-          >
-            {error
-              ? "● API Unavailable"
-              : "● API Connected"}
-          </span>
+                ? "border-red-500/20 bg-red-500/10 text-red-300"
+                : "border-emerald-500/20 bg-emerald-500/10 text-emerald-400"
+            }`}>
+              <span className={`h-1.5 w-1.5 rounded-full ${
+                error ? "bg-red-400" : "bg-emerald-400"
+              }`} />
+              {error ? "Disconnected" : "Connected"}
+            </span>
+          </div>
         </header>
 
-        <section className="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          <MetricCard
-            title="Runs"
-            value={data.count.toLocaleString()}
-          />
-
-          <MetricCard
-            title="Total Spans"
-            value={totalSpans.toLocaleString()}
-          />
-
-          <MetricCard
-            title="Failed Runs"
-            value={failedRuns.toLocaleString()}
-            accent="red"
-          />
-
-          <MetricCard
-            title="Total Tokens"
-            value={totalTokens.toLocaleString()}
-            subtitle={`${totalInputTokens.toLocaleString()} input · ${totalOutputTokens.toLocaleString()} output`}
-          />
-
-          <MetricCard
-            title="Estimated LLM Cost"
-            value={formatCost(totalCost)}
-            accent="indigo"
-          />
-        </section>
-
-        <section className="overflow-hidden rounded-xl border border-slate-800 bg-[#101522]">
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 px-6 py-5">
-            <div>
-              <h2 className="text-lg font-semibold">
-                Recent Agent Runs
-              </h2>
-
-              <p className="mt-1 text-sm text-slate-400">
-                Explore execution traces, token usage,
-                and agent activity
-              </p>
+        <div className="w-full px-5 py-8 md:px-9 xl:px-11">
+          <section id="overview">
+            <div className="flex flex-wrap items-end justify-between gap-5">
+              <div>
+                <div className="mb-2 flex items-center gap-2 text-sm font-medium text-[#9b96ff]">
+                  <Zap size={13} /> OBSERVABILITY / OVERVIEW
+                </div>
+                <h1 className="text-[32px] font-semibold tracking-[-0.045em] md:text-[38px]">
+                  Your agents, at a glance.
+                </h1>
+                <p className="mt-2 text-base text-[#9298a9]">
+                  Monitor executions, investigate failures, and understand usage.
+                </p>
+              </div>
             </div>
 
-            <div className="flex flex-wrap gap-2">
-              {filters.map((filter) => {
-                const active =
-                  status === filter.value;
+            {error && (
+              <div className="mt-6 rounded-lg border border-red-500/25 bg-red-500/10 p-4 text-sm text-red-300">
+                {error}
+              </div>
+            )}
 
-                return (
-                  <Link
-                    key={filter.value}
-                    href={filter.href}
-                    className={`rounded-lg border px-4 py-2 text-sm transition-colors ${
-                      active
-                        ? "border-indigo-500 bg-indigo-500/20 text-indigo-300"
-                        : "border-slate-700 text-slate-400 hover:border-slate-500 hover:text-white"
-                    }`}
-                  >
-                    {filter.label}
-                  </Link>
-                );
-              })}
+            <div className="mt-8 grid grid-cols-2 overflow-hidden rounded-xl border border-[#292c38] bg-[#151820] md:grid-cols-4">
+              <Metric
+                label="Total Executions"
+                value={number(total)}
+                sub="All Recorded Runs"
+                icon={Workflow}
+                accent
+              />
+              <Metric
+                label="Total Tokens"
+                value={number((tokens?.input_tokens ?? 0) + (tokens?.output_tokens ?? 0))}
+                sub="Input and Output Tokens"
+                icon={Zap}
+              />
+              <Metric
+                label="Failed Runs"
+                value={number(failed)}
+                sub="Runs With Errors"
+                icon={CircleAlert}
+              />
+              <Metric
+                label="Total Spans"
+                value={number(summary?.total_spans ?? 0)}
+                sub="Recorded trace events"
+                icon={GitBranch}
+              />
             </div>
-          </div>
+          </section>
 
-          {error ? (
-            <div className="p-8 text-red-400">
-              Unable to connect to AgentScope API.
-              Make sure FastAPI is running on port
-              8000 and PostgreSQL is available.
+          <section id="runs" className="mt-9">
+            <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <h2 className="text-2xl font-semibold tracking-tight">
+                  Recent Executions
+                </h2>
+                <p className="mt-1 text-sm text-[#858b9d]">
+                  Inspect traces, review errors, and debug individual runs.
+                </p>
+              </div>
+              <span className="text-sm text-[#9399aa]">
+                {number(result.count)} matching runs
+              </span>
             </div>
-          ) : data.runs.length === 0 ? (
-            <div className="p-8 text-slate-400">
-              No runs found for this filter.
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
-                <thead className="bg-slate-900/60 text-slate-400">
-                  <tr>
-                    <th className="px-6 py-4">
-                      Run ID
-                    </th>
-                    <th className="px-6 py-4">
-                      Status
-                    </th>
-                    <th className="px-6 py-4">
-                      Spans
-                    </th>
-                    <th className="px-6 py-4">
-                      Errors
-                    </th>
-                    <th className="px-6 py-4">
-                      Tokens
-                    </th>
-                    <th className="px-6 py-4">
-                      Est. Cost
-                    </th>
-                    <th className="px-6 py-4">
-                      Started
-                    </th>
-                  </tr>
-                </thead>
 
-                <tbody>
-                  {data.runs.map((run) => {
-                    const runTokens =
-                      run.input_tokens +
-                      run.output_tokens;
+            <div className="overflow-hidden rounded-xl border border-[#292c38] bg-[#151820]">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#292c38] px-5 py-4">
+                <div className="execution-filters flex items-center gap-1 rounded-lg bg-[#f3f1fa] p-1 dark:bg-[#101218]">
+                  {[
+                    ["All Runs", "all"],
+                    ["Successful", "ok"],
+                    ["Failed", "error"],
+                  ].map(([label, value]) => (
+                    <Link
+                      key={value}
+                      href={url(1, value)}
+                      data-active={status === value}
+                      className={`rounded-md px-3 py-2 text-sm transition ${
+                        status === value
+                          ? "bg-[#e7e2ff] font-medium text-[#5149a7] dark:bg-[#2b2a43] dark:text-[#c4c0ff]"
+                          : "text-[#667085] hover:bg-[#eeeaff] hover:text-[#5149a7] dark:text-[#9298a9] dark:hover:bg-[#252937] dark:hover:text-white"
+                      }`}
+                    >
+                      {label}
+                    </Link>
+                  ))}
+                </div>
 
-                    return (
+                <form action="/" className="flex items-center gap-2">
+                  <input type="hidden" name="status" value={status} />
+                  <div className="relative">
+                    <Search
+                      size={14}
+                      className="absolute left-3 top-1/2 -translate-y-1/2 text-[#747b8e]"
+                    />
+                    <input
+                      name="q"
+                      defaultValue={q}
+                      placeholder="Find run on this page..."
+                      className="w-44 rounded-lg border border-[#343746] bg-[#101218] py-2.5 pl-9 pr-3 text-sm text-white outline-none placeholder:text-[#686e7e] focus:border-[#7772f8] sm:w-56"
+                    />
+                  </div>
+                  <button className="rounded-lg bg-[#7772f8] px-4 py-2.5 text-sm font-medium text-white transition hover:bg-[#8984ff]">
+                    Search
+                  </button>
+                </form>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[800px] text-left">
+                  <thead className="bg-[#11141c]">
+                    <tr className="text-sm text-[#80879a]">
+                      <th className="px-5 py-4 font-medium">Run / Trace ID</th>
+                      <th className="px-5 py-4 font-medium">Status</th>
+                      <th className="px-5 py-4 font-medium">Spans</th>
+                      <th className="px-5 py-4 font-medium">Duration</th>
+                      <th className="px-5 py-4 font-medium">Tokens</th>
+                      <th className="px-5 py-4 font-medium">Started</th>
+                      <th className="px-5 py-4" />
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {runs.map((run) => (
                       <tr
                         key={run.run_id}
-                        className="border-t border-slate-800 transition-colors hover:bg-slate-800/40"
+                        className="border-t border-[#242733] transition hover:bg-[#f0f2f8] dark:hover:bg-[#252937]"
                       >
-                        <td className="px-6 py-4 font-mono text-indigo-400">
+                        <td className="px-5 py-4">
                           <Link
                             href={`/runs/${run.run_id}`}
-                            className="hover:text-indigo-300 hover:underline"
-                            title={run.run_id}
+                            className="flex items-center gap-2 font-mono text-sm font-medium text-[#6864d8] dark:text-[#b1acff] hover:underline"
                           >
-                            {run.run_id.slice(0, 8)}
-                            ...
+                            <GitBranch size={13} />
+                            {run.run_id.slice(0, 20)}…
                           </Link>
                         </td>
-
-                        <td className="px-6 py-4">
-                          <span
-                            className={
-                              run.status === "ok"
-                                ? "text-emerald-400"
-                                : "text-red-400"
-                            }
-                          >
-                            ● {run.status}
+                        <td className="px-5 py-4">
+                          <span className={`inline-flex items-center gap-2 rounded-md px-2.5 py-1 text-sm font-medium ${
+                            run.status === "ok"
+                              ? "bg-emerald-500/10 text-emerald-400"
+                              : "bg-red-500/10 text-red-400"
+                          }`}>
+                            <span className={`h-1.5 w-1.5 rounded-full ${
+                              run.status === "ok" ? "bg-emerald-400" : "bg-red-400"
+                            }`} />
+                            {run.status === "ok" ? "Success" : "Error"}
                           </span>
                         </td>
-
-                        <td className="px-6 py-4">
+                        <td className="px-5 py-4 text-sm text-[#c2c6d2]">
                           {run.span_count}
                         </td>
-
-                        <td className="px-6 py-4">
-                          {run.error_count}
+                        <td className="px-5 py-4 font-mono text-sm text-[#a0a6b6]">
+                          {duration(run.started_at, run.last_event_at)}
                         </td>
-
-                        <td className="px-6 py-4">
-                          {runTokens.toLocaleString()}
+                        <td className="px-5 py-4 text-sm text-[#c2c6d2]">
+                          {number(run.input_tokens + run.output_tokens)}
                         </td>
-
-                        <td className="px-6 py-4 text-slate-300">
-                          {formatCost(
-                            Number(
-                              run.estimated_cost_usd
-                            )
-                          )}
+                        <td className="whitespace-nowrap px-5 py-4 text-sm text-[#9298a9]">
+                          {new Date(run.started_at).toLocaleString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            hour: "numeric",
+                            minute: "2-digit",
+                          })}
                         </td>
-
-                        <td className="whitespace-nowrap px-6 py-4 text-slate-400">
-                          {formatDate(run.started_at)}
+                        <td className="px-5 py-4">
+                          <Link
+                            href={`/runs/${run.run_id}`}
+                            aria-label="Inspect run"
+                            className="text-[#747b8e] hover:text-[#b1acff]"
+                          >
+                            <ArrowUpRight size={16} />
+                          </Link>
                         </td>
                       </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                    ))}
+                  </tbody>
+                </table>
+
+                {runs.length === 0 && (
+                  <div className="py-14 text-center text-base text-[#858b9d]">
+                    No matching executions found.
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[#292c38] px-5 py-4">
+                <span className="text-sm text-[#8a90a1]">
+                  Page {page} of {pages} · 25 runs per page
+                </span>
+
+                <div className="flex items-center gap-2">
+                  <Link
+                    href={url(Math.max(1, page - 1))}
+                    aria-disabled={page <= 1}
+                    className={`flex items-center gap-2 rounded-md border border-[#343746] px-3 py-2 text-sm ${
+                      page <= 1 ? "pointer-events-none opacity-35" : "hover:bg-[#252937]"
+                    }`}
+                  >
+                    <ChevronLeft size={14} /> Previous
+                  </Link>
+                  <Link
+                    href={url(Math.min(pages, page + 1))}
+                    aria-disabled={page >= pages}
+                    className={`flex items-center gap-2 rounded-md border border-[#343746] px-3 py-2 text-sm ${
+                      page >= pages ? "pointer-events-none opacity-35" : "hover:bg-[#252937]"
+                    }`}
+                  >
+                    Next <ChevronRight size={14} />
+                  </Link>
+                </div>
+              </div>
             </div>
-          )}
+          </section>
 
-          {!error && (
-            <div className="border-t border-slate-800 px-6 py-4 text-xs text-slate-500">
-              Showing {data.runs.length}{" "}
-              {status === "all"
-                ? "recent runs"
-                : status === "ok"
-                  ? "successful runs"
-                  : "failed runs"}
-              . Token usage and estimated costs
-              reflect available trace metadata.
-              Demo pricing is simulated.
-            </div>
-          )}
-        </section>
-      </div>
-    </main>
-  );
-}
-
-function MetricCard({
-  title,
-  value,
-  subtitle,
-  accent = "default",
-}: {
-  title: string;
-  value: string;
-  subtitle?: string;
-  accent?: "default" | "red" | "indigo";
-}) {
-  const valueColor =
-    accent === "red"
-      ? "text-red-400"
-      : accent === "indigo"
-        ? "text-indigo-300"
-        : "text-white";
-
-  return (
-    <div className="rounded-xl border border-slate-800 bg-[#101522] p-6">
-      <p className="text-sm text-slate-400">
-        {title}
-      </p>
-
-      <p
-        className={`mt-3 text-2xl font-bold tracking-tight ${valueColor}`}
-      >
-        {value}
-      </p>
-
-      {subtitle && (
-        <p className="mt-2 text-xs text-slate-500">
-          {subtitle}
-        </p>
-      )}
+          <footer className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-[#252936] py-6 text-sm text-[#72798b]">
+            <span>AgentScope · Built for debugging AI agents</span>
+            <a
+              href="https://github.com/adjascently/agentscope"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 hover:text-white"
+            >
+              View source <ExternalLink size={13} />
+            </a>
+          </footer>
+        </div>
+      </main>
     </div>
   );
 }
