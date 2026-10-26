@@ -55,3 +55,4 @@ htmlcov/
 # Temporary files
 *.tmp
 *.swp
+brag-output/
